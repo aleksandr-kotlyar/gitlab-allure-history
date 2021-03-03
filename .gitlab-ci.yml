@@ -17,8 +17,16 @@ test:
 allure:
   stage: report
   script:
-    - allure generate allure-results -o allure-report
+    - git checkout gl-pages
+    - REPORT=job_${CI_PIPELINE_ID}
+    - LAST=$("cd public/stage; ls -td -- */ | head -n 1") || echo "No history"
+    - cp -r ${LAST}history allure-results
+    - allure generate allure-results -o $REPORT
+    - cp -r $REPORT public/stage
+    - git add public/stage
+    - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
+    - git push -u gl-pages
   artifacts:
     when: on_success
     paths:
-      - allure-report
+      - $REPORT
