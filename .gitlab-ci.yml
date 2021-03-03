@@ -23,7 +23,7 @@ allure:
     - cd ..
     - REPORT=job_${CI_PIPELINE_ID}
     - LAST=$("cd public/stage; ls -td -- */ | head -n 1") || echo "No history"
-    - cp -r ${LAST}history allure-results
+    - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
     - cp -r $REPORT ${CI_PROJECT_NAME}/public/stage
 
