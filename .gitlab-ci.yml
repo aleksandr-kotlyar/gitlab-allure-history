@@ -6,6 +6,7 @@ stages:
 
 test:
   stage: test
+  allow_failure: true
   script:
     pytest tests
   artifacts:
