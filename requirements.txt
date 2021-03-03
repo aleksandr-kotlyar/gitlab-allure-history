@@ -1,0 +1,2 @@
+allure-pytest==2.8.35
+pytest==6.2.2
