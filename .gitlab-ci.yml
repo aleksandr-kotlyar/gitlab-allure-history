@@ -2,11 +2,22 @@ image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v2
 
 stages:
   - test
+  - report
 
 test:
+  stage: test
   script:
     pytest tests
   artifacts:
     when: always
     paths:
       - allure-results
+
+allure:
+  stage: report
+  script:
+    - allure generate allure-results -o allure-report
+  artifacts:
+    when: on_success
+    paths:
+      - allure-report
