@@ -17,12 +17,17 @@ test:
 allure:
   stage: report
   script:
+    - git clone $CI_PROJECT_URL
+    - cd $CI_PROJECT_NAME
     - git checkout gl-pages
+    - cd ..
     - REPORT=job_${CI_PIPELINE_ID}
     - LAST=$("cd public/stage; ls -td -- */ | head -n 1") || echo "No history"
     - cp -r ${LAST}history allure-results
     - allure generate allure-results -o $REPORT
-    - cp -r $REPORT public/stage
+    - cp -r $REPORT ${CI_PROJECT_NAME}/public/stage
+
+    - cd $CI_PROJECT_NAME
     - git add public/stage
     - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
     - git push -u gl-pages
