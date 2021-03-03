@@ -17,12 +17,9 @@ test:
 allure:
   stage: report
   script:
-    - git clone $CI_PROJECT_URL
-    - cd $CI_PROJECT_NAME
-    - git checkout gl-pages
-    - cd ..
+    - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
     - REPORT=job_${CI_PIPELINE_ID}
-    - LAST=$("cd public/stage; ls -td -- */ | head -n 1") || echo "No history"
+    - LAST=$("cd ${CI_PROJECT_NAME}/public/stage; ls -td -- */ | head -n 1") || echo "No history"
     - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
     - cp -r $REPORT ${CI_PROJECT_NAME}/public/stage
