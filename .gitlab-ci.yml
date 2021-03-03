@@ -1,0 +1,12 @@
+image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v1
+
+stages:
+  - test
+
+test:
+  script:
+    pytest tests
+  artifacts:
+    when: always
+    paths:
+      - allure-results
