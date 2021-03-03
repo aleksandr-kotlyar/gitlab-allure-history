@@ -2,6 +2,7 @@ FROM python:3.7.9-alpine3.13 AS compile-image
 
 WORKDIR /app
 COPY requirements.txt /app/requirements.txt
+ENV PATH="/app/venv/bin:$PATH"
 RUN python -m venv /app/venv
 RUN pip3 install --upgrade pip setuptools wheel \
     && pip3 install --no-cache-dir -r requirements.txt
