@@ -29,7 +29,8 @@ allure:
     - git config user.email ${CI_EMAIL}
     - git add public/stage
     - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
-    - git push -u $CI_PROJECT_URL
+    - git remote add $CI_PROJECT_NAME https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${$CI_PROJECT_NAME}.git
+    - git push -u $CI_PROJECT_NAME
   artifacts:
     when: on_success
     paths:
