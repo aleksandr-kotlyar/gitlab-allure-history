@@ -22,11 +22,12 @@ allure:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
 
     - REPORT=job_${CI_PIPELINE_ID}
-    - LAST=$("cd ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}; ls -td -- */ | head -n 1") || echo "No history"
+    - CURRENT_BRANCH=${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
+    - LAST=${CURRENT_BRANCH}/$("cd ${CURRENT_BRANCH}; ls -td -- */ | head -n 1") || echo "No history"
     - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
-    - mkdir -p ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
-    - cp -r $REPORT ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
+    - mkdir -p ${CURRENT_BRANCH}
+    - cp -r $REPORT ${CURRENT_BRANCH}
 
     - cp -r ${CI_PROJECT_NAME}/public ./public
 
