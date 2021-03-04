@@ -23,7 +23,7 @@ allure:
 
     - REPORT=job_${CI_PIPELINE_ID}
     - CURRENT_BRANCH=${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
-    - LAST=${CURRENT_BRANCH}/$("cd ${CURRENT_BRANCH}; ls -td -- */ | head -n 1") || echo "No history"
+    - LAST=${CURRENT_BRANCH}/$("cd ${CURRENT_BRANCH}; ls -td -- */ | head -n 1")
     - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
     - mkdir -p ${CURRENT_BRANCH}
