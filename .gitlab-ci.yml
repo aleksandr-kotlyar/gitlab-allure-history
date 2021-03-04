@@ -3,6 +3,7 @@ image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
 stages:
   - test
   - report
+  - deploy
 
 test:
   stage: test
@@ -27,6 +28,8 @@ allure:
     - mkdir -p ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
     - cp -r $REPORT ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
 
+    - cp -r ${CI_PROJECT_NAME}/public ./public
+
     - cd $CI_PROJECT_NAME
     - git config user.name "Gitlab Runner"
     - git config user.email ${CI_EMAIL}
@@ -36,6 +39,20 @@ allure:
     - git push -u $CI_PROJECT_NAME
   artifacts:
     when: on_success
+    expire_in: 3 days
+    paths:
+      - public
+
+pages:
+  image: python:3.7-alpine
+  stage: deploy
+  when: on_success
+  script:
+    - pwd
+    - ls -la
+    - ls public -la
+    - python3 generate_index.py ./public/${CI_COMMIT_REF_NAME}
+  artifacts:
     expire_in: 3 days
     paths:
       - public
