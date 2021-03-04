@@ -48,10 +48,8 @@ pages:
   stage: deploy
   when: on_success
   script:
-    - pwd
-    - ls -la
-    - ls public -la
-    - python3 generate_index.py ./public
+    - python3 generate_index.py public
+    - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
   artifacts:
     expire_in: 3 days
     paths:
