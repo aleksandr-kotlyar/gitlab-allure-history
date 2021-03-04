@@ -11,6 +11,7 @@ test:
     pytest tests
   artifacts:
     when: always
+    expire_in: 3 days
     paths:
       - allure-results
 
@@ -26,5 +27,6 @@ allure:
     - cp -r $REPORT public/stage
   artifacts:
     when: on_success
+    expire_in: 3 days
     paths:
       - public
