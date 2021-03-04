@@ -29,7 +29,7 @@ allure:
     - git config user.email ${CI_EMAIL}
     - git add public/stage
     - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
-    - git push -u
+    - git push -u $CI_PROJECT_URL
   artifacts:
     when: on_success
     paths:
