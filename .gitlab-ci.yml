@@ -51,7 +51,7 @@ pages:
     - pwd
     - ls -la
     - ls public -la
-    - python3 generate_index.py ./public/${CI_COMMIT_REF_NAME}
+    - python3 generate_index.py ./public
   artifacts:
     expire_in: 3 days
     paths:
