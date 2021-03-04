@@ -1,0 +1,63 @@
+{
+  "uid" : "d6afa55659fe45b9",
+  "name" : "test_fail",
+  "fullName" : "tests.test_simulation#test_fail",
+  "historyId" : "df023592146030b65b1fe3d232937503",
+  "time" : {
+    "start" : 1614897772458,
+    "stop" : 1614897772458,
+    "duration" : 0
+  },
+  "status" : "failed",
+  "statusMessage" : "AssertionError: assert False",
+  "statusTrace" : "@link(2)\n    def test_fail():\n>       assert False\nE       assert False\n\ntests/test_simulation.py:12: AssertionError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "tests"
+  }, {
+    "name" : "suite",
+    "value" : "test_simulation"
+  }, {
+    "name" : "host",
+    "value" : "runner-z3wu8uu--project-24847075-concurrent-0"
+  }, {
+    "name" : "thread",
+    "value" : "10-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "tests.test_simulation"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "url" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "type" : "link"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Product defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "tags" : [ ]
+  },
+  "source" : "d6afa55659fe45b9.json",
+  "parameterValues" : [ ]
+}
