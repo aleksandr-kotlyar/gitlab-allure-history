@@ -4,6 +4,9 @@ stages:
   - test
   - report
 
+variables:
+  ENV: 'stage'
+
 test:
   stage: test
   allow_failure: true
@@ -21,18 +24,12 @@ allure:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
 
     - REPORT=job_${CI_PIPELINE_ID}
-    - LAST=$("cd ${CI_PROJECT_NAME}/public/stage; ls -td -- */ | head -n 1") || echo "No history"
+    - LAST=$("cd ${CI_PROJECT_NAME}/public/${ENV}/${CI_COMMIT_REF_NAME}; ls -td -- */ | head -n 1") || echo "No history"
     - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
-    - cp -r $REPORT ${CI_PROJECT_NAME}/public/stage
-
-    - ls -la
-    - ls ${CI_PROJECT_NAME}/public/stage -la
+    - cp -r $REPORT ${CI_PROJECT_NAME}/public/${ENV}/${CI_COMMIT_REF_NAME}
 
     - cd $CI_PROJECT_NAME
-
-    - ls -la
-
     - git config user.name "Gitlab Runner"
     - git config user.email ${CI_EMAIL}
     - git remote add $CI_PROJECT_NAME https://oauth2:${ALLURE_GITLAB_PAGES}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
