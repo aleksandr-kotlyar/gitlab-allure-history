@@ -18,12 +18,13 @@ allure:
   stage: report
   script:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
+    - cp -r ${CI_PROJECT_NAME}/public public
     - REPORT=job_${CI_PIPELINE_ID}
-    - LAST=$("cd ${CI_PROJECT_NAME}/public/stage; ls -td -- */ | head -n 1") || echo "No history"
+    - LAST=$("cd public/stage; ls -td -- */ | head -n 1") || echo "No history"
     - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
-    - cp -r $REPORT ${CI_PROJECT_NAME}/public/stage
+    - cp -r $REPORT public/stage
   artifacts:
     when: on_success
     paths:
-      - ${CI_PROJECT_NAME}/public
+      - public
