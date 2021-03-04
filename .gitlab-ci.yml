@@ -27,6 +27,7 @@ allure:
     - LAST=$("cd ${CI_PROJECT_NAME}/public/${ENV}/${CI_COMMIT_REF_NAME}; ls -td -- */ | head -n 1") || echo "No history"
     - cp -r ${LAST}history allure-results || echo "No history"
     - allure generate allure-results -o $REPORT
+    - mkdir -p ${CI_PROJECT_NAME}/public/${ENV}/${CI_COMMIT_REF_NAME}
     - cp -r $REPORT ${CI_PROJECT_NAME}/public/${ENV}/${CI_COMMIT_REF_NAME}
 
     - cd $CI_PROJECT_NAME
