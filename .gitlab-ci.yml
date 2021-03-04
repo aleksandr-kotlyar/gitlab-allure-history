@@ -9,7 +9,7 @@ test:
   stage: test
   allow_failure: true
   script:
-    - echo $CI_JOB_ID > jobid
+    - echo "${CI_JOB_ID}" > jobid
     - pytest tests
   artifacts:
     when: always
@@ -23,7 +23,7 @@ allure:
   script:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
 
-    - JOB_ID=$(<jobid)
+    - JOB_ID=$(cat "$jobid")
     - REPORT=job_${JOB_ID}
     - CURRENT_BRANCH=${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
     - LAST=${CURRENT_BRANCH}/$(cd ${CURRENT_BRANCH}; ls -td -- */ | head -n 1)
