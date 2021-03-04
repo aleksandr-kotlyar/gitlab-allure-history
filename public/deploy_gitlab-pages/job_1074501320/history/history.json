@@ -1,0 +1,159 @@
+{
+  "35ee7794966218b9bf8cc8862677c955" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 3,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "92fc5f68fd510dce",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_1074501320//#testresult/92fc5f68fd510dce",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1614900651450,
+        "stop" : 1614900651450,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "ecd13902cc0902ca",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_//#testresult/ecd13902cc0902ca",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1614899930424,
+        "stop" : 1614899930424,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "685ff442371453f3",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1614897772486,
+        "stop" : 1614897772486,
+        "duration" : 0
+      }
+    } ]
+  },
+  "afb8d6324b95598fa2412a9efe824720" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 3,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "106d6a8334f70cc1",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_1074501320//#testresult/106d6a8334f70cc1",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1614900651447,
+        "stop" : 1614900651447,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "98c4693b7c576f6e",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_//#testresult/98c4693b7c576f6e",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1614899930421,
+        "stop" : 1614899930421,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "d858c8413e1204ac",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1614897772483,
+        "stop" : 1614897772483,
+        "duration" : 0
+      }
+    } ]
+  },
+  "ce347b871f95042004e15bd7a763594b" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 3,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "26fb4698277e8d1a",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_1074501320//#testresult/26fb4698277e8d1a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1614900651421,
+        "stop" : 1614900651421,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "dc6bdcdefb176830",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_//#testresult/dc6bdcdefb176830",
+      "status" : "passed",
+      "time" : {
+        "start" : 1614899930394,
+        "stop" : 1614899930395,
+        "duration" : 1
+      }
+    }, {
+      "uid" : "41d0910a4b85919d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1614897772455,
+        "stop" : 1614897772456,
+        "duration" : 1
+      }
+    } ]
+  },
+  "df023592146030b65b1fe3d232937503" : {
+    "statistic" : {
+      "failed" : 3,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    },
+    "items" : [ {
+      "uid" : "7012fc461ede22d0",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_1074501320//#testresult/7012fc461ede22d0",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1614900651423,
+        "stop" : 1614900651423,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "19927bcf4d336c93",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_//#testresult/19927bcf4d336c93",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1614899930397,
+        "stop" : 1614899930397,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "d6afa55659fe45b9",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1614897772458,
+        "stop" : 1614897772458,
+        "duration" : 0
+      }
+    } ]
+  }
+}
