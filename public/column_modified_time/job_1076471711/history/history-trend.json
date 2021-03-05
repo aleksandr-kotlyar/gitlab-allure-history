@@ -1,0 +1,25 @@
+[ {
+  "buildOrder" : 1076471711,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1076471711/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "failed" : 1,
+    "broken" : 1,
+    "skipped" : 1,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 4
+  }
+}, {
+  "buildOrder" : 1075307522,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1075307522/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "failed" : 1,
+    "broken" : 1,
+    "skipped" : 1,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 4
+  }
+} ]
