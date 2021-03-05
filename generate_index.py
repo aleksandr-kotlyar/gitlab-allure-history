@@ -1,7 +1,7 @@
 import os
 import sys
 
-indexTextStart = """<!DOCTYPE html>
+INDEX_TEXT_START = """<!DOCTYPE html>
 <html>
 <head><title>Index of {folderPath}</title></head>
 <body>
@@ -12,7 +12,7 @@ indexTextStart = """<!DOCTYPE html>
             <a href='../'>../</a>
         </li>
 """
-indexTextEnd = """
+INDEX_TEXT_END = """
     </ul>
 </body>
 </html>
@@ -22,13 +22,13 @@ indexTextEnd = """
 def index_folder(folder_path):
     print("Indexing: " + folder_path + '/')
     # Getting the sub-dirs of the folder
-    files = os.listdir(folder_path)
+    files = [file_ for file_ in os.listdir(folder_path) if file_ != 'index.html']
     files.sort(key=os.path.getmtime)
     # If Root folder, correcting folder name
     root = folder_path
     if folder_path.startswith('public'):
         root = folder_path.replace('public', 'gitlab-allure-history')
-    index_text = indexTextStart.format(folderPath=root)
+    index_text = INDEX_TEXT_START.format(folderPath=root)
     for file in sorted(files):
         # Avoiding index.html files
         if file != 'index.html':
@@ -42,7 +42,7 @@ def index_folder(folder_path):
             )
             # Recursive call to continue indexing
             # index_folder(folder_path + '/' + file)
-    index_text += indexTextEnd
+    index_text += INDEX_TEXT_END
     # Create or override previous index.html
     index = open(folder_path + '/index.html', "w")
     # Save indexed content to file
