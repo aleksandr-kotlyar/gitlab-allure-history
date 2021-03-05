@@ -1,0 +1,10 @@
+[ {
+  "name" : "GitLabCI",
+  "type" : "gitlab",
+  "url" : "gitlab.io/gitlab-allure-history/public/column_modified_time",
+  "buildOrder" : 1076514378,
+  "buildName" : "GitLab Job Run 1076514378",
+  "buildUrl" : "https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/pipelines/266103229",
+  "reportName" : "Allure Report with history",
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1076514378/"
+} ]
