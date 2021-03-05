@@ -3,29 +3,46 @@ image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
 stages:
   - test
   - report
+  - deploy
 
 test:
   stage: test
   allow_failure: true
   script:
-    pytest tests
+    - echo "${CI_JOB_ID}" > jobid
+    - pytest tests
   artifacts:
     when: always
     expire_in: 3 days
     paths:
       - allure-results
+      - jobid
 
 allure:
   stage: report
   script:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
 
-    - REPORT=job_${CI_PIPELINE_ID}
-    - LAST=$("cd ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}; ls -td -- */ | head -n 1") || echo "No history"
-    - cp -r ${LAST}history allure-results || echo "No history"
+    - JOB_ID=$(cat jobid)
+    - REPORT=job_${JOB_ID}
+    - CURRENT_BRANCH=${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
+    - LAST=${CURRENT_BRANCH}/$(cd ${CURRENT_BRANCH}; ls -td -- */ | head -n 1)
+    - cp -r ./${LAST}history allure-results || echo "No history"
+
+    #echo "executor.json"
+    - echo '{"name":"GitLabCI","type":"gitlab","reportName":"Allure Report with history",' > executor.json
+    - echo "\"url\":\"${CI_PAGES_DOMAIN}/${CURRENT_BRANCH}\"," >> executor.json
+    - echo "\"reportUrl\":\"${CI_PAGES_DOMAIN}/${CURRENT_BRANCH}/${REPORT}/\"," >> executor.json
+    - echo "\"buildUrl\":\"${CI_PIPELINE_URL}\"," >> executor.json
+    - echo "\"buildName\":\"GitLab Job Run `#`${JOB_ID}\",\"buildOrder\":\"${JOB_ID}\"}" >> executor.json
+    #cat executor.json
+    - mv ./executor.json ./allure-results
+
     - allure generate allure-results -o $REPORT
-    - mkdir -p ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
-    - cp -r $REPORT ${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
+
+    - mkdir -p ${CURRENT_BRANCH}
+    - cp -r $REPORT ${CURRENT_BRANCH}
+    - cp -r ${CI_PROJECT_NAME}/public ./public
 
     - cd $CI_PROJECT_NAME
     - git config user.name "Gitlab Runner"
@@ -36,6 +53,18 @@ allure:
     - git push -u $CI_PROJECT_NAME
   artifacts:
     when: on_success
+    expire_in: 3 days
+    paths:
+      - public
+
+pages:
+  image: python:3.7-alpine
+  stage: deploy
+  when: on_success
+  script:
+    - python3 generate_index.py public
+    - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
+  artifacts:
     expire_in: 3 days
     paths:
       - public
