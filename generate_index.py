@@ -30,16 +30,18 @@ def index_folder(folder_path):
         root = folder_path.replace('public', 'gitlab-allure-history')
     index_text = indexTextStart.format(folderPath=root)
     for file in sorted(files):
-        index_text += (
+        # Avoiding index.html files
+        if file != 'index.html':
+            index_text += (
                 "\t\t<li>\n\t\t\t"
                 + "<a href='" + file + "'>"
                 + file
                 + "</a>"
                 + f"\t\t{os.path.getmtime(os.path.join(folder_path, file))}"
                 + "\n\t\t</li>\n"
-        )
-        # Recursive call to continue indexing
-        # index_folder(folder_path + '/' + file)
+            )
+            # Recursive call to continue indexing
+            # index_folder(folder_path + '/' + file)
     index_text += indexTextEnd
     # Create or override previous index.html
     index = open(folder_path + '/index.html', "w")
