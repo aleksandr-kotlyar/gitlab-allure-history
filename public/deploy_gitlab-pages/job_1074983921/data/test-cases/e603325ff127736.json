@@ -1,0 +1,102 @@
+{
+  "uid" : "e603325ff127736",
+  "name" : "test_skipped",
+  "fullName" : "tests.test_simulation#test_skipped",
+  "historyId" : "35ee7794966218b9bf8cc8862677c955",
+  "time" : {
+    "start" : 1614923463181,
+    "stop" : 1614923463181,
+    "duration" : 0
+  },
+  "status" : "skipped",
+  "statusMessage" : "Skipped: skip",
+  "statusTrace" : "('/builds/aleksandr-kotlyar/gitlab-allure-history/tests/test_simulation.py', 20, 'Skipped: skip')",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "tag",
+    "value" : "@pytest.mark.skip('skip')"
+  }, {
+    "name" : "parentSuite",
+    "value" : "tests"
+  }, {
+    "name" : "suite",
+    "value" : "test_simulation"
+  }, {
+    "name" : "host",
+    "value" : "runner-z3wu8uu--project-24847075-concurrent-0"
+  }, {
+    "name" : "thread",
+    "value" : "9-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "tests.test_simulation"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "url" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "type" : "link"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 0,
+        "skipped" : 4,
+        "passed" : 0,
+        "unknown" : 0,
+        "total" : 4
+      },
+      "items" : [ {
+        "uid" : "92fc5f68fd510dce",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_1074501320//#testresult/92fc5f68fd510dce",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1614900651450,
+          "stop" : 1614900651450,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "ecd13902cc0902ca",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/deploy_gitlab-pages/job_//#testresult/ecd13902cc0902ca",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1614899930424,
+          "stop" : 1614899930424,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "685ff442371453f3",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1614897772486,
+          "stop" : 1614897772486,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ "@pytest.mark.skip('skip')" ]
+  },
+  "source" : "e603325ff127736.json",
+  "parameterValues" : [ ]
+}
