@@ -1,0 +1,124 @@
+{
+  "35ee7794966218b9bf8cc8862677c955" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 2,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "720e8b2ff95dd5e8",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1076487004//#testresult/720e8b2ff95dd5e8",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1614959167577,
+        "stop" : 1614959167577,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "f0246343e475143c",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1075307522//#testresult/f0246343e475143c",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1614933766236,
+        "stop" : 1614933766236,
+        "duration" : 0
+      }
+    } ]
+  },
+  "afb8d6324b95598fa2412a9efe824720" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 2,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "ba0cdfeadab2efdb",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1076487004//#testresult/ba0cdfeadab2efdb",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1614959167575,
+        "stop" : 1614959167575,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "6ea2713eca2d3799",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1075307522//#testresult/6ea2713eca2d3799",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1614933766233,
+        "stop" : 1614933766233,
+        "duration" : 0
+      }
+    } ]
+  },
+  "ce347b871f95042004e15bd7a763594b" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "22d36ae50c44302e",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1076487004//#testresult/22d36ae50c44302e",
+      "status" : "passed",
+      "time" : {
+        "start" : 1614959167547,
+        "stop" : 1614959167547,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "3add7ab302761915",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1075307522//#testresult/3add7ab302761915",
+      "status" : "passed",
+      "time" : {
+        "start" : 1614933766205,
+        "stop" : 1614933766206,
+        "duration" : 1
+      }
+    } ]
+  },
+  "df023592146030b65b1fe3d232937503" : {
+    "statistic" : {
+      "failed" : 2,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 2
+    },
+    "items" : [ {
+      "uid" : "8a8b170d8b726d16",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1076487004//#testresult/8a8b170d8b726d16",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1614959167549,
+        "stop" : 1614959167549,
+        "duration" : 0
+      }
+    }, {
+      "uid" : "f260fe99668cdfd3",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/column_modified_time/job_1075307522//#testresult/f260fe99668cdfd3",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1614933766208,
+        "stop" : 1614933766208,
+        "duration" : 0
+      }
+    } ]
+  }
+}
