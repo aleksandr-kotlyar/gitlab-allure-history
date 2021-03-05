@@ -22,7 +22,7 @@ indexTextEnd = """
 def index_folder(folder_path):
     print("Indexing: " + folder_path + '/')
     # Getting the sub-dirs of the folder
-    files = [file_ for file_ in os.listdir(folder_path) if os.path.isdir(file_)]
+    files = os.listdir(folder_path)
     files.sort(key=os.path.getmtime)
     # If Root folder, correcting folder name
     root = folder_path
