@@ -23,6 +23,7 @@ def index_folder(folder_path):
     print("Indexing: " + folder_path + '/')
     # Getting the content of the folder
     files = os.listdir(folder_path)
+    files.sort(key=os.path.getmtime)
     # If Root folder, correcting folder name
     root = folder_path
     if folder_path.startswith('public'):
@@ -31,7 +32,14 @@ def index_folder(folder_path):
     for file in sorted(files):
         # Avoiding index.html files
         if file != 'index.html':
-            index_text += "\t\t<li>\n\t\t\t<a href='" + file + "'>" + file + "</a>\n\t\t</li>\n"
+            index_text += (
+                    "\t\t<li>\n\t\t\t"
+                    + "<a href='" + file + "'>"
+                    + file
+                    + "</a>"
+                    + f"\t\t{os.path.getmtime(os.path.join(folder_path, file))}"
+                    + "\n\t\t</li>\n"
+            )
         # Recursive call to continue indexing
         # if os.path.isdir(folder_path + '/' + file):
         #     index_folder(folder_path + '/' + file)
