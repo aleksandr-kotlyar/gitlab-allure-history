@@ -56,7 +56,8 @@ Here is how it works:
    4. Generates report with allure Commandline into job_number build folder.
    5. Creates branch-dir in 'gl-pages' `/public` directory if it's not existed yet.    
    5. Copies report into 'gl-pages' `/public/branch` directory: `/public/branch/job_number`.
-   6. Commits and pushes the public directory into 'gl-pages' branch into the repo.
+   6. Generates the index files for page tree `/public` and `/public/branch`.
+   7. Commits and pushes the public directory into 'gl-pages' branch into the repo.
 3. And then push to branch 'gl-pages' triggers it's own job `pages` which publishes all 
    content from `/public` directory on GitLab Pages. You can open root link of GitLab Pages and 
    always see all the history of each branch and find the latest execution by the latest 
