@@ -1,0 +1,9 @@
+[ {
+  "name" : "GitLabCI",
+  "type" : "gitlab",
+  "buildOrder" : 1078118373,
+  "buildName" : "GitLab Job Run 1078118373",
+  "buildUrl" : "https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/pipelines/266466821",
+  "reportName" : "Allure Report with history",
+  "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078118373/"
+} ]
