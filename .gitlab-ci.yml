@@ -5,6 +5,10 @@ stages:
   - report
   - deploy
 
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_NAME != "gl-pages"
+
 test:
   stage: test
   allow_failure: true
@@ -47,24 +51,23 @@ allure:
     - cd $CI_PROJECT_NAME
     - git config user.name "Gitlab Runner"
     - git config user.email ${CI_EMAIL}
-    - git remote add $CI_PROJECT_NAME https://oauth2:${ALLURE_GITLAB_PAGES}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
+    - git remote add $CI_PROJECT_NAME https://oauth2:${ALLURE_GITLAB_PAGES}@${CI_REPOSITORY_URL}
     - git add ./public
     - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
     - git push -u $CI_PROJECT_NAME
-  artifacts:
-    when: on_success
-    expire_in: 3 days
-    paths:
-      - public
+  after_script:
+    - >
+      curl --request POST --header "PRIVATE-TOKEN: ${ALLURE_GITLAB_PAGES}"
+      "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipeline?ref=gl-pages"
 
 pages:
   image: python:3.7-alpine
   stage: deploy
-  when: on_success
   script:
     - python3 generate_index.py public
     - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
+  rules:
+    - if: $CI_COMMIT_REF_NAME == 'gl-pages'
   artifacts:
-    expire_in: 3 days
     paths:
       - public
