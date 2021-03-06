@@ -57,7 +57,7 @@ allure:
     - git push -u $CI_PROJECT_NAME
   after_script:
     - >
-      curl --request POST --header "PRIVATE-TOKEN: ${ALLURE_GITLAB_PAGES}"
+      curl --request POST --header "PRIVATE-TOKEN: ${PRIVATE_API_TOKEN}"
       "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipeline?ref=gl-pages"
 
 pages:
