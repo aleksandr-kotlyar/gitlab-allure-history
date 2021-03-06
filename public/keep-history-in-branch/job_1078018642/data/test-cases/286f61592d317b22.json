@@ -1,0 +1,84 @@
+{
+  "uid" : "286f61592d317b22",
+  "name" : "test_broken",
+  "fullName" : "tests.test_simulation#test_broken",
+  "historyId" : "afb8d6324b95598fa2412a9efe824720",
+  "time" : {
+    "start" : 1615044503324,
+    "stop" : 1615044503324,
+    "duration" : 0
+  },
+  "status" : "broken",
+  "statusMessage" : "ValueError: broken",
+  "statusTrace" : "@link(2)\n    def test_broken():\n>       raise ValueError('broken')\nE       ValueError: broken\n\ntests/test_simulation.py:17: ValueError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "tests"
+  }, {
+    "name" : "suite",
+    "value" : "test_simulation"
+  }, {
+    "name" : "host",
+    "value" : "runner-z3wu8uu--project-24847075-concurrent-0"
+  }, {
+    "name" : "thread",
+    "value" : "9-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "tests.test_simulation"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "url" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "type" : "link"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Test defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 2,
+        "skipped" : 0,
+        "passed" : 0,
+        "unknown" : 0,
+        "total" : 2
+      },
+      "items" : [ {
+        "uid" : "db231d2bc8519d19",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/keep-history-in-branch/job_1078016719//#testresult/db231d2bc8519d19",
+        "status" : "broken",
+        "statusDetails" : "ValueError: broken",
+        "time" : {
+          "start" : 1615044293650,
+          "stop" : 1615044293650,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ ]
+  },
+  "source" : "286f61592d317b22.json",
+  "parameterValues" : [ ]
+}
