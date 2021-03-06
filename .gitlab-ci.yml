@@ -1,4 +1,4 @@
-image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v4
+image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
 
 stages:
   - test
@@ -55,19 +55,3 @@ allure:
     - git add ./public
     - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
     - git push -u $CI_PROJECT_NAME
-  after_script:
-    - >
-      curl --request POST --header "PRIVATE-TOKEN: ${PRIVATE_API_TOKEN}"
-      "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipeline?ref=gl-pages"
-
-pages:
-  image: python:3.7-alpine
-  stage: deploy
-  script:
-    - python3 generate_index.py public
-    - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
-  rules:
-    - if: $CI_COMMIT_REF_NAME == 'gl-pages'
-  artifacts:
-    paths:
-      - public
