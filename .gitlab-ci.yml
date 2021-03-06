@@ -1,0 +1,11 @@
+stages:
+    - deploy
+
+pages:
+  image: python:3.7-alpine
+  stage: deploy
+  script:
+    - python3 generate_index.py public
+  artifacts:
+    paths:
+      - public
