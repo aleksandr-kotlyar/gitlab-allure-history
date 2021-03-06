@@ -1,0 +1,85 @@
+{
+  "35ee7794966218b9bf8cc8862677c955" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 1,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "2b86c9a2449addc",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/keep-history-in-branch/job_1078016719//#testresult/2b86c9a2449addc",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1615044293653,
+        "stop" : 1615044293653,
+        "duration" : 0
+      }
+    } ]
+  },
+  "afb8d6324b95598fa2412a9efe824720" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "db231d2bc8519d19",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/keep-history-in-branch/job_1078016719//#testresult/db231d2bc8519d19",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1615044293650,
+        "stop" : 1615044293650,
+        "duration" : 0
+      }
+    } ]
+  },
+  "ce347b871f95042004e15bd7a763594b" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "6c4235e2009585d",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/keep-history-in-branch/job_1078016719//#testresult/6c4235e2009585d",
+      "status" : "passed",
+      "time" : {
+        "start" : 1615044293623,
+        "stop" : 1615044293624,
+        "duration" : 1
+      }
+    } ]
+  },
+  "df023592146030b65b1fe3d232937503" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "49b9a9c137797d1b",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/keep-history-in-branch/job_1078016719//#testresult/49b9a9c137797d1b",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1615044293626,
+        "stop" : 1615044293626,
+        "duration" : 0
+      }
+    } ]
+  }
+}
