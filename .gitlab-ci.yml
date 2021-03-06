@@ -29,7 +29,7 @@ allure:
 
     #echo "executor.json"
     - echo '{"name":"GitLabCI","type":"gitlab","reportName":"Allure Report with history",' > executor.json
-    - echo "\"reportUrl\":\"${CI_PAGES_DOMAIN}/${CURRENT_BRANCH}/${REPORT}/\"," >> executor.json
+    - echo "\"reportUrl\":\"${CI_PAGES_URL}/${CURRENT_BRANCH}/${REPORT}/\"," >> executor.json
     - echo "\"buildUrl\":\"${CI_PIPELINE_URL}\"," >> executor.json
     - echo "\"buildName\":\"GitLab Job Run ${JOB_ID}\",\"buildOrder\":\"${JOB_ID}\"}" >> executor.json
     #cat executor.json
