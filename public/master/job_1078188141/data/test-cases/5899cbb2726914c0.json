@@ -1,0 +1,274 @@
+{
+  "uid" : "5899cbb2726914c0",
+  "name" : "test_fail",
+  "fullName" : "tests.test_simulation#test_fail",
+  "historyId" : "df023592146030b65b1fe3d232937503",
+  "time" : {
+    "start" : 1615058734087,
+    "stop" : 1615058734087,
+    "duration" : 0
+  },
+  "status" : "failed",
+  "statusMessage" : "AssertionError: assert False",
+  "statusTrace" : "@link(2)\n    def test_fail():\n>       assert False\nE       assert False\n\ntests/test_simulation.py:12: AssertionError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "tests"
+  }, {
+    "name" : "suite",
+    "value" : "test_simulation"
+  }, {
+    "name" : "host",
+    "value" : "runner-0277ea0f-project-24847075-concurrent-0"
+  }, {
+    "name" : "thread",
+    "value" : "10-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "tests.test_simulation"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "url" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "type" : "link"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ {
+      "name" : "Product defects",
+      "matchedStatuses" : [ ],
+      "flaky" : false
+    } ],
+    "history" : {
+      "statistic" : {
+        "failed" : 45,
+        "broken" : 0,
+        "skipped" : 0,
+        "passed" : 0,
+        "unknown" : 0,
+        "total" : 45
+      },
+      "items" : [ {
+        "uid" : "2df2f4719bf2b108",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078184662//#testresult/2df2f4719bf2b108",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615058430273,
+          "stop" : 1615058430273,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "1aaf748e7fa59499",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078181926//#testresult/1aaf748e7fa59499",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615058131595,
+          "stop" : 1615058131595,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "e27bf4495d09c998",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078179327//#testresult/e27bf4495d09c998",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615057834461,
+          "stop" : 1615057834462,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "8d66bd9db30faf9c",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078176854//#testresult/8d66bd9db30faf9c",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615057584786,
+          "stop" : 1615057584786,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "602dca1f12439b6b",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078169678//#testresult/602dca1f12439b6b",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615057232481,
+          "stop" : 1615057232481,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "ee327e429ef1e17a",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078167390//#testresult/ee327e429ef1e17a",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615056930721,
+          "stop" : 1615056930721,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "87be2d199237014e",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078165306//#testresult/87be2d199237014e",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615056635200,
+          "stop" : 1615056635201,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "f55e9babfb48a5ae",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078162165//#testresult/f55e9babfb48a5ae",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615056332028,
+          "stop" : 1615056332028,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "3c97a6a6e0c123f1",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078159532//#testresult/3c97a6a6e0c123f1",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615056037788,
+          "stop" : 1615056037788,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "670e597ac2dded3d",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078157189//#testresult/670e597ac2dded3d",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615055736344,
+          "stop" : 1615055736345,
+          "duration" : 1
+        }
+      }, {
+        "uid" : "6712fb58f770b907",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078153837//#testresult/6712fb58f770b907",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615055431702,
+          "stop" : 1615055431702,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "d78bdaba3cb42de0",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078151607//#testresult/d78bdaba3cb42de0",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615055137624,
+          "stop" : 1615055137624,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "a6b9fa02d0d11ba6",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078148008//#testresult/a6b9fa02d0d11ba6",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615054831871,
+          "stop" : 1615054831871,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "6024d642976130c5",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078142962//#testresult/6024d642976130c5",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615054530864,
+          "stop" : 1615054530864,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "f11057a58d949330",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078140282//#testresult/f11057a58d949330",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615054233228,
+          "stop" : 1615054233228,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "b603424a457eb4db",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078137223//#testresult/b603424a457eb4db",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615053989885,
+          "stop" : 1615053989885,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "ac2800ef46623bb",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078130930//#testresult/ac2800ef46623bb",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615053634848,
+          "stop" : 1615053634848,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "eb3a449c6356f482",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078128461//#testresult/eb3a449c6356f482",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615053330701,
+          "stop" : 1615053330701,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "4638bb94d4aa9a97",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078126265//#testresult/4638bb94d4aa9a97",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615053045745,
+          "stop" : 1615053045745,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "f70cafe33f4101da",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078123366//#testresult/f70cafe33f4101da",
+        "status" : "failed",
+        "statusDetails" : "AssertionError: assert False",
+        "time" : {
+          "start" : 1615052733049,
+          "stop" : 1615052733049,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ ]
+  },
+  "source" : "5899cbb2726914c0.json",
+  "parameterValues" : [ ]
+}
