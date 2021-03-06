@@ -1,0 +1,22 @@
+[ {
+  "buildOrder" : 1077943788,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1077943788/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "Product defects" : 1,
+    "Test defects" : 1
+  }
+}, {
+  "buildOrder" : 1075000042,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1075000042/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "Product defects" : 1,
+    "Test defects" : 1
+  }
+}, {
+  "data" : {
+    "Product defects" : 1,
+    "Test defects" : 1
+  }
+} ]
