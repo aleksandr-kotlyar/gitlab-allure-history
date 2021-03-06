@@ -1,0 +1,243 @@
+{
+  "uid" : "b6e165c41f2ccd48",
+  "name" : "test_skipped",
+  "fullName" : "tests.test_simulation#test_skipped",
+  "historyId" : "35ee7794966218b9bf8cc8862677c955",
+  "time" : {
+    "start" : 1615050632467,
+    "stop" : 1615050632467,
+    "duration" : 0
+  },
+  "status" : "skipped",
+  "statusMessage" : "Skipped: skip",
+  "statusTrace" : "('/builds/aleksandr-kotlyar/gitlab-allure-history/tests/test_simulation.py', 20, 'Skipped: skip')",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "tag",
+    "value" : "@pytest.mark.skip('skip')"
+  }, {
+    "name" : "parentSuite",
+    "value" : "tests"
+  }, {
+    "name" : "suite",
+    "value" : "test_simulation"
+  }, {
+    "name" : "host",
+    "value" : "runner-0277ea0f-project-24847075-concurrent-0"
+  }, {
+    "name" : "thread",
+    "value" : "9-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "tests.test_simulation"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "url" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "type" : "link"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "history" : {
+      "statistic" : {
+        "failed" : 0,
+        "broken" : 0,
+        "skipped" : 18,
+        "passed" : 0,
+        "unknown" : 0,
+        "total" : 18
+      },
+      "items" : [ {
+        "uid" : "a76a193b15a8ceac",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078098608//#testresult/a76a193b15a8ceac",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615050388698,
+          "stop" : 1615050388698,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "c9d0d3a2494783ec",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078091970//#testresult/c9d0d3a2494783ec",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615050036535,
+          "stop" : 1615050036535,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "97a546e9059889af",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078088892//#testresult/97a546e9059889af",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615049735803,
+          "stop" : 1615049735803,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "66b8facc27b6b8af",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078085627//#testresult/66b8facc27b6b8af",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615049441853,
+          "stop" : 1615049441853,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "2a36818a283effb9",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078082513//#testresult/2a36818a283effb9",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615049141520,
+          "stop" : 1615049141520,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "df1a212da96a6901",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078081317//#testresult/df1a212da96a6901",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615049045312,
+          "stop" : 1615049045312,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "788bb50f297d6cc2",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078079815//#testresult/788bb50f297d6cc2",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615048831259,
+          "stop" : 1615048831259,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "b707e35e445e02a",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078078687//#testresult/b707e35e445e02a",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615048772638,
+          "stop" : 1615048772638,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "d3b6971558bf7b73",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078076760//#testresult/d3b6971558bf7b73",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615048544815,
+          "stop" : 1615048544815,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "ed111d2fecac41cf",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/master/job_1078074094//#testresult/ed111d2fecac41cf",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615048312696,
+          "stop" : 1615048312696,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "cc6971016b32cea7",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/gitlab-allure-history/public/master/job_1078073444//#testresult/cc6971016b32cea7",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615048240150,
+          "stop" : 1615048240150,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "fe5a44bef0be9b4d",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/gitlab-allure-history/public/master/job_1078071624//#testresult/fe5a44bef0be9b4d",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615048037024,
+          "stop" : 1615048037024,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "502cb4ddc7b58d47",
+        "reportUrl" : "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/gitlab-allure-history/public/master/job_1078071315//#testresult/502cb4ddc7b58d47",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615047961170,
+          "stop" : 1615047961170,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "cc8f8b4d0ea02a55",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1078066171//#testresult/cc8f8b4d0ea02a55",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615047480004,
+          "stop" : 1615047480004,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "7b54ab6ab2b1cc40",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1078063491//#testresult/7b54ab6ab2b1cc40",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615047260183,
+          "stop" : 1615047260183,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "41793470cebff8bd",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1078060511//#testresult/41793470cebff8bd",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615047126303,
+          "stop" : 1615047126303,
+          "duration" : 0
+        }
+      }, {
+        "uid" : "5b4ac427999c22cc",
+        "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1078058036//#testresult/5b4ac427999c22cc",
+        "status" : "skipped",
+        "statusDetails" : "Skipped: skip",
+        "time" : {
+          "start" : 1615047028449,
+          "stop" : 1615047028449,
+          "duration" : 0
+        }
+      } ]
+    },
+    "tags" : [ "@pytest.mark.skip('skip')" ]
+  },
+  "source" : "b6e165c41f2ccd48.json",
+  "parameterValues" : [ ]
+}
