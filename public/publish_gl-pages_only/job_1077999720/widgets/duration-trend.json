@@ -1,0 +1,15 @@
+[ {
+  "buildOrder" : 1077999720,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/publish_gl-pages_only/job_1077999720/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "duration" : 30
+  }
+}, {
+  "buildOrder" : 1077941548,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/publish_gl-pages_only/job_1077941548/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "duration" : 28
+  }
+} ]
