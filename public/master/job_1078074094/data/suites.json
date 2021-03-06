@@ -1,0 +1,65 @@
+{
+  "uid" : "98d3104e051c652961429bf95fa0b5d6",
+  "children" : [ {
+    "name" : "tests",
+    "children" : [ {
+      "name" : "test_simulation",
+      "children" : [ {
+        "name" : "test_pass",
+        "uid" : "b4d9fa7fbe57ed4",
+        "parentUid" : "341edd3f90fc335a7cb63034aac62d99",
+        "status" : "passed",
+        "time" : {
+          "start" : 1615048312666,
+          "stop" : 1615048312666,
+          "duration" : 0
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "test_fail",
+        "uid" : "7e175a0cf71552ae",
+        "parentUid" : "341edd3f90fc335a7cb63034aac62d99",
+        "status" : "failed",
+        "time" : {
+          "start" : 1615048312669,
+          "stop" : 1615048312669,
+          "duration" : 0
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "test_broken",
+        "uid" : "45fc2d93db01b5bf",
+        "parentUid" : "341edd3f90fc335a7cb63034aac62d99",
+        "status" : "broken",
+        "time" : {
+          "start" : 1615048312693,
+          "stop" : 1615048312694,
+          "duration" : 1
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "test_skipped",
+        "uid" : "ed111d2fecac41cf",
+        "parentUid" : "341edd3f90fc335a7cb63034aac62d99",
+        "status" : "skipped",
+        "time" : {
+          "start" : 1615048312696,
+          "stop" : 1615048312696,
+          "duration" : 0
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "341edd3f90fc335a7cb63034aac62d99"
+    } ],
+    "uid" : "e387fa4bb326b54ea8c19c2822aba374"
+  } ],
+  "name" : "suites"
+}
