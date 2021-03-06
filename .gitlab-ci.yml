@@ -47,7 +47,7 @@ allure:
     - mkdir -p ${CURRENT_BRANCH}
     - cp -r $REPORT ${CURRENT_BRANCH}
     - cp -r ${CI_PROJECT_NAME}/public ./public
-
+    - cp -r generate_index.py $CI_PROJECT_NAME
     - cd $CI_PROJECT_NAME
     - python3 generate_index.py public
     - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
