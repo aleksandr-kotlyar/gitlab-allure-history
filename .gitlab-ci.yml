@@ -54,7 +54,7 @@ allure:
 
     - git config user.name "Gitlab Runner"
     - git config user.email ${CI_EMAIL}
-    - git remote add $CI_PROJECT_NAME https://oauth2:${ALLURE_GITLAB_PAGES}@${CI_REPOSITORY_URL}
+    - git remote add $CI_PROJECT_NAME oauth2:${ALLURE_GITLAB_PAGES}@${CI_REPOSITORY_URL}
     - git add ./public
     - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
     - git push -u $CI_PROJECT_NAME
