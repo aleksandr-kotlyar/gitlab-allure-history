@@ -5,7 +5,7 @@ pages:
   image: python:3.7-alpine
   stage: deploy
   script:
-    - python3 generate_index.py public
+    - echo "Publish to GitLab Pages"
   artifacts:
     paths:
       - public
