@@ -49,6 +49,9 @@ allure:
     - cp -r ${CI_PROJECT_NAME}/public ./public
 
     - cd $CI_PROJECT_NAME
+    - python3 generate_index.py public
+    - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
+
     - git config user.name "Gitlab Runner"
     - git config user.email ${CI_EMAIL}
     - git remote add $CI_PROJECT_NAME https://oauth2:${ALLURE_GITLAB_PAGES}@${CI_REPOSITORY_URL}
