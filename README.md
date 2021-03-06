@@ -58,6 +58,6 @@ Here is how it works:
    5. Copies report into 'gl-pages' `/public/branch` directory: `/public/branch/job_number`.
    6. Commits and pushes the public directory into 'gl-pages' branch into the repo.
 3. And then push to branch 'gl-pages' triggers it's own job `pages` which publishes all 
-   content from `/public` directory on GitLab Pages, you can open root link of GitLab Pages and 
+   content from `/public` directory on GitLab Pages. You can open root link of GitLab Pages and 
    always see all the history of each branch and find the latest execution by the latest 
-   job_number of the branch you are interested in. 
+   job_number inside the branch-dir of the branch you are interested in.
