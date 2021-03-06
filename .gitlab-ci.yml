@@ -3,11 +3,6 @@ image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
 stages:
   - test
   - report
-  - deploy
-
-workflow:
-  rules:
-    - if: $CI_COMMIT_REF_NAME != "gl-pages"
 
 test:
   stage: test
