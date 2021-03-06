@@ -1,0 +1,85 @@
+{
+  "35ee7794966218b9bf8cc8862677c955" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 1,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "b803f614af29019",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/readme/job_1077984307//#testresult/b803f614af29019",
+      "status" : "skipped",
+      "statusDetails" : "Skipped: skip",
+      "time" : {
+        "start" : 1615041173395,
+        "stop" : 1615041173395,
+        "duration" : 0
+      }
+    } ]
+  },
+  "afb8d6324b95598fa2412a9efe824720" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 1,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "51f920390d15ebe5",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/readme/job_1077984307//#testresult/51f920390d15ebe5",
+      "status" : "broken",
+      "statusDetails" : "ValueError: broken",
+      "time" : {
+        "start" : 1615041173392,
+        "stop" : 1615041173392,
+        "duration" : 0
+      }
+    } ]
+  },
+  "ce347b871f95042004e15bd7a763594b" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 1,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "bf0af77f9cd9fb7a",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/readme/job_1077984307//#testresult/bf0af77f9cd9fb7a",
+      "status" : "passed",
+      "time" : {
+        "start" : 1615041173366,
+        "stop" : 1615041173366,
+        "duration" : 0
+      }
+    } ]
+  },
+  "df023592146030b65b1fe3d232937503" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "825513a3a2dae3cb",
+      "reportUrl" : "gitlab.io/gitlab-allure-history/public/readme/job_1077984307//#testresult/825513a3a2dae3cb",
+      "status" : "failed",
+      "statusDetails" : "AssertionError: assert False",
+      "time" : {
+        "start" : 1615041173369,
+        "stop" : 1615041173369,
+        "duration" : 0
+      }
+    } ]
+  }
+}

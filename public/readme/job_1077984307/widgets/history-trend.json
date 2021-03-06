@@ -1,0 +1,13 @@
+[ {
+  "buildOrder" : 1077984307,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/readme/job_1077984307/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "failed" : 1,
+    "broken" : 1,
+    "skipped" : 1,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 4
+  }
+} ]

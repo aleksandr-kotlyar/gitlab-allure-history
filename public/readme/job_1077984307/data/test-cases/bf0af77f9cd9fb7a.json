@@ -1,0 +1,57 @@
+{
+  "uid" : "bf0af77f9cd9fb7a",
+  "name" : "test_pass",
+  "fullName" : "tests.test_simulation#test_pass",
+  "historyId" : "ce347b871f95042004e15bd7a763594b",
+  "time" : {
+    "start" : 1615041173366,
+    "stop" : 1615041173366,
+    "duration" : 0
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "tests"
+  }, {
+    "name" : "suite",
+    "value" : "test_simulation"
+  }, {
+    "name" : "host",
+    "value" : "runner-72989761-project-24847075-concurrent-0"
+  }, {
+    "name" : "thread",
+    "value" : "11-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "tests.test_simulation"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ {
+    "name" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "url" : "https://github.com/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "type" : "link"
+  } ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "bf0af77f9cd9fb7a.json",
+  "parameterValues" : [ ]
+}
