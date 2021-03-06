@@ -12,6 +12,7 @@ COPY --from=compile-image /app/venv /app/venv
 
 RUN apk --no-cache add \
     git=2.30.1-r0 \
+    curl=7.74.0-r1 \
     openjdk8-jre=8.275.01-r0 \
     && rm -rf /var/cache/apk/*
 

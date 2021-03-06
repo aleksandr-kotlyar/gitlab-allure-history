@@ -1,4 +1,4 @@
-image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
+image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v4
 
 stages:
   - test
