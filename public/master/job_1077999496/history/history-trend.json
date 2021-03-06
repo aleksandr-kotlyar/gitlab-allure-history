@@ -1,0 +1,34 @@
+[ {
+  "buildOrder" : 1077999496,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1077999496/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "failed" : 1,
+    "broken" : 1,
+    "skipped" : 1,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 4
+  }
+}, {
+  "buildOrder" : 1075000042,
+  "reportUrl" : "gitlab.io/gitlab-allure-history/public/master/job_1075000042/",
+  "reportName" : "Allure Report with history",
+  "data" : {
+    "failed" : 1,
+    "broken" : 1,
+    "skipped" : 1,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 4
+  }
+}, {
+  "data" : {
+    "failed" : 1,
+    "broken" : 1,
+    "skipped" : 1,
+    "passed" : 1,
+    "unknown" : 0,
+    "total" : 4
+  }
+} ]
