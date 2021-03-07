@@ -1,5 +1,5 @@
 # gitlab-allure-history
-Example project using GitLab CI/CD for Allure report with history on GitLab Pages.
+Example project using GitLab CI/CD for Allure report with history on GitLab Pages. Project mirror on [GitLab](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history).
 
 You can see [Allure Report](https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/) on GitLab Pages.
 
