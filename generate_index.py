@@ -32,7 +32,7 @@ def index_folder(path_):
         # Avoiding index.html files
         if file != 'index.html':
             index_text += "\t\t<li>\n\t\t\t<a href='" + file + "'>" \
-                + file
+                + file \
                 + "</a>\n\t\t</li>\n"
         # Recursive call to continue indexing
         # if os.path.isdir(folder_path + '/' + file):
