@@ -1,4 +1,11 @@
 # gitlab-allure-history
+
+![GitHub statistics](https://raw.githubusercontent.com/aleksandr-kotlyar/gitlab-allure-history/traffic-2021/traffic-gitlab-allure-history/in_2021.svg)
+![GitHub views](https://raw.githubusercontent.com/aleksandr-kotlyar/gitlab-allure-history/traffic-2021/traffic-gitlab-allure-history/views.svg)
+![GitHub views per week](https://raw.githubusercontent.com/aleksandr-kotlyar/gitlab-allure-history/traffic-2021/traffic-gitlab-allure-history/views_per_week.svg)
+![GitHub clones](https://raw.githubusercontent.com/aleksandr-kotlyar/gitlab-allure-history/traffic-2021/traffic-gitlab-allure-history/clones.svg)
+![GitHub clones per week](https://raw.githubusercontent.com/aleksandr-kotlyar/gitlab-allure-history/traffic-2021/traffic-gitlab-allure-history/clones_per_week.svg)
+
 Example project using GitLab CI/CD for Allure report with history on GitLab Pages.
 
 You can see [Allure Report](https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/) on GitLab Pages.
