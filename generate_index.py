@@ -19,14 +19,14 @@ indexTextEnd = """
 """
 
 
-def index_folder(folder_path):
-    print("Indexing: " + folder_path + '/')
+def index_folder(path_):
+    print("Indexing: " + path_ + '/')
     # Getting the content of the folder
     files = os.listdir(folder_path)
     # If Root folder, correcting folder name
-    root = folder_path
-    if folder_path.startswith('public'):
-        root = folder_path.replace('public', 'gitlab-allure-history')
+    root = path_
+    if path_.startswith('public'):
+        root = path_.replace('public', 'gitlab-allure-history')
     index_text = indexTextStart.format(folderPath=root)
     for file in sorted(files):
         # Avoiding index.html files
@@ -37,9 +37,9 @@ def index_folder(folder_path):
         #     index_folder(folder_path + '/' + file)
     index_text += indexTextEnd
     # Create or override previous index.html
-    index = open(folder_path + '/index.html', "w")
     # Save indexed content to file
-    index.write(index_text)
+    with open(path_ + '/index.html', "w") as index:
+        index.write(index_text)
 
 
 folder_path = sys.argv[1]
