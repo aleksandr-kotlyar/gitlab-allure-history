@@ -8,5 +8,6 @@ pages:
     - python3 generate_index.py public
     - echo "Publish to GitLab Pages"
   artifacts:
+    expire_in: 1 day
     paths:
       - public
