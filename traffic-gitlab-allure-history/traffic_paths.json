@@ -2,20 +2,20 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: Example of using Allure Rep...",
-    "count": 266,
-    "uniques": 46
+    "count": 255,
+    "uniques": 47
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/branches",
     "title": "Branches · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 55,
+    "count": 45,
     "uniques": 3
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/issues",
-    "title": "Issues · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 49,
-    "uniques": 6
+    "title": "Issues · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "count": 37,
+    "uniques": 7
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
@@ -30,12 +30,6 @@
     "uniques": 13
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/projects/1",
-    "title": "gitlab-allure-history",
-    "count": 20,
-    "uniques": 3
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/issues/12",
     "title": "Bug: 404 GitLab Pages when deleting branch · Issue #12 · aleksandr-kotlyar/gi...",
     "count": 19,
@@ -44,7 +38,7 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/pulls",
     "title": "Pull requests · aleksandr-kotlyar/gitlab-allure-history · GitHub",
-    "count": 19,
+    "count": 18,
     "uniques": 2
   },
   {
@@ -57,6 +51,12 @@
     "path": "/aleksandr-kotlyar/gitlab-allure-history/pulse",
     "title": "Pulse · aleksandr-kotlyar/gitlab-allure-history",
     "count": 17,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
+    "title": "Traffic · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 16,
     "uniques": 1
   }
 ]
