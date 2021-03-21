@@ -2,19 +2,13 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: Example of using Allure Rep...",
-    "count": 97,
+    "count": 89,
     "uniques": 26
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
     "title": "Traffic · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 10,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/pulse",
-    "title": "Pulse · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 10,
+    "count": 9,
     "uniques": 1
   },
   {
@@ -22,6 +16,12 @@
     "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
     "count": 8,
     "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/pulse",
+    "title": "Pulse · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 8,
+    "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/branches",
@@ -36,12 +36,6 @@
     "uniques": 4
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/README.md",
-    "title": "gitlab-allure-history/README.md at master · aleksandr-kotlyar/gitlab-allure-h...",
-    "count": 4,
-    "uniques": 3
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/edit/master/generate_index.py",
     "title": "Editing gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar...",
     "count": 4,
@@ -54,9 +48,15 @@
     "uniques": 1
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/issues",
-    "title": "Issues · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/tests",
+    "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-history",
     "count": 2,
     "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages",
+    "title": "aleksandr-kotlyar/gitlab-allure-history at gl-pages",
+    "count": 2,
+    "uniques": 1
   }
 ]
