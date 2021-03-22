@@ -2,14 +2,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: Example of using Allure Rep...",
-    "count": 89,
-    "uniques": 26
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
-    "title": "Traffic · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 9,
-    "uniques": 1
+    "count": 72,
+    "uniques": 21
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
@@ -18,14 +12,14 @@
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/pulse",
-    "title": "Pulse · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 8,
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
+    "title": "Traffic · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 6,
     "uniques": 1
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/branches",
-    "title": "Branches · aleksandr-kotlyar/gitlab-allure-history",
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/pulse",
+    "title": "Pulse · aleksandr-kotlyar/gitlab-allure-history",
     "count": 5,
     "uniques": 1
   },
@@ -34,6 +28,12 @@
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
     "count": 4,
     "uniques": 4
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/branches",
+    "title": "Branches · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 4,
+    "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/edit/master/generate_index.py",
@@ -48,15 +48,15 @@
     "uniques": 1
   },
   {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/commits/master",
+    "title": "Commits · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 3,
+    "uniques": 1
+  },
+  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/tests",
     "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-history",
     "count": 2,
     "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages",
-    "title": "aleksandr-kotlyar/gitlab-allure-history at gl-pages",
-    "count": 2,
-    "uniques": 1
   }
 ]
