@@ -2,8 +2,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: Example of using Allure Rep...",
-    "count": 55,
-    "uniques": 26
+    "count": 49,
+    "uniques": 21
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
@@ -20,8 +20,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 4,
-    "uniques": 3
+    "count": 3,
+    "uniques": 2
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
@@ -30,33 +30,33 @@
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
-    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 2,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
-    "title": "gitlab-allure-history/test_simulation.py at master · aleksandr-kotlyar/gitlab...",
-    "count": 2,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
-    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
-    "count": 2,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/tests",
-    "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-histo...",
-    "count": 2,
-    "uniques": 2
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/commits/master",
     "title": "Commits · aleksandr-kotlyar/gitlab-allure-history",
     "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/network/members",
+    "title": "Forks · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/watchers",
+    "title": "Watchers · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/actions",
+    "title": "Actions · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
+    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
+    "count": 1,
     "uniques": 1
   }
 ]
