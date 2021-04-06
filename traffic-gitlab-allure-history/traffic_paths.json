@@ -2,8 +2,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: Example of using Allure Rep...",
-    "count": 56,
-    "uniques": 20
+    "count": 55,
+    "uniques": 18
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
@@ -18,6 +18,12 @@
     "uniques": 1
   },
   {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
+    "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
+    "count": 5,
+    "uniques": 3
+  },
+  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
     "title": "gitlab-allure-history/test_simulation.py at master · aleksandr-kotlyar/gitlab...",
     "count": 3,
@@ -28,12 +34,6 @@
     "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-history",
     "count": 3,
     "uniques": 3
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
-    "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 3,
-    "uniques": 2
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
