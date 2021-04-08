@@ -2,32 +2,26 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: Example of using Allure Rep...",
-    "count": 38,
-    "uniques": 10
+    "count": 32,
+    "uniques": 8
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
+    "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
+    "count": 5,
+    "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/pulse",
     "title": "Pulse · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 7,
+    "count": 5,
     "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/graphs/traffic",
     "title": "Traffic · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 6,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
-    "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
     "count": 4,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/pytest.ini",
-    "title": "gitlab-allure-history/pytest.ini at master · aleksandr-kotlyar/gitlab-allure-...",
-    "count": 2,
-    "uniques": 2
+    "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
@@ -42,12 +36,6 @@
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/actions",
-    "title": "Actions · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 1,
-    "uniques": 1
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/public/master/job_1078005392/widgets/executors.json",
     "title": "gitlab-allure-history/executors.json at gl-pages · aleksandr-kotlyar/gitlab-a...",
     "count": 1,
@@ -56,6 +44,18 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/public/master/job_265801555/widgets/executors.json",
     "title": "gitlab-allure-history/executors.json at gl-pages · aleksandr-kotlyar/gitlab-a...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/pytest.ini",
+    "title": "gitlab-allure-history/pytest.ini at master · aleksandr-kotlyar/gitlab-allure-...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/branches",
+    "title": "Branches · aleksandr-kotlyar/gitlab-allure-history",
     "count": 1,
     "uniques": 1
   }
