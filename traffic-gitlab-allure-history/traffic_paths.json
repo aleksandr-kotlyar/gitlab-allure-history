@@ -2,13 +2,13 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 40,
+    "count": 41,
     "uniques": 20
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 24,
+    "count": 26,
     "uniques": 7
   },
   {
@@ -20,7 +20,7 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
     "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 6,
+    "count": 7,
     "uniques": 3
   },
   {
@@ -28,6 +28,12 @@
     "title": "gitlab-allure-history/public at gl-pages · aleksandr-kotlyar/gitlab-allure-hi...",
     "count": 6,
     "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
+    "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
+    "count": 5,
+    "uniques": 3
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
@@ -38,12 +44,6 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at gl-pages · aleksandr-kotlyar/gitlab-a...",
-    "count": 3,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
-    "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
     "count": 3,
     "uniques": 2
   },
