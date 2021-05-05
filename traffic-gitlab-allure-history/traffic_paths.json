@@ -2,7 +2,7 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
-    "count": 31,
+    "count": 28,
     "uniques": 19
   },
   {
@@ -12,51 +12,51 @@
     "uniques": 5
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages",
-    "title": "aleksandr-kotlyar/gitlab-allure-history at gl-pages",
-    "count": 7,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public",
-    "title": "gitlab-allure-history/public at gl-pages · aleksandr-kotlyar/gitlab-allure-hi...",
-    "count": 5,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
-    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 4,
-    "uniques": 3
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
     "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
     "count": 3,
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
-    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
+    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
     "count": 3,
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/.gitlab-ci.yml",
-    "title": "gitlab-allure-history/.gitlab-ci.yml at gl-pages · aleksandr-kotlyar/gitlab-a...",
-    "count": 2,
-    "uniques": 2
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.github/workflows/traffic2badge.yml",
-    "title": "gitlab-allure-history/traffic2badge.yml at master · aleksandr-kotlyar/gitlab-...",
-    "count": 2,
-    "uniques": 2
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages",
+    "title": "aleksandr-kotlyar/gitlab-allure-history at gl-pages",
+    "count": 3,
+    "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/requirements.txt",
     "title": "gitlab-allure-history/requirements.txt at master · aleksandr-kotlyar/gitlab-a...",
     "count": 2,
     "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/branches",
+    "title": "Branches · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master",
+    "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/.gitlab-ci.yml",
+    "title": "gitlab-allure-history/.gitlab-ci.yml at gl-pages · aleksandr-kotlyar/gitlab-a...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.github/workflows/traffic2badge.yml",
+    "title": "gitlab-allure-history/traffic2badge.yml at master · aleksandr-kotlyar/gitlab-...",
+    "count": 1,
+    "uniques": 1
   }
 ]
