@@ -1,15 +1,15 @@
 [
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history",
-    "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
-    "count": 12,
-    "uniques": 8
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 12,
-    "uniques": 3
+    "count": 10,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history",
+    "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
+    "count": 7,
+    "uniques": 4
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
