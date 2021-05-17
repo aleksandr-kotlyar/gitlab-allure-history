@@ -2,8 +2,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 8,
-    "uniques": 6
+    "count": 7,
+    "uniques": 5
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
@@ -20,6 +20,12 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/commits/master",
     "title": "Commits · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
+    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
     "count": 1,
     "uniques": 1
   },
