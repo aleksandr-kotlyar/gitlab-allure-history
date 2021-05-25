@@ -2,8 +2,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 6,
-    "uniques": 4
+    "count": 4,
+    "uniques": 3
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
@@ -14,12 +14,6 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/commit/488f59daa87f7d7bf89581b3abc81dc5bf0e25d4",
     "title": "make `.open` -> `with open` · aleksandr-kotlyar/gitlab-allure-history@488f59d...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/commits/master",
-    "title": "Commits · aleksandr-kotlyar/gitlab-allure-history",
     "count": 1,
     "uniques": 1
   },
