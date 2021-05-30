@@ -2,12 +2,30 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 5,
-    "uniques": 4
+    "count": 12,
+    "uniques": 7
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
+    "count": 3,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
+    "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/README.md",
+    "title": "gitlab-allure-history/README.md at master · aleksandr-kotlyar/gitlab-allure-h...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/issues/2",
+    "title": "first tests · Issue #2 · aleksandr-kotlyar/gitlab-allure-history · GitHub",
     "count": 1,
     "uniques": 1
   }
