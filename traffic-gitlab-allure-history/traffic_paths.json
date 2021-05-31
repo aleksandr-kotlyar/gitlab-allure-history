@@ -2,14 +2,20 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 12,
+    "count": 15,
     "uniques": 7
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 3,
+    "count": 4,
     "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/README.md",
+    "title": "gitlab-allure-history/README.md at master · aleksandr-kotlyar/gitlab-allure-h...",
+    "count": 2,
+    "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
@@ -18,14 +24,38 @@
     "uniques": 1
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/README.md",
-    "title": "gitlab-allure-history/README.md at master · aleksandr-kotlyar/gitlab-allure-h...",
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
+    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.github/workflows/traffic2badge.yml",
+    "title": "gitlab-allure-history/traffic2badge.yml at master · aleksandr-kotlyar/gitlab-...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/pytest.ini",
+    "title": "gitlab-allure-history/pytest.ini at master · aleksandr-kotlyar/gitlab-allure-...",
     "count": 1,
     "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/issues/2",
     "title": "first tests · Issue #2 · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
+    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/tests",
+    "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-history",
     "count": 1,
     "uniques": 1
   }
