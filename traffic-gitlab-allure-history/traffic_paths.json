@@ -2,14 +2,14 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 67,
-    "uniques": 12
+    "count": 76,
+    "uniques": 16
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 37,
-    "uniques": 12
+    "count": 38,
+    "uniques": 13
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
@@ -54,9 +54,9 @@
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/issues/2",
-    "title": "first tests · Issue #2 · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/traffic-2021/traffic-gitlab-allure-history/clones_per_week.svg",
+    "title": "gitlab-allure-history/clones_per_week.svg at traffic-2021 · aleksandr-kotlyar...",
     "count": 2,
-    "uniques": 2
+    "uniques": 1
   }
 ]
