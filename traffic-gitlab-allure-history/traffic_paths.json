@@ -2,32 +2,38 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history: AllureFramework history tre...",
-    "count": 76,
-    "uniques": 16
+    "count": 81,
+    "uniques": 20
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 38,
-    "uniques": 13
+    "count": 42,
+    "uniques": 16
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
     "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 10,
-    "uniques": 5
+    "count": 11,
+    "uniques": 6
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/tests",
     "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 6,
+    "count": 7,
     "uniques": 6
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
+    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
+    "count": 4,
+    "uniques": 4
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
     "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
-    "count": 5,
-    "uniques": 4
+    "count": 4,
+    "uniques": 3
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.github/workflows/traffic2badge.yml",
@@ -36,26 +42,20 @@
     "uniques": 3
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
-    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
-    "count": 3,
-    "uniques": 3
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/README.md",
-    "title": "gitlab-allure-history/README.md at master · aleksandr-kotlyar/gitlab-allure-h...",
-    "count": 3,
-    "uniques": 1
-  },
-  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
     "title": "gitlab-allure-history/test_simulation.py at master · aleksandr-kotlyar/gitlab...",
     "count": 2,
     "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/traffic-2021/traffic-gitlab-allure-history/clones_per_week.svg",
-    "title": "gitlab-allure-history/clones_per_week.svg at traffic-2021 · aleksandr-kotlyar...",
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/issues",
+    "title": "Issues · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/README.md",
+    "title": "gitlab-allure-history/README.md at master · aleksandr-kotlyar/gitlab-allure-h...",
     "count": 2,
     "uniques": 1
   }
