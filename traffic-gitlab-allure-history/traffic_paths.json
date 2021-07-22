@@ -2,61 +2,13 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
-    "count": 34,
-    "uniques": 3
+    "count": 29,
+    "uniques": 2
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 14,
-    "uniques": 4
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
-    "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
-    "count": 2,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/pytest.ini",
-    "title": "gitlab-allure-history/pytest.ini at master · aleksandr-kotlyar/gitlab-allure-...",
-    "count": 2,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
-    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitignore",
-    "title": "gitlab-allure-history/.gitignore at master · aleksandr-kotlyar/gitlab-allure-...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/requirements.txt",
-    "title": "gitlab-allure-history/requirements.txt at master · aleksandr-kotlyar/gitlab-a...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
-    "title": "gitlab-allure-history/test_simulation.py at master · aleksandr-kotlyar/gitlab...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/.github/workflows",
-    "title": "gitlab-allure-history/.github/workflows at master · aleksandr-kotlyar/gitlab-...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/master/tests",
-    "title": "gitlab-allure-history/tests at master · aleksandr-kotlyar/gitlab-allure-histo...",
-    "count": 1,
-    "uniques": 1
+    "count": 10,
+    "uniques": 3
   }
 ]
