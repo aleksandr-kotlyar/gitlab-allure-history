@@ -2,12 +2,60 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
-    "count": 23,
-    "uniques": 2
+    "count": 64,
+    "uniques": 26
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
+    "count": 6,
+    "uniques": 6
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public",
+    "title": "gitlab-allure-history/public at gl-pages · aleksandr-kotlyar/gitlab-allure-hi...",
+    "count": 4,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/issues",
+    "title": "Issues · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages",
+    "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history at gl-pages",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public/column_modified_time",
+    "title": "gitlab-allure-history/public/column_modified_time at gl-pages · aleksandr-kot...",
+    "count": 2,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/generate_index.py",
+    "title": "gitlab-allure-history/generate_index.py at gl-pages · aleksandr-kotlyar/gitla...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
+    "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/requirements.txt",
+    "title": "gitlab-allure-history/requirements.txt at master · aleksandr-kotlyar/gitlab-a...",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
+    "title": "gitlab-allure-history/test_simulation.py at master · aleksandr-kotlyar/gitlab...",
     "count": 1,
     "uniques": 1
   }
