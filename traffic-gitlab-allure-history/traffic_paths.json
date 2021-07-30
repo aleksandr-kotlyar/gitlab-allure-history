@@ -2,8 +2,8 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
-    "count": 64,
-    "uniques": 26
+    "count": 67,
+    "uniques": 28
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
@@ -36,6 +36,18 @@
     "uniques": 1
   },
   {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/actions",
+    "title": "Actions · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 1,
+    "uniques": 1
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/actions/workflows/traffic2badge.yml",
+    "title": "Actions · aleksandr-kotlyar/gitlab-allure-history",
+    "count": 1,
+    "uniques": 1
+  },
+  {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/generate_index.py",
     "title": "gitlab-allure-history/generate_index.py at gl-pages · aleksandr-kotlyar/gitla...",
     "count": 1,
@@ -44,18 +56,6 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
     "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/requirements.txt",
-    "title": "gitlab-allure-history/requirements.txt at master · aleksandr-kotlyar/gitlab-a...",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/tests/test_simulation.py",
-    "title": "gitlab-allure-history/test_simulation.py at master · aleksandr-kotlyar/gitlab...",
     "count": 1,
     "uniques": 1
   }
