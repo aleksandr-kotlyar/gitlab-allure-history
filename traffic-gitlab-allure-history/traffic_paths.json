@@ -2,61 +2,61 @@
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history",
     "title": "aleksandr-kotlyar/gitlab-allure-history: AllureFramework history trends on Gi...",
-    "count": 73,
-    "uniques": 30
+    "count": 77,
+    "uniques": 31
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml",
     "title": "gitlab-allure-history/.gitlab-ci.yml at master · aleksandr-kotlyar/gitlab-all...",
-    "count": 8,
-    "uniques": 8
+    "count": 11,
+    "uniques": 9
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public",
     "title": "gitlab-allure-history/public at gl-pages · aleksandr-kotlyar/gitlab-allure-hi...",
-    "count": 4,
-    "uniques": 1
+    "count": 6,
+    "uniques": 2
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/issues",
     "title": "Issues · aleksandr-kotlyar/gitlab-allure-history · GitHub",
-    "count": 2,
-    "uniques": 2
+    "count": 3,
+    "uniques": 3
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages",
     "title": "GitHub - aleksandr-kotlyar/gitlab-allure-history at gl-pages",
-    "count": 2,
-    "uniques": 1
+    "count": 3,
+    "uniques": 2
   },
   {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public/column_modified_time",
-    "title": "gitlab-allure-history/public/column_modified_time at gl-pages · aleksandr-kot...",
-    "count": 2,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/actions",
-    "title": "Actions · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/actions/workflows/traffic2badge.yml",
-    "title": "Actions · aleksandr-kotlyar/gitlab-allure-history",
-    "count": 1,
-    "uniques": 1
-  },
-  {
-    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/gl-pages/generate_index.py",
-    "title": "gitlab-allure-history/generate_index.py at gl-pages · aleksandr-kotlyar/gitla...",
-    "count": 1,
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/Dockerfile",
+    "title": "gitlab-allure-history/Dockerfile at master · aleksandr-kotlyar/gitlab-allure-...",
+    "count": 3,
     "uniques": 1
   },
   {
     "path": "/aleksandr-kotlyar/gitlab-allure-history/blob/master/generate_index.py",
     "title": "gitlab-allure-history/generate_index.py at master · aleksandr-kotlyar/gitlab-...",
-    "count": 1,
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/projects",
+    "title": "Projects · aleksandr-kotlyar/gitlab-allure-history · GitHub",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public/readme",
+    "title": "gitlab-allure-history/public/readme at gl-pages · aleksandr-kotlyar/gitlab-al...",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "path": "/aleksandr-kotlyar/gitlab-allure-history/tree/gl-pages/public/column_modified_time",
+    "title": "gitlab-allure-history/public/column_modified_time at gl-pages · aleksandr-kot...",
+    "count": 2,
     "uniques": 1
   }
 ]
