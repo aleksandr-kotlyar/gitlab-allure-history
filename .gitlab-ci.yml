@@ -1,8 +1,25 @@
-image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
+image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v4
 
 stages:
+  - build
   - test
   - report
+
+build:
+  image: docker:20.10.16
+  stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: always
+    - when: never
+  services:
+    - docker:20.10.16-dind
+  variables:
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
 
 test:
   stage: test
@@ -10,6 +27,9 @@ test:
   script:
     - echo "${CI_JOB_ID}" > jobid
     - pytest tests
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
   artifacts:
     when: always
     expire_in: 2 hours
@@ -19,6 +39,9 @@ test:
 
 allure:
   stage: report
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
   script:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
 
