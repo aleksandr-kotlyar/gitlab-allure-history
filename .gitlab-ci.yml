@@ -30,6 +30,8 @@ test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
   artifacts:
     when: always
     expire_in: 2 hours
@@ -42,6 +44,10 @@ allure:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+      needs: ['test']
+
   script:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
 
