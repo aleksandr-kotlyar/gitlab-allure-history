@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Jun 12 18:59:47 GMT 2025","Thu Jun 12 18:59:47 GMT 2025","0","tests","test_simulation","","","","test_pass",""
+"broken","Thu Jun 12 18:59:47 GMT 2025","Thu Jun 12 18:59:47 GMT 2025","0","tests","test_simulation","","","","test_broken",""
+"failed","Thu Jun 12 18:59:47 GMT 2025","Thu Jun 12 18:59:47 GMT 2025","1","tests","test_simulation","","","","test_fail",""
+"skipped","Thu Jun 12 18:59:47 GMT 2025","Thu Jun 12 18:59:47 GMT 2025","0","tests","test_simulation","","","","test_skipped",""
