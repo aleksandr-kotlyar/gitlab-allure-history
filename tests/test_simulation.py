@@ -3,12 +3,12 @@ from allure import link
 
 
 @link(2)
-def test_pass():
+def test_pass(before_test):
     assert True
 
 
 @link(2)
-def test_fail():
+def test_fail(before_test):
     assert False
 
 
