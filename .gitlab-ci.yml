@@ -6,14 +6,14 @@ stages:
   - report
 
 build:
-  image: docker:20.10.16
+  image: docker:29.3.1
   stage: build
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: always
     - when: never
   services:
-    - docker:20.10.16-dind
+    - docker:29.3.1-dind
   variables:
     IMAGE_TAG: $CI_COMMIT_REF_SLUG
   script:
