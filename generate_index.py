@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 INDEX_TEXT_START = """<!DOCTYPE html>
 <html>
@@ -7,13 +8,16 @@ INDEX_TEXT_START = """<!DOCTYPE html>
 <body>
     <h2>Index of {folderPath}</h2>
     <hr>
-    <ul>
-        <li>
-            <a href='../'>../</a>
-        </li>
+    <table>
+        <tbody>
+        <tr>
+            <td><a href='../'>../</a></td>
+            <td></td>
+        </tr>
 """
 INDEX_TEXT_END = """
-    </ul>
+        </tbody>
+    </table>
 </body>
 </html>
 """
@@ -31,9 +35,14 @@ def index_folder(path_):
     for file in sorted(files):
         # Avoiding index.html files
         if file != 'index.html':
-            index_text += "\t\t<li>\n\t\t\t<a href='" + file + "'>" \
-                + file \
-                + "</a>\n\t\t</li>\n"
+            modified_ts = os.path.getmtime(os.path.join(path_, file))
+            modified_at = datetime.fromtimestamp(modified_ts).strftime("%d-%b-%Y %H:%M")
+            index_text += (
+                "\t\t<tr>\n"
+                "\t\t\t<td><a href='" + file + "'>" + file + "</a></td>\n"
+                "\t\t\t<td>" + modified_at + "</td>\n"
+                "\t\t</tr>\n"
+            )
         # Recursive call to continue indexing
         # if os.path.isdir(folder_path + '/' + file):
         #     index_folder(folder_path + '/' + file)
