@@ -22,7 +22,7 @@ INDEX_TEXT_END = """
 def index_folder(path_):
     print("Indexing: " + path_ + '/')
     # Getting the content of the folder
-    files = os.listdir(folder_path)
+    files = os.listdir(path_)
     # If Root folder, correcting folder name
     root = path_
     if path_.startswith('public'):
@@ -40,7 +40,7 @@ def index_folder(path_):
     index_text += INDEX_TEXT_END
     # Create or override previous index.html
     # Save indexed content to file
-    with open(path_ + '/index.html', "w") as index:
+    with open(path_ + '/index.html', "w", encoding="utf-8") as index:
         index.write(index_text)
 
 

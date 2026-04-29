@@ -21,12 +21,11 @@ build:
     - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG .
     - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
 
-test:
+test_gate:
   stage: test
-  allow_failure: true
   script:
     - echo "${CI_JOB_ID}" > jobid
-    - pytest tests
+    - pytest -m "not demo" --junitxml=report-gate.xml
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
@@ -38,15 +37,33 @@ test:
     paths:
       - allure-results
       - jobid
+      - report-gate.xml
 
-allure:
-  stage: report
+test_demo:
+  stage: test
+  allow_failure: true
+  script:
+    - pytest -m "demo" --junitxml=report-demo.xml || true
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
-      needs: ['test']
+  artifacts:
+    when: always
+    expire_in: 2 hours
+    paths:
+      - allure-results
+      - report-demo.xml
+
+allure:
+  stage: report
+  needs: ["test_gate"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
 
   script:
     - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
@@ -74,18 +91,9 @@ allure:
     - python3 generate_index.py public
     - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
 
-    - mkdir ~/.ssh/
-    - apk add openssh-client
-    - GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
-    - ssh-keyscan -t rsa gitlab.com >> ~/.ssh/known_hosts
-    - echo "${SSH_PUSH_KEY}" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-
     - git config user.name "Gitlab Runner"
     - git config user.email ${CI_EMAIL}
-    - >
-      git remote add $CI_PROJECT_NAME 
-      git@gitlab.com:aleksandr-kotlyar/gitlab-allure-history.git
+    - git remote set-url origin "https://oauth2:${GIT_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
     - git add ./public
-    - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}"
-    - git push -u $CI_PROJECT_NAME
+    - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}" || echo "No changes to commit"
+    - git push origin gl-pages
