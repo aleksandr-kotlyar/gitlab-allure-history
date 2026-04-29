@@ -1,64 +1,64 @@
-# gitlab-allure-history
-Example project using GitLab CI/CD for Allure report with history on GitLab Pages. Project mirror on [GitLab](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history).
+# GitLab Allure History Publisher
 
-You can see [Allure Report](https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/) on GitLab Pages.
+Publish **Allure reports with history** to **GitLab Pages** automatically on every pipeline run.
 
-## GitLab CI/CD
-Learn how to use GitLab CI/CD on [official docs](https://docs.gitlab.com/ce/ci/quick_start/index.html).
+This template solves the common problem: reports are not lost between runs, and trend/history stays available per branch.
 
-Here are my advices:
-1. You need to create workflow in `.gitlab-ci.yml` in project root. Example workflow [.gitlab-ci.yml](https://github.com/aleksandr-kotlyar/gitlab-allure-history/blob/master/.gitlab-ci.yml).
-2. This workflow uses GitLab Job artifacts to pass allure-results from job to job through 
-   stages. Read more about [Job artifacts](https://docs.gitlab.com/ce/ci/pipelines/job_artifacts.html).
-3. There are three stages: test, report, deploy. Read more about GitLab [Pipeline Architecture](https://docs.gitlab.com/ee/ci/pipelines/pipeline_architectures.html). 
-   - test (tests execution, passing allure-results to artifacts)
-   - report (generating allure-report, passing allure-report to artifacts)
-   - deploy (publishing allure-report on GitLab Pages from artifacts)
+## Value
 
-## GitLab Pages
-Learn how to use GitLab Pages on [official docs](https://docs.gitlab.com/ee/user/project/pages/).
+- Branch-based Allure report history
+- Automatic GitLab Pages publishing
+- Simple HTML storage index for navigation
+- Clear split between blocking (`gate`) and non-blocking (`demo`) tests
 
-Here are my advices:
-1. Go to your repository Settings-> General->Visibility scroll down to Pages and ensure the 
-   feature is enabled. Also, you can choose visibility for everyone or for project members only.
-2. Create a separate branch which will store your allure-reports on GitLab Pages, to not store full 
-   allure-report history at master. For example 'gl-pages'.
-3. Create in branch 'gl-pages' a `.gitlab-ci.yml` file with job `pages`, stage `deploy` and 
-   artifacts `public`, example:
-   ```yaml
-   stages:
-    - deploy
+## How it works
 
-   pages:
-     image: alpine
-     stage: deploy
-     script:
-       - echo "Publish to GitLab Pages"
-     artifacts:
-       paths:
-         - public
-   ```
-4. Commit your reports with indexed report tree to 'gl-pages' `/public` directory.
-5. Every time you push a commit to 'gl-pages', the 'pages' job will publish all the public 
-   directory has on GitLab Pages.
+1. `test_gate` runs core tests (blocks pipeline on failure).
+2. `test_demo` runs demo tests (does not block pipeline).
+3. `allure` job:
+   - pulls previous branch `history`,
+   - generates a new Allure report,
+   - stores it under `gl-pages/public/<branch>/job_<id>`,
+   - updates index pages with a `modified at` column,
+   - pushes updates to `gl-pages`.
+4. GitLab Pages serves the `public` content.
 
-## Allure Report with history on GitLab Pages
-Here is how it works:
+## Report storage layout
 
-1. Job 'test' is running tests on your current branch and saves allure-results to artifacts for 
-   the next job in pipeline.
-2. Job 'allure':
-   1. Clones 'gl-pages' branch into container with a copy of all 'gl-pages' branch files 
-      (previous reports).
-   2. Gets the 'history' of the last build from the same branch (if exists) into
-      'allure-results' of current build.
-   3. Creates 'executor.json' in 'allure-results' with build info and buildUrls in trends.
-   4. Generates report with allure Commandline into job_number build folder.
-   5. Creates branch-dir in 'gl-pages' `/public` directory if it's not existed yet.    
-   5. Copies report into 'gl-pages' `/public/branch` directory: `/public/branch/job_number`.
-   6. Generates the index files for page tree `/public` and `/public/branch`.
-   7. Commits and pushes the public directory into 'gl-pages' branch into the repo.
-3. And then push to branch 'gl-pages' triggers it's own job `pages` which publishes all 
-   content from `/public` directory on GitLab Pages. You can open root link of GitLab Pages and 
-   always see all the history of each branch and find the latest execution by the latest 
-   job_number inside the branch-dir of the branch you are interested in.
+- `public/<branch>/job_<id>/` — report snapshot for a run
+- `public/<branch>/history/` — Allure trend data
+- `public/index.html` and `public/<branch>/index.html` — storage tree index
+
+## Quick start
+
+1. Enable GitLab Pages in project settings.
+2. Create branch `gl-pages`.
+3. Add CI variable:
+   - `GIT_PUSH_TOKEN` (masked + protected, with `write_repository` permission)
+4. Run pipeline.
+5. Open Pages URL and verify report tree.
+
+## Local run
+
+```bash
+python3 -m venv .venv
+./.venv/bin/pip install -r requirements.txt
+./.venv/bin/pytest -m "not demo"
+./.venv/bin/pytest -m "demo"
+```
+
+## Key files
+
+- `.gitlab-ci.yml` — CI/CD flow
+- `generate_index.py` — HTML index generation for report storage
+- `pytest.ini` — pytest config and markers
+- `tests/` — sample tests
+
+## Demo
+
+- GitLab mirror: [gitlab.com/aleksandr-kotlyar/gitlab-allure-history](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history)
+- Pages report: [aleksandr-kotlyar.gitlab.io/gitlab-allure-history](https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/)
+
+## License
+
+MIT
