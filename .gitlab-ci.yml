@@ -18,7 +18,7 @@ build:
   services:
     - docker:29.3.1-dind
   variables:
-    IMAGE_TAG: v6
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG
   script:
     - set -euo pipefail
     - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
