@@ -1,21 +1,133 @@
-import os
+from __future__ import annotations
+
 import sys
 from datetime import datetime
+from html import escape
+from pathlib import Path
+from urllib.parse import quote
 
-INDEX_TEXT_START = """<!DOCTYPE html>
-<html>
-<head><title>Index of {folderPath}</title></head>
-<body>
-    <h2>Index of {folderPath}</h2>
-    <hr>
-    <table>
-        <tbody>
-        <tr>
-            <td><a href='../'>../</a></td>
-            <td></td>
-        </tr>
+
+STYLE = """
+        body {
+            color: #222;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 2rem;
+        }
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            border-collapse: collapse;
+            min-width: 32rem;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 0.45rem 0.75rem;
+            text-align: left;
+        }
+        th {
+            color: #555;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
 """
-INDEX_TEXT_END = """
+
+
+def entry_sort_key(path: Path) -> tuple[bool, str, str]:
+    """Sort directories first, then names case-insensitively and stably."""
+    return (not path.is_dir(), path.name.casefold(), path.name)
+
+
+def iter_entries(folder: Path) -> list[Path]:
+    return sorted(
+        (entry for entry in folder.iterdir() if entry.name != "index.html"),
+        key=entry_sort_key,
+    )
+
+
+def format_modified_at(path: Path) -> str:
+    modified_ts = path.stat().st_mtime
+    return datetime.fromtimestamp(modified_ts).strftime("%d-%b-%Y %H:%M")
+
+
+def link_for(entry: Path) -> str:
+    suffix = "/" if entry.is_dir() else ""
+    return quote(entry.name, safe="") + suffix
+
+
+def label_for(entry: Path) -> str:
+    suffix = "/" if entry.is_dir() else ""
+    return entry.name + suffix
+
+
+def display_path(folder: Path) -> str:
+    parts = folder.as_posix().split("/")
+    if "public" in parts:
+        return "/".join(parts[parts.index("public") :])
+    return folder.as_posix()
+
+
+def build_index_html(folder: Path, entries: list[Path]) -> str:
+    title = f"Index of {display_path(folder)}"
+    rows = [
+        "            <tr>",
+        '                <td><a href="../">../</a></td>',
+        "                <td></td>",
+        "            </tr>",
+    ]
+
+    if entries:
+        for entry in entries:
+            rows.extend(
+                [
+                    "            <tr>",
+                    '                <td><a href="{href}">{label}</a></td>'.format(
+                        href=escape(link_for(entry), quote=True),
+                        label=escape(label_for(entry)),
+                    ),
+                    f"                <td>{format_modified_at(entry)}</td>",
+                    "            </tr>",
+                ]
+            )
+    else:
+        rows.extend(
+            [
+                "            <tr>",
+                '                <td colspan="2">No reports yet.</td>',
+                "            </tr>",
+            ]
+        )
+
+    body = "\n".join(rows)
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{escape(title)}</title>
+    <style>
+{STYLE.rstrip()}
+    </style>
+</head>
+<body>
+    <h1>{escape(title)}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Modified</th>
+            </tr>
+        </thead>
+        <tbody>
+{body}
         </tbody>
     </table>
 </body>
@@ -23,38 +135,24 @@ INDEX_TEXT_END = """
 """
 
 
-def index_folder(path_):
-    print("Indexing: " + path_ + '/')
-    # Getting the content of the folder
-    files = os.listdir(path_)
-    # If Root folder, correcting folder name
-    root = path_
-    if path_.startswith('public'):
-        root = path_.replace('public', 'gitlab-allure-history')
-    index_text = INDEX_TEXT_START.format(folderPath=root)
-    for file in sorted(files):
-        # Avoiding index.html files
-        if file != 'index.html':
-            modified_ts = os.path.getmtime(os.path.join(path_, file))
-            modified_at = datetime.fromtimestamp(modified_ts).strftime("%d-%b-%Y %H:%M")
-            index_text += (
-                "\t\t<tr>\n"
-                "\t\t\t<td><a href='" + file + "'>" + file + "</a></td>\n"
-                "\t\t\t<td>" + modified_at + "</td>\n"
-                "\t\t</tr>\n"
-            )
-        # Recursive call to continue indexing
-        # if os.path.isdir(folder_path + '/' + file):
-        #     index_folder(folder_path + '/' + file)
-    index_text += INDEX_TEXT_END
-    # Create or override previous index.html
-    # Save indexed content to file
-    with open(path_ + '/index.html', "w", encoding="utf-8") as index:
-        index.write(index_text)
+def index_folder(folder: str | Path) -> Path:
+    path = Path(folder)
+    path.mkdir(parents=True, exist_ok=True)
+
+    print(f"Indexing: {path.as_posix()}/")
+    index_path = path / "index.html"
+    index_path.write_text(build_index_html(path, iter_entries(path)), encoding="utf-8")
+    return index_path
 
 
-folder_path = sys.argv[1]
+def main(argv: list[str]) -> int:
+    if len(argv) != 2:
+        print("Usage: python3 generate_index.py <folder>", file=sys.stderr)
+        return 2
+
+    index_folder(argv[1])
+    return 0
 
 
-# Indexing root directory (Script position)
-index_folder(folder_path)
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))

@@ -5,6 +5,9 @@ stages:
   - test
   - report
 
+variables:
+  PAGES_BRANCH: gl-pages
+
 build:
   image: docker:29.3.1
   stage: build
@@ -15,22 +18,24 @@ build:
   services:
     - docker:29.3.1-dind
   variables:
-    IMAGE_TAG: $CI_COMMIT_REF_SLUG
+    IMAGE_TAG: v4
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG .
-    - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+    - set -euo pipefail
+    - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - docker build -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
+    - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
 
 test_gate:
   stage: test
-  script:
-    - echo "${CI_JOB_ID}" > jobid
-    - pytest -m "not demo" --junitxml=report-gate.xml
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
+  script:
+    - set -euo pipefail
+    - echo "$CI_JOB_ID" > jobid
+    - pytest -m "not demo" --junitxml=report-gate.xml
   artifacts:
     when: always
     expire_in: 2 hours
@@ -42,13 +47,14 @@ test_gate:
 test_demo:
   stage: test
   allow_failure: true
-  script:
-    - pytest -m "demo" --junitxml=report-demo.xml || true
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
+  script:
+    - set -euo pipefail
+    - pytest -m "demo" --junitxml=report-demo.xml
   artifacts:
     when: always
     expire_in: 2 hours
@@ -58,42 +64,110 @@ test_demo:
 
 allure:
   stage: report
-  needs: ["test_gate"]
+  needs:
+    - job: test_gate
+      artifacts: true
+    - job: test_demo
+      artifacts: true
+  resource_group: pages-publish
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
+  pages: true
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - public
 
   script:
-    - git clone --single-branch --branch gl-pages $CI_PROJECT_URL
+    - set -euo pipefail
+    - |
+      if [ -z "${GIT_PUSH_TOKEN:-}" ]; then
+        echo "GIT_PUSH_TOKEN is required to push Allure reports to ${PAGES_BRANCH}."
+        exit 1
+      fi
+    - |
+      if ! git clone --single-branch --branch "$PAGES_BRANCH" "$CI_REPOSITORY_URL" pages-worktree; then
+        echo "Failed to clone '${PAGES_BRANCH}'. Create the branch before publishing reports."
+        exit 1
+      fi
+    - |
+      test -s jobid || {
+        echo "Missing jobid artifact from test_gate."
+        exit 1
+      }
 
-    - JOB_ID=$(cat jobid)
-    - REPORT=job_${JOB_ID}
-    - CURRENT_BRANCH=${CI_PROJECT_NAME}/public/${CI_COMMIT_REF_NAME}
-    - cp -r ./${CURRENT_BRANCH}/history allure-results || echo "No history"
+      JOB_ID="$(cat jobid)"
+      REPORT_DIR="job_${JOB_ID}"
+      REPORT_BRANCH="${CI_COMMIT_REF_SLUG:-detached}"
+      PAGES_PUBLIC_DIR="pages-worktree/public"
+      BRANCH_PUBLIC_DIR="${PAGES_PUBLIC_DIR}/${REPORT_BRANCH}"
+      HISTORY_DIR="${BRANCH_PUBLIC_DIR}/history"
+      export JOB_ID REPORT_DIR REPORT_BRANCH
 
-    #echo "executor.json"
-    - echo '{"name":"GitLabCI","type":"gitlab","reportName":"Allure Report with history",' > executor.json
-    - echo "\"reportUrl\":\"${CI_PAGES_URL}/${CI_COMMIT_REF_NAME}/${REPORT}/\"," >> executor.json
-    - echo "\"buildUrl\":\"${CI_PIPELINE_URL}\"," >> executor.json
-    - echo "\"buildName\":\"GitLab Job Run ${JOB_ID}\",\"buildOrder\":\"${JOB_ID}\"}" >> executor.json
-    #cat executor.json
-    - mv ./executor.json ./allure-results
+      mkdir -p allure-results "$BRANCH_PUBLIC_DIR"
 
-    - allure generate allure-results -o $REPORT
+      if [ -d "$HISTORY_DIR" ]; then
+        cp -r "$HISTORY_DIR" allure-results/history
+        echo "Restored previous Allure history from ${HISTORY_DIR}."
+      else
+        echo "No previous Allure history for branch slug '${REPORT_BRANCH}'."
+      fi
+    - |
+      python3 - <<'PY'
+      import json
+      import os
 
-    - mkdir -p $CURRENT_BRANCH
-    - cp -r $REPORT $CURRENT_BRANCH
-    - cp -r ${REPORT}/history $CURRENT_BRANCH
-    - cp -r generate_index.py $CI_PROJECT_NAME
-    - cd $CI_PROJECT_NAME
-    - python3 generate_index.py public
-    - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
+      report_url = "{}/{}/{}/".format(
+          os.environ["CI_PAGES_URL"].rstrip("/"),
+          os.environ["REPORT_BRANCH"],
+          os.environ["REPORT_DIR"],
+      )
 
-    - git config user.name "Gitlab Runner"
-    - git config user.email ${CI_EMAIL}
-    - git remote set-url origin "https://oauth2:${GIT_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-    - git add ./public
-    - git commit -m "pipeline_${CI_PIPELINE_ID}_job_${CI_JOB_ID}" || echo "No changes to commit"
-    - git push origin gl-pages
+      executor = {
+          "name": "GitLab CI",
+          "type": "gitlab",
+          "reportName": "Allure Report with history",
+          "reportUrl": report_url,
+          "buildUrl": os.environ["CI_PIPELINE_URL"],
+          "buildName": "GitLab Job Run {}".format(os.environ["JOB_ID"]),
+          "buildOrder": os.environ["JOB_ID"],
+      }
+
+      with open("allure-results/executor.json", "w", encoding="utf-8") as file:
+          json.dump(executor, file, indent=2)
+          file.write("\n")
+      PY
+    - allure generate allure-results -o "$REPORT_DIR" --clean
+    - |
+      rm -rf "$BRANCH_PUBLIC_DIR/$REPORT_DIR"
+      cp -r "$REPORT_DIR" "$BRANCH_PUBLIC_DIR/$REPORT_DIR"
+
+      rm -rf "$HISTORY_DIR"
+      if [ -d "$REPORT_DIR/history" ]; then
+        cp -r "$REPORT_DIR/history" "$HISTORY_DIR"
+      else
+        mkdir -p "$HISTORY_DIR"
+      fi
+
+      python3 generate_index.py "$PAGES_PUBLIC_DIR"
+      python3 generate_index.py "$BRANCH_PUBLIC_DIR"
+    - |
+      git -C pages-worktree config user.name "GitLab Runner"
+      git -C pages-worktree config user.email "${GITLAB_USER_EMAIL:-gitlab-ci@example.invalid}"
+      git -C pages-worktree remote set-url origin "https://oauth2:${GIT_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+      git -C pages-worktree add public
+
+      if git -C pages-worktree diff --cached --quiet; then
+        echo "No Pages changes to publish."
+      else
+        git -C pages-worktree commit -m "Publish Allure report for pipeline ${CI_PIPELINE_ID}"
+        git -C pages-worktree pull --rebase origin "$PAGES_BRANCH"
+        git -C pages-worktree push origin "HEAD:$PAGES_BRANCH"
+      fi
+
+      rm -rf public
+      cp -r pages-worktree/public public

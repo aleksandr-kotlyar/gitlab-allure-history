@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+.DS_Store
 __pycache__/
 *.py[cod]
 *$py.class
@@ -131,4 +132,8 @@ dmypy.json
 # allure
 allure-report/
 allure-results/
+public/
+jobid
+executor.json
+report-*.xml
 .idea/
