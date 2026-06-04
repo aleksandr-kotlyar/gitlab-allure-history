@@ -10,6 +10,7 @@ RUN python -m venv /app/venv \
 FROM python:3.13.13-alpine3.23 AS build-image
 COPY --from=compile-image /app/venv /app/venv
 
+RUN apk update && apk upgrade
 RUN apk --no-cache add \
     git \
     openjdk17-jre

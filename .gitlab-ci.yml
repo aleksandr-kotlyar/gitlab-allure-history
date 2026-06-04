@@ -1,4 +1,4 @@
-image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v4
+image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v6
 
 stages:
   - build
@@ -18,7 +18,7 @@ build:
   services:
     - docker:29.3.1-dind
   variables:
-    IMAGE_TAG: v4
+    IMAGE_TAG: v6
   script:
     - set -euo pipefail
     - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
