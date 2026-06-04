@@ -87,7 +87,9 @@ allure:
     - cp -r $REPORT $CURRENT_BRANCH
     - cp -r ${REPORT}/history $CURRENT_BRANCH
     - cp -r generate_index.py $CI_PROJECT_NAME
+    - cp -r prune_reports.py $CI_PROJECT_NAME
     - cd $CI_PROJECT_NAME
+    - python3 prune_reports.py public/${CI_COMMIT_REF_NAME} 20
     - python3 generate_index.py public
     - python3 generate_index.py public/${CI_COMMIT_REF_NAME}
 
