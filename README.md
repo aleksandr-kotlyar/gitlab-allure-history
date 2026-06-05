@@ -1,63 +1,233 @@
 # GitLab Allure History Publisher
 
-Publish **Allure reports with history** to **GitLab Pages** automatically on every pipeline run.
+Publish pytest Allure reports with preserved history to GitLab Pages, using only GitLab CI and static files.
 
-This template solves the common problem: reports are not lost between runs, and trend/history stays available per branch.
+## Problem
+
+Allure reports are easy to generate in CI, but they are usually temporary job artifacts. That makes it hard to see trends, compare recent runs, or share a stable report link with a team.
+
+GitLab Pages can host static reports, but a useful setup still needs to:
+
+- keep Allure `history` between pipeline runs;
+- avoid overwriting previous reports;
+- separate reports by branch;
+- make old reports easy to find;
+- stay simple enough to copy into another project.
+
+## Solution
+
+This repository is a small GitLab CI template for publishing Allure reports with history:
+
+- pytest writes `allure-results`;
+- GitLab CI generates an Allure HTML report;
+- the previous branch `history` is copied into the next run;
+- each report is stored under a branch and job folder;
+- static indexes are generated for navigation;
+- the final `public/` folder is pushed to a dedicated `gl-pages` storage branch;
+- the report job publishes the same `public/` folder to GitLab Pages.
+
+No report server, database, web framework, or external storage service is required.
 
 ## Value
 
-- Branch-based Allure report history
-- Automatic GitLab Pages publishing
-- Simple HTML storage index for navigation
-- Clear split between blocking (`gate`) and non-blocking (`demo`) tests
+- Preserves Allure trend history between GitLab pipeline runs.
+- Keeps reports branch-based, so feature branches do not overwrite each other.
+- Stores immutable report snapshots per test job.
+- Uses GitLab Pages as simple static hosting.
+- Keeps blocking quality gates separate from non-blocking demo tests.
+- Provides a small HTML index so report history is navigable.
+- Stays readable enough to copy and adapt.
 
-## How it works
+## How It Works
 
-1. `test_gate` runs core tests (blocks pipeline on failure).
-2. `test_demo` runs demo tests (does not block pipeline).
-3. `allure` job:
-   - pulls previous branch `history`,
-   - generates a new Allure report,
-   - stores it under `gl-pages/public/<branch>/job_<id>`,
-   - updates index pages with a `modified at` column,
-   - pushes updates to `gl-pages`.
-4. GitLab Pages serves the `public` content.
+```mermaid
+flowchart TD
+    A[pytest jobs] --> B[allure-results artifacts]
+    B --> C[allure job]
+    C --> D[Pull previous history from gl-pages]
+    D --> E[Generate new Allure report]
+    E --> F[Copy report to public branch/job folder]
+    F --> G[Update HTML indexes]
+    G --> H[Push public content to gl-pages]
+    H --> I[GitLab Pages]
+```
 
-## Report storage layout
+Pipeline flow:
 
-- `public/<branch>/job_<id>/` — report snapshot for a run
-- `public/<branch>/history/` — Allure trend data
-- `public/index.html` and `public/<branch>/index.html` — storage tree index
+1. `test_gate` runs stable tests and blocks the pipeline on failure.
+2. `test_demo` runs demonstration tests and is allowed to fail.
+3. `allure` downloads test artifacts, restores previous branch history, generates the report, updates indexes, and pushes Pages content.
+4. The generated `public/` tree is saved to `gl-pages` for the next run and published as the GitLab Pages artifact.
 
-## Quick start
+## Report Storage Layout
 
-1. Enable GitLab Pages in project settings.
-2. Create branch `gl-pages`.
-3. Add CI variable:
-   - `GIT_PUSH_TOKEN` (masked + protected, with `write_repository` permission)
-4. Run pipeline.
-5. Open Pages URL and verify report tree.
+Reports are persisted in the `gl-pages` branch:
 
-## Local run
+```text
+public/
+  index.html
+  <branch-slug>/
+    index.html
+    history/
+    job_<test-job-id>/
+```
+
+- `public/<branch-slug>/job_<test-job-id>/` is one report snapshot.
+- `public/<branch-slug>/history/` is copied into the next run to preserve Allure trends.
+- `public/index.html` lists branch folders.
+- `public/<branch-slug>/index.html` lists reports for that branch.
+
+The CI uses `CI_COMMIT_REF_SLUG` for folder names. This keeps paths safe for GitLab Pages, but it also means branch names are normalized by GitLab before they become report paths.
+
+## Quick Start
+
+1. Create a GitLab project or mirror this repository to GitLab.
+2. Create a storage branch named `gl-pages`.
+3. Enable GitLab Pages and make sure GitLab Runner is available for the project.
+4. Add a CI/CD variable named `GIT_PUSH_TOKEN`.
+5. Run a pipeline on a normal branch.
+6. Open the GitLab Pages URL and navigate through the generated index.
+
+For a copied project, also update the CI image if you do not want to use the example image from this repository. The Dockerfile shows the required runtime: Python, pytest dependencies, Java, Git, and Allure commandline.
+
+## Required GitLab Setup
+
+### `gl-pages` Storage Branch
+
+Create the storage branch before running the report job:
+
+```bash
+git checkout --orphan gl-pages
+git rm -rf .
+mkdir public
+touch public/.gitkeep
+git add public/.gitkeep
+git commit -m "Initialize report storage branch"
+git push origin gl-pages
+```
+
+The `gl-pages` branch stores previous reports and Allure `history/` data. GitLab Pages itself is deployed by the CI report job with `pages: true` and a `public/` artifact.
+
+### Push Token
+
+Create a project, group, or personal access token with `write_repository` permission and save it as:
+
+```text
+GIT_PUSH_TOKEN
+```
+
+Recommended settings:
+
+- Masked.
+- Protected, if you publish only from protected branches.
+- Unprotected, if you intentionally publish reports from feature branches.
+
+The token is used only by the `allure` job to push generated static content back to the `gl-pages` branch.
+
+## CI Variables And Permissions
+
+Required:
+
+- `GIT_PUSH_TOKEN`: token with permission to push to the repository.
+
+Provided by GitLab CI:
+
+- `CI_COMMIT_REF_SLUG`: used as the branch report folder.
+- `CI_JOB_ID`: used for the report snapshot folder.
+- `CI_PAGES_URL`: used in Allure executor metadata.
+- `CI_PIPELINE_URL`: linked from the Allure report metadata.
+
+The GitLab runner also needs network access to:
+
+- pull the CI image;
+- clone the `gl-pages` branch;
+- push updated Pages content.
+- upload the `public/` artifact for GitLab Pages.
+
+## Local Run
+
+Install dependencies:
 
 ```bash
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
+```
+
+Run blocking gate tests:
+
+```bash
 ./.venv/bin/pytest -m "not demo"
+```
+
+Run demo tests:
+
+```bash
 ./.venv/bin/pytest -m "demo"
 ```
 
-## Key files
+The demo suite intentionally contains failed, broken, skipped, and passed examples. It is useful for demonstrating Allure output, but it is not meant to be a blocking quality gate.
 
-- `.gitlab-ci.yml` — CI/CD flow
-- `generate_index.py` — HTML index generation for report storage
-- `pytest.ini` — pytest config and markers
-- `tests/` — sample tests
+Generate an index locally:
 
-## Demo
+```bash
+python3 generate_index.py public
+```
+
+## Key Files
+
+- `.gitlab-ci.yml`: GitLab pipeline for tests, Allure report generation, history reuse, and Pages publishing.
+- `Dockerfile`: example runtime image with Python, Java, Git, and Allure commandline.
+- `generate_index.py`: small static HTML index generator for the `public/` report tree.
+- `pytest.ini`: pytest markers and Allure result configuration.
+- `conftest.py`: minimal pytest fixture example.
+- `tests/`: sample gate and demo tests.
+
+## Demo Links
 
 - GitLab mirror: [gitlab.com/aleksandr-kotlyar/gitlab-allure-history](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history)
 - Pages report: [aleksandr-kotlyar.gitlab.io/gitlab-allure-history](https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/)
+
+## Limitations And Trade-Offs
+
+- Report history depends on a writable `gl-pages` storage branch.
+- The CI serializes the Pages publishing job with `resource_group`, but manual pushes to `gl-pages` can still race with CI.
+- `CI_COMMIT_REF_SLUG` keeps report paths safe, but different branch names can theoretically normalize to the same slug.
+- Old report snapshots are not deleted automatically. Add retention logic only if your project needs it.
+- This template is intentionally not a reusable GitLab component, report portal, or framework.
+
+## Troubleshooting
+
+### `gl-pages` Branch Not Found
+
+Create the `gl-pages` branch. It is used as persistent report storage and is cloned by the report job.
+
+### Report Job Cannot Push
+
+Check that `GIT_PUSH_TOKEN` exists, is available to the branch running the pipeline, and has `write_repository` permission.
+
+If the variable is protected, pipelines on unprotected branches cannot use it.
+
+### No Previous History
+
+The first run for a branch has no previous Allure history. The report still publishes, and the next run reuses the generated `history/` folder.
+
+### Pages Index Shows A Slug Instead Of The Original Branch Name
+
+This is expected. The template stores reports by `CI_COMMIT_REF_SLUG` to avoid unsafe paths in static hosting.
+
+### Demo Tests Fail
+
+This is expected. `test_demo` is marked `allow_failure: true` in GitLab CI and exists to show how failed and broken tests appear in Allure.
+
+## Roadmap
+
+Useful extensions for real projects:
+
+- keep only the last N reports per branch;
+- add links from merge requests to the latest report;
+- publish only from selected branches;
+- add screenshots or videos as Allure attachments;
+- replace the example CI image with a project-owned image.
 
 ## License
 

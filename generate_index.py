@@ -1,35 +1,22 @@
-import os
+from __future__ import annotations
+
 import sys
 from datetime import datetime
+from html import escape
+from pathlib import Path
+from urllib.parse import quote
+
 
 INDEX_FILENAME = "index.html"
 JOB_PREFIX = "job_"
 MODIFIED_AT_FILENAME = ".modified_at"
 HISTORY_DIRNAME = "history"
 HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
-ROOT_INDEX_DIR = "public"
 
-INDEX_TEXT_START = """<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{folderPath}</title>
-    <script>
-        (function () {
-            var storedTheme = null;
-            try {
-                storedTheme = localStorage.getItem("gah-index-theme");
-            } catch (error) {
-                storedTheme = null;
-            }
-            var prefersDark = window.matchMedia &&
-                window.matchMedia("(prefers-color-scheme: dark)").matches;
-            var theme = storedTheme || (prefersDark ? "dark" : "light");
-            document.documentElement.dataset.theme = theme;
-        })();
-    </script>
-    <style>
+ROOT_INDEX_DIR = "public"
+PUBLIC_TITLE = "gitlab-allure-history"
+
+STYLE = """
         :root {
             color-scheme: light dark;
             --bg: #f6f8fa;
@@ -81,7 +68,7 @@ INDEX_TEXT_START = """<!DOCTYPE html>
             margin: 0 0 16px;
         }
 
-        h2 {
+        h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 650;
@@ -171,7 +158,7 @@ INDEX_TEXT_START = """<!DOCTYPE html>
                 margin: 16px auto;
             }
 
-            h2 {
+            h1 {
                 font-size: 20px;
             }
 
@@ -224,39 +211,33 @@ INDEX_TEXT_START = """<!DOCTYPE html>
                 --link: #58a6ff;
             }
         }
-    </style>
-</head>
-<body>
-    <main>
-    <div class="page-header">
-        <h2>{folderPath}</h2>
-        <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
-    </div>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Modified</th>
-        </tr>
-        </thead>
-        <tbody>
 """
-PARENT_ROW = """        <tr>
-            <td class="name-cell"><a href='../'>../</a></td>
-            <td class="modified-cell"></td>
-        </tr>
+
+THEME_INIT_SCRIPT = """
+        (function () {
+            var storedTheme = null;
+            try {
+                storedTheme = localStorage.getItem("gah-index-theme");
+            } catch (error) {
+                storedTheme = null;
+            }
+
+            var prefersDark = window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+            var theme = storedTheme || (prefersDark ? "dark" : "light");
+
+            document.documentElement.dataset.theme = theme;
+        })();
 """
-INDEX_TEXT_END = """
-        </tbody>
-    </table>
-    </main>
-    <script>
+
+THEME_TOGGLE_SCRIPT = """
         (function () {
             var storageKey = "gah-index-theme";
             var button = document.querySelector(".theme-toggle");
 
             function setTheme(theme, persist) {
                 document.documentElement.dataset.theme = theme;
+
                 if (persist) {
                     try {
                         localStorage.setItem(storageKey, theme);
@@ -264,41 +245,43 @@ INDEX_TEXT_END = """
                         // Continue with the in-page theme even when storage is blocked.
                     }
                 }
+
                 button.textContent = theme === "dark" ? "Light" : "Dark";
             }
 
             setTheme(document.documentElement.dataset.theme || "light", false);
+
             button.addEventListener("click", function () {
                 var currentTheme = document.documentElement.dataset.theme;
                 setTheme(currentTheme === "dark" ? "light" : "dark", true);
             });
         })();
-    </script>
-</body>
-</html>
 """
 
 
-def job_id(file_name):
-    if not file_name.startswith(JOB_PREFIX):
+def job_id(entry: Path) -> int | None:
+    if not entry.name.startswith(JOB_PREFIX):
         return None
 
     try:
-        return int(file_name.removeprefix(JOB_PREFIX))
+        return int(entry.name.removeprefix(JOB_PREFIX))
     except ValueError:
         return None
 
 
-def read_modified_at(folder_path, file_name):
-    modified_at_path = os.path.join(folder_path, file_name, MODIFIED_AT_FILENAME)
-    if not os.path.isfile(modified_at_path):
+def read_modified_at(entry: Path) -> str:
+    modified_at_path = entry / MODIFIED_AT_FILENAME
+    if not modified_at_path.is_file():
         return ""
 
-    with open(modified_at_path, encoding="utf-8") as modified_at_file:
-        return modified_at_file.readline().strip()
+    lines = modified_at_path.read_text(encoding="utf-8").splitlines()
+    if not lines:
+        return ""
+
+    return lines[0].strip()
 
 
-def parse_modified_at(modified_at):
+def parse_modified_at(modified_at: str) -> datetime | None:
     if not modified_at:
         return None
 
@@ -308,69 +291,173 @@ def parse_modified_at(modified_at):
         return None
 
 
-def format_modified_at(modified_at):
-    parsed_modified_at = parse_modified_at(modified_at)
-    if parsed_modified_at is None:
-        return modified_at
-
-    return parsed_modified_at.strftime("%d-%b-%Y %H:%M")
+def format_datetime(value: datetime) -> str:
+    return value.strftime("%d-%b-%Y %H:%M")
 
 
-def index_sort_key(folder_path, file_name):
-    file_job_id = job_id(file_name)
-    modified_at = read_modified_at(folder_path, file_name)
+def format_entry_modified_at(entry: Path) -> str:
+    modified_at = read_modified_at(entry)
     parsed_modified_at = parse_modified_at(modified_at)
 
     if parsed_modified_at is not None:
-        return (0, -parsed_modified_at.timestamp(), -(file_job_id or 0), file_name)
+        return format_datetime(parsed_modified_at)
 
-    if file_job_id is not None:
-        return (1, -file_job_id, file_name)
+    if modified_at:
+        return modified_at
 
-    return (2, file_name)
-
-
-def show_parent_link(folder_path):
-    return os.path.normpath(folder_path) != ROOT_INDEX_DIR
+    return format_datetime(datetime.fromtimestamp(entry.stat().st_mtime))
 
 
-def index_folder(folder_path):
-    folder_path = os.fspath(folder_path)
-    print("Indexing: " + folder_path + '/')
-    # Getting the content of the folder
-    files = [
-        file_
-        for file_ in os.listdir(folder_path)
-        if file_ not in HIDDEN_INDEX_ENTRIES
+def entry_sort_key(entry: Path) -> tuple[object, ...]:
+    entry_job_id = job_id(entry)
+    modified_at = read_modified_at(entry)
+    parsed_modified_at = parse_modified_at(modified_at)
+
+    if parsed_modified_at is not None:
+        return (0, -parsed_modified_at.timestamp(), -(entry_job_id or 0), entry.name)
+
+    if entry_job_id is not None:
+        return (1, -entry_job_id, entry.name)
+
+    return (2, not entry.is_dir(), entry.name.casefold(), entry.name)
+
+
+def iter_entries(folder: Path) -> list[Path]:
+    return sorted(
+        (entry for entry in folder.iterdir() if entry.name not in HIDDEN_INDEX_ENTRIES),
+        key=entry_sort_key,
+    )
+
+
+def link_for(entry: Path) -> str:
+    suffix = "/" if entry.is_dir() else ""
+    return quote(entry.name, safe="") + suffix
+
+
+def label_for(entry: Path) -> str:
+    suffix = "/" if entry.is_dir() else ""
+    return entry.name + suffix
+
+
+def display_path(folder: Path) -> str:
+    parts = folder.as_posix().split("/")
+
+    if ROOT_INDEX_DIR not in parts:
+        return folder.as_posix()
+
+    public_index = len(parts) - 1 - parts[::-1].index(ROOT_INDEX_DIR)
+    suffix_parts = parts[public_index + 1 :]
+
+    return "/".join([PUBLIC_TITLE, *suffix_parts])
+
+
+def show_parent_link(folder: Path) -> bool:
+    return folder.name != ROOT_INDEX_DIR
+
+
+def parent_row() -> list[str]:
+    return [
+        "            <tr>",
+        '                <td class="name-cell"><a href="../">../</a></td>',
+        '                <td class="modified-cell"></td>',
+        "            </tr>",
     ]
-    # If Root folder, correcting folder name
-    root = folder_path
-    if folder_path.startswith('public'):
-        root = folder_path.replace('public', 'gitlab-allure-history')
-    index_text = INDEX_TEXT_START.replace("{folderPath}", root)
-    if show_parent_link(folder_path):
-        index_text += PARENT_ROW
-    files.sort(key=lambda file_: index_sort_key(folder_path, file_))
-    for file in files:
-        modified_at = format_modified_at(read_modified_at(folder_path, file))
-        index_text += (
-            "\t\t<tr>\n"
-            "\t\t\t<td class=\"name-cell\"><a href='" + file + "'>" + file + "</a></td>\n"
-            "\t\t\t<td class=\"modified-cell\">" + modified_at + "</td>\n"
-            "\t\t</tr>\n"
-        )
-        # Recursive call to continue indexing
-        # if os.path.isdir(folder_path + '/' + file):
-        #     index_folder(folder_path + '/' + file)
-    index_text += INDEX_TEXT_END
-    # Create or override previous index.html
-    # Save indexed content to file
-    with open(folder_path + '/index.html', "w", encoding="utf-8") as index:
-        index.write(index_text)
+
+
+def entry_row(entry: Path) -> list[str]:
+    return [
+        "            <tr>",
+        '                <td class="name-cell"><a href="{href}">{label}</a></td>'.format(
+            href=escape(link_for(entry), quote=True),
+            label=escape(label_for(entry)),
+        ),
+        f'                <td class="modified-cell">{escape(format_entry_modified_at(entry))}</td>',
+        "            </tr>",
+    ]
+
+
+def empty_row() -> list[str]:
+    return [
+        "            <tr>",
+        '                <td class="name-cell" colspan="2">No reports yet.</td>',
+        "            </tr>",
+    ]
+
+
+def build_index_html(folder: Path, entries: list[Path]) -> str:
+    title = display_path(folder)
+    rows: list[str] = []
+
+    if show_parent_link(folder):
+        rows.extend(parent_row())
+
+    if entries:
+        for entry in entries:
+            rows.extend(entry_row(entry))
+    else:
+        rows.extend(empty_row())
+
+    body = "\n".join(rows)
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{escape(title)}</title>
+    <script>
+{THEME_INIT_SCRIPT.rstrip()}
+    </script>
+    <style>
+{STYLE.rstrip()}
+    </style>
+</head>
+<body>
+    <main>
+        <div class="page-header">
+            <h1>{escape(title)}</h1>
+            <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+{body}
+            </tbody>
+        </table>
+    </main>
+    <script>
+{THEME_TOGGLE_SCRIPT.rstrip()}
+    </script>
+</body>
+</html>
+"""
+
+
+def index_folder(folder: str | Path) -> Path:
+    path = Path(folder)
+    path.mkdir(parents=True, exist_ok=True)
+
+    print(f"Indexing: {path.as_posix()}/")
+
+    index_path = path / INDEX_FILENAME
+    index_path.write_text(build_index_html(path, iter_entries(path)), encoding="utf-8")
+
+    return index_path
+
+
+def main(argv: list[str]) -> int:
+    if len(argv) != 2:
+        print("Usage: python3 generate_index.py <folder>", file=sys.stderr)
+        return 2
+
+    index_folder(argv[1])
+    return 0
 
 
 if __name__ == "__main__":
-    folder_path = sys.argv[1]
-
-    # Indexing root directory (Script position)
-    index_folder(folder_path)
+    raise SystemExit(main(sys.argv))
