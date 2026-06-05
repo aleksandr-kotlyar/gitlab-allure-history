@@ -86,6 +86,8 @@ allure:
     - mkdir -p $CURRENT_BRANCH
     - cp -r $REPORT $CURRENT_BRANCH
     - cp -r ${REPORT}/history $CURRENT_BRANCH
+    - MODIFIED_AT=${CI_PIPELINE_CREATED_AT:-$CI_JOB_STARTED_AT}
+    - test -f "$CURRENT_BRANCH/$REPORT/.modified_at" || printf "%s\n" "$MODIFIED_AT" > "$CURRENT_BRANCH/$REPORT/.modified_at"
     - cp -r generate_index.py $CI_PROJECT_NAME
     - cp -r prune_reports.py $CI_PROJECT_NAME
     - cd $CI_PROJECT_NAME
