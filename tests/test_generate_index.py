@@ -54,6 +54,9 @@ def test_index_hides_parent_link_for_public_root(tmp_path, monkeypatch):
     assert "<h2>gitlab-allure-history</h2>" in index_html
     assert "Index of" not in index_html
     assert "href='../'" not in index_html
+    assert 'class="theme-toggle"' in index_html
+    assert "gah-index-theme" in index_html
+    assert "localStorage.setItem" in index_html
 
 
 def test_index_keeps_parent_link_for_nested_directory(tmp_path):
