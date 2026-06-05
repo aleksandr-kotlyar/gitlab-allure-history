@@ -5,7 +5,6 @@ pages:
   image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v3
   stage: deploy
   script:
-    - python3 generate_index.py public
     - echo "Publish to GitLab Pages"
   artifacts:
     expire_in: 1 day
