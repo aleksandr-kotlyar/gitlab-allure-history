@@ -7,6 +7,7 @@ JOB_PREFIX = "job_"
 MODIFIED_AT_FILENAME = ".modified_at"
 HISTORY_DIRNAME = "history"
 HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
+ROOT_INDEX_DIR = "public"
 
 INDEX_TEXT_START = """<!DOCTYPE html>
 <html>
@@ -167,7 +168,8 @@ INDEX_TEXT_START = """<!DOCTYPE html>
         </tr>
         </thead>
         <tbody>
-        <tr>
+"""
+PARENT_ROW = """        <tr>
             <td class="name-cell"><a href='../'>../</a></td>
             <td class="modified-cell"></td>
         </tr>
@@ -232,6 +234,10 @@ def index_sort_key(folder_path, file_name):
     return (2, file_name)
 
 
+def show_parent_link(folder_path):
+    return os.path.normpath(folder_path) != ROOT_INDEX_DIR
+
+
 def index_folder(folder_path):
     folder_path = os.fspath(folder_path)
     print("Indexing: " + folder_path + '/')
@@ -246,6 +252,8 @@ def index_folder(folder_path):
     if folder_path.startswith('public'):
         root = folder_path.replace('public', 'gitlab-allure-history')
     index_text = INDEX_TEXT_START.replace("{folderPath}", root)
+    if show_parent_link(folder_path):
+        index_text += PARENT_ROW
     files.sort(key=lambda file_: index_sort_key(folder_path, file_))
     for file in files:
         modified_at = format_modified_at(read_modified_at(folder_path, file))

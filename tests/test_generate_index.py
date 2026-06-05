@@ -39,3 +39,26 @@ def test_index_hides_history_directory(tmp_path):
 
     index_html = (tmp_path / "index.html").read_text(encoding="utf-8")
     assert "href='history'" not in index_html
+
+
+def test_index_hides_parent_link_for_public_root(tmp_path, monkeypatch):
+    public_path = tmp_path / "public"
+    public_path.mkdir()
+    create_report(public_path, "job_1", "2024-01-01T01:00:00Z")
+    monkeypatch.chdir(tmp_path)
+
+    index_folder("public")
+
+    index_html = (public_path / "index.html").read_text(encoding="utf-8")
+    assert "href='../'" not in index_html
+
+
+def test_index_keeps_parent_link_for_nested_directory(tmp_path):
+    nested_path = tmp_path / "public" / "main"
+    nested_path.mkdir(parents=True)
+    create_report(nested_path, "job_1", "2024-01-01T01:00:00Z")
+
+    index_folder(nested_path)
+
+    index_html = (nested_path / "index.html").read_text(encoding="utf-8")
+    assert "href='../'" in index_html
