@@ -5,6 +5,8 @@ from datetime import datetime
 INDEX_FILENAME = "index.html"
 JOB_PREFIX = "job_"
 MODIFIED_AT_FILENAME = ".modified_at"
+HISTORY_DIRNAME = "history"
+HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
 
 INDEX_TEXT_START = """<!DOCTYPE html>
 <html>
@@ -222,10 +224,10 @@ def index_sort_key(folder_path, file_name):
     parsed_modified_at = parse_modified_at(modified_at)
 
     if parsed_modified_at is not None:
-        return (1, parsed_modified_at.timestamp(), file_job_id or -1, file_name)
+        return (0, -parsed_modified_at.timestamp(), -(file_job_id or 0), file_name)
 
     if file_job_id is not None:
-        return (0, file_job_id, file_name)
+        return (1, -file_job_id, file_name)
 
     return (2, file_name)
 
@@ -237,7 +239,7 @@ def index_folder(folder_path):
     files = [
         file_
         for file_ in os.listdir(folder_path)
-        if file_ not in {INDEX_FILENAME, MODIFIED_AT_FILENAME}
+        if file_ not in HIDDEN_INDEX_ENTRIES
     ]
     # If Root folder, correcting folder name
     root = folder_path
