@@ -4,6 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gitlab-allure-history/v6</title>
+    <script>
+        (function () {
+            var storedTheme = null;
+            try {
+                storedTheme = localStorage.getItem("gah-index-theme");
+            } catch (error) {
+                storedTheme = null;
+            }
+            var prefersDark = window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+            var theme = storedTheme || (prefersDark ? "dark" : "light");
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
     <style>
         :root {
             color-scheme: light dark;
@@ -14,6 +28,21 @@
             --border: #d0d7de;
             --row: #f6f8fa;
             --link: #0969da;
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #0d1117;
+            --panel: #161b22;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --border: #30363d;
+            --row: #21262d;
+            --link: #58a6ff;
+        }
+
+        :root[data-theme="light"] {
+            color-scheme: light;
         }
 
         * {
@@ -33,10 +62,42 @@
             margin: 32px auto;
         }
 
-        h2 {
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
             margin: 0 0 16px;
+        }
+
+        h2 {
+            margin: 0;
             font-size: 24px;
             font-weight: 650;
+            overflow-wrap: anywhere;
+        }
+
+        .theme-toggle {
+            min-width: 72px;
+            min-height: 34px;
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .theme-toggle:hover {
+            background: var(--row);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
         }
 
         table {
@@ -101,7 +162,15 @@
 
             h2 {
                 font-size: 20px;
-                overflow-wrap: anywhere;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .theme-toggle {
+                min-width: 68px;
             }
 
             th {
@@ -134,7 +203,7 @@
         }
 
         @media (prefers-color-scheme: dark) {
-            :root {
+            :root:not([data-theme]) {
                 --bg: #0d1117;
                 --panel: #161b22;
                 --text: #e6edf3;
@@ -148,7 +217,10 @@
 </head>
 <body>
     <main>
-    <h2>gitlab-allure-history/v6</h2>
+    <div class="page-header">
+        <h2>gitlab-allure-history/v6</h2>
+        <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
+    </div>
     <table>
         <thead>
         <tr>
@@ -169,5 +241,29 @@
         </tbody>
     </table>
     </main>
+    <script>
+        (function () {
+            var storageKey = "gah-index-theme";
+            var button = document.querySelector(".theme-toggle");
+
+            function setTheme(theme, persist) {
+                document.documentElement.dataset.theme = theme;
+                if (persist) {
+                    try {
+                        localStorage.setItem(storageKey, theme);
+                    } catch (error) {
+                        // Continue with the in-page theme even when storage is blocked.
+                    }
+                }
+                button.textContent = theme === "dark" ? "Light" : "Dark";
+            }
+
+            setTheme(document.documentElement.dataset.theme || "light", false);
+            button.addEventListener("click", function () {
+                var currentTheme = document.documentElement.dataset.theme;
+                setTheme(currentTheme === "dark" ? "light" : "dark", true);
+            });
+        })();
+    </script>
 </body>
 </html>
