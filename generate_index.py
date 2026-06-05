@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 INDEX_TEXT_START = """<!DOCTYPE html>
 <html>
@@ -7,13 +8,16 @@ INDEX_TEXT_START = """<!DOCTYPE html>
 <body>
     <h2>Index of {folderPath}</h2>
     <hr>
-    <ul>
-        <li>
-            <a href='../'>../</a>
-        </li>
+    <table>
+        <tbody>
+        <tr>
+            <td><a href='../'>../</a></td>
+            <td></td>
+        </tr>
 """
 INDEX_TEXT_END = """
-    </ul>
+        </tbody>
+    </table>
 </body>
 </html>
 """
@@ -21,32 +25,30 @@ INDEX_TEXT_END = """
 
 def index_folder(folder_path):
     print("Indexing: " + folder_path + '/')
-    # Getting the sub-dirs of the folder
+    # Getting the content of the folder
     files = [file_ for file_ in os.listdir(folder_path) if file_ != 'index.html']
-    files.sort(key=os.path.getmtime)
     # If Root folder, correcting folder name
     root = folder_path
     if folder_path.startswith('public'):
         root = folder_path.replace('public', 'gitlab-allure-history')
     index_text = INDEX_TEXT_START.format(folderPath=root)
     for file in sorted(files):
-        # Avoiding index.html files
-        if file != 'index.html':
-            index_text += (
-                "\t\t<li>\n\t\t\t"
-                + "<a href='" + file + "'>"
-                + file
-                + "</a>"
-                + f"\t\t{os.path.getmtime(os.path.join(folder_path, file))}"
-                + "\n\t\t</li>\n"
-            )
-            # Recursive call to continue indexing
-            # index_folder(folder_path + '/' + file)
+        modified_ts = os.path.getmtime(os.path.join(folder_path, file))
+        modified_at = datetime.fromtimestamp(modified_ts).strftime("%d-%b-%Y %H:%M")
+        index_text += (
+            "\t\t<tr>\n"
+            "\t\t\t<td><a href='" + file + "'>" + file + "</a></td>\n"
+            "\t\t\t<td>" + modified_at + "</td>\n"
+            "\t\t</tr>\n"
+        )
+        # Recursive call to continue indexing
+        # if os.path.isdir(folder_path + '/' + file):
+        #     index_folder(folder_path + '/' + file)
     index_text += INDEX_TEXT_END
     # Create or override previous index.html
-    index = open(folder_path + '/index.html', "w")
     # Save indexed content to file
-    index.write(index_text)
+    with open(folder_path + '/index.html', "w", encoding="utf-8") as index:
+        index.write(index_text)
 
 
 folder_path = sys.argv[1]
