@@ -50,6 +50,9 @@ def test_index_hides_parent_link_for_public_root(tmp_path, monkeypatch):
     index_folder("public")
 
     index_html = (public_path / "index.html").read_text(encoding="utf-8")
+    assert "<title>gitlab-allure-history</title>" in index_html
+    assert "<h2>gitlab-allure-history</h2>" in index_html
+    assert "Index of" not in index_html
     assert "href='../'" not in index_html
 
 

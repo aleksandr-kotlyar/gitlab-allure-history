@@ -14,7 +14,7 @@ INDEX_TEXT_START = """<!DOCTYPE html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Index of {folderPath}</title>
+    <title>{folderPath}</title>
     <style>
         :root {
             color-scheme: light dark;
@@ -159,7 +159,7 @@ INDEX_TEXT_START = """<!DOCTYPE html>
 </head>
 <body>
     <main>
-    <h2>Index of {folderPath}</h2>
+    <h2>{folderPath}</h2>
     <table>
         <thead>
         <tr>
