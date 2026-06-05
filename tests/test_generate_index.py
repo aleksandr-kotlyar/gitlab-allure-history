@@ -9,7 +9,8 @@ def test_index_folder_creates_empty_index(tmp_path):
     html = index_path.read_text(encoding="utf-8")
     assert index_path == public_dir / "index.html"
     assert "No reports yet." in html
-    assert "Index of public" in html
+    assert "Index of" not in html
+    assert "gitlab-allure-history" in html
 
 
 def test_index_escapes_labels_and_encodes_links(tmp_path):
@@ -53,5 +54,5 @@ def test_index_handles_branch_report_folder(tmp_path):
     index_path = index_folder(branch_dir)
 
     html = index_path.read_text(encoding="utf-8")
-    assert 'href="history/"' in html
+    assert 'href="history/"' not in html
     assert 'href="job_101/"' in html
