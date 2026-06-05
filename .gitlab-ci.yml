@@ -7,6 +7,7 @@ stages:
 
 variables:
   PAGES_BRANCH: gl-pages
+  REPORTS_TO_KEEP: "20"
 
 build:
   image: docker:29.3.1
@@ -84,16 +85,19 @@ allure:
 
   script:
     - set -euo pipefail
+
     - |
       if [ -z "${GIT_PUSH_TOKEN:-}" ]; then
         echo "GIT_PUSH_TOKEN is required to push Allure reports to ${PAGES_BRANCH}."
         exit 1
       fi
+
     - |
       if ! git clone --single-branch --branch "$PAGES_BRANCH" "$CI_REPOSITORY_URL" pages-worktree; then
         echo "Failed to clone '${PAGES_BRANCH}'. Create the branch before publishing reports."
         exit 1
       fi
+
     - |
       test -s jobid || {
         echo "Missing jobid artifact from test_gate."
@@ -103,9 +107,11 @@ allure:
       JOB_ID="$(cat jobid)"
       REPORT_DIR="job_${JOB_ID}"
       REPORT_BRANCH="${CI_COMMIT_REF_SLUG:-detached}"
+
       PAGES_PUBLIC_DIR="pages-worktree/public"
       BRANCH_PUBLIC_DIR="${PAGES_PUBLIC_DIR}/${REPORT_BRANCH}"
       HISTORY_DIR="${BRANCH_PUBLIC_DIR}/history"
+
       export JOB_ID REPORT_DIR REPORT_BRANCH
 
       mkdir -p allure-results "$BRANCH_PUBLIC_DIR"
@@ -116,6 +122,7 @@ allure:
       else
         echo "No previous Allure history for branch slug '${REPORT_BRANCH}'."
       fi
+
     - |
       python3 - <<'PY'
       import json
@@ -141,10 +148,20 @@ allure:
           json.dump(executor, file, indent=2)
           file.write("\n")
       PY
+
     - allure generate allure-results -o "$REPORT_DIR" --clean
+
     - |
+      MODIFIED_AT="${CI_PIPELINE_CREATED_AT:-${CI_JOB_STARTED_AT:-}}"
+
+      if [ -z "$MODIFIED_AT" ]; then
+        MODIFIED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      fi
+
       rm -rf "$BRANCH_PUBLIC_DIR/$REPORT_DIR"
       cp -r "$REPORT_DIR" "$BRANCH_PUBLIC_DIR/$REPORT_DIR"
+
+      printf "%s\n" "$MODIFIED_AT" > "$BRANCH_PUBLIC_DIR/$REPORT_DIR/.modified_at"
 
       rm -rf "$HISTORY_DIR"
       if [ -d "$REPORT_DIR/history" ]; then
@@ -153,12 +170,30 @@ allure:
         mkdir -p "$HISTORY_DIR"
       fi
 
+      META_DIR="$BRANCH_PUBLIC_DIR"
+
+      while :; do
+        META_FILE="$META_DIR/.modified_at"
+
+        if [ ! -f "$META_FILE" ] || [ "$(cat "$META_FILE")" \< "$MODIFIED_AT" ]; then
+          printf "%s\n" "$MODIFIED_AT" > "$META_FILE"
+        fi
+
+        [ "$META_DIR" = "$PAGES_PUBLIC_DIR" ] && break
+
+        META_DIR="$(dirname "$META_DIR")"
+      done
+
+      python3 prune_reports.py "$BRANCH_PUBLIC_DIR" "$REPORTS_TO_KEEP"
+
       python3 generate_index.py "$PAGES_PUBLIC_DIR"
       python3 generate_index.py "$BRANCH_PUBLIC_DIR"
+
     - |
       git -C pages-worktree config user.name "GitLab Runner"
       git -C pages-worktree config user.email "${GITLAB_USER_EMAIL:-gitlab-ci@example.invalid}"
       git -C pages-worktree remote set-url origin "https://oauth2:${GIT_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+
       git -C pages-worktree add public
 
       if git -C pages-worktree diff --cached --quiet; then
