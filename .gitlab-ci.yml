@@ -88,6 +88,16 @@ allure:
     - cp -r ${REPORT}/history $CURRENT_BRANCH
     - MODIFIED_AT=${CI_PIPELINE_CREATED_AT:-$CI_JOB_STARTED_AT}
     - test -f "$CURRENT_BRANCH/$REPORT/.modified_at" || printf "%s\n" "$MODIFIED_AT" > "$CURRENT_BRANCH/$REPORT/.modified_at"
+    - |
+      META_DIR=$CURRENT_BRANCH
+      while [ "$META_DIR" != "$CI_PROJECT_NAME" ]; do
+        META_FILE="$META_DIR/.modified_at"
+        if [ ! -f "$META_FILE" ] || [ "$(cat "$META_FILE")" \< "$MODIFIED_AT" ]; then
+          printf "%s\n" "$MODIFIED_AT" > "$META_FILE"
+        fi
+        [ "$META_DIR" = "$CI_PROJECT_NAME/public" ] && break
+        META_DIR=$(dirname "$META_DIR")
+      done
     - cp -r generate_index.py $CI_PROJECT_NAME
     - cp -r prune_reports.py $CI_PROJECT_NAME
     - cd $CI_PROJECT_NAME
