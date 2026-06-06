@@ -440,19 +440,6 @@ def breadcrumb_html(folder: Path) -> str:
     return "".join(html_parts)
 
 
-def show_parent_link(folder: Path) -> bool:
-    return folder.name != ROOT_INDEX_DIR
-
-
-def parent_row() -> list[str]:
-    return [
-        "            <tr>",
-        '                <td class="name-cell"><a href="../">../</a></td>',
-        '                <td class="modified-cell"></td>',
-        "            </tr>",
-    ]
-
-
 def entry_row(entry: Path) -> list[str]:
     return [
         "            <tr>",
@@ -476,9 +463,6 @@ def empty_row() -> list[str]:
 def build_index_html(folder: Path, entries: list[Path]) -> str:
     title = display_path(folder)
     rows: list[str] = []
-
-    if show_parent_link(folder):
-        rows.extend(parent_row())
 
     if entries:
         for entry in entries:
