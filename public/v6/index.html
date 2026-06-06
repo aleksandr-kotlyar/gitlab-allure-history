@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gitlab-allure-history/v6</title>
     <script>
+
         (function () {
             var storedTheme = null;
             try {
@@ -12,13 +13,16 @@
             } catch (error) {
                 storedTheme = null;
             }
+
             var prefersDark = window.matchMedia &&
                 window.matchMedia("(prefers-color-scheme: dark)").matches;
             var theme = storedTheme || (prefersDark ? "dark" : "light");
+
             document.documentElement.dataset.theme = theme;
         })();
     </script>
     <style>
+
         :root {
             color-scheme: light dark;
             --bg: #f6f8fa;
@@ -67,14 +71,32 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin: 0 0 16px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            margin: -8px 0 12px;
+            padding: 8px 0 12px;
+            background: var(--bg);
         }
 
-        h2 {
+        h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 650;
             overflow-wrap: anywhere;
+        }
+
+        .breadcrumbs {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            min-width: 0;
+        }
+
+        .breadcrumb-separator {
+            margin: 0 4px;
+            color: var(--muted);
+            font-weight: 500;
         }
 
         .theme-toggle {
@@ -134,6 +156,10 @@
             background: var(--row);
         }
 
+        [hidden] {
+            display: none !important;
+        }
+
         .name-cell {
             width: 70%;
         }
@@ -154,13 +180,46 @@
             text-decoration: underline;
         }
 
+        .list-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .show-more {
+            min-width: 104px;
+            min-height: 34px;
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .show-more:hover {
+            background: var(--row);
+        }
+
+        .show-more:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
+        }
+
         @media (max-width: 640px) {
             main {
                 width: min(100% - 20px, 960px);
                 margin: 16px auto;
             }
 
-            h2 {
+            h1 {
                 font-size: 20px;
             }
 
@@ -200,6 +259,15 @@
                 padding-top: 0;
                 text-align: left;
             }
+
+            .list-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .show-more {
+                width: 100%;
+            }
         }
 
         @media (prefers-color-scheme: dark) {
@@ -217,37 +285,39 @@
 </head>
 <body>
     <main>
-    <div class="page-header">
-        <h2>gitlab-allure-history/v6</h2>
-        <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
-    </div>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Modified</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="name-cell"><a href='../'>../</a></td>
-            <td class="modified-cell"></td>
-        </tr>
-		<tr>
-			<td class="name-cell"><a href='job_7195068136'>job_7195068136</a></td>
-			<td class="modified-cell">26-Jun-2024 16:46</td>
-		</tr>
+        <div class="page-header">
+            <h1 class="breadcrumbs" aria-label="Current location"><a href="../">gitlab-allure-history</a><span class="breadcrumb-separator">/</span><span aria-current="page">v6</span></h1>
+            <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
+        </div>
+        <table data-progressive-list>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr data-list-row>
+                <td class="name-cell"><a href="job_7195068136/">job_7195068136/</a></td>
+                <td class="modified-cell">26-Jun-2024 16:46</td>
+            </tr>
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
+        <div class="list-controls" hidden>
+            <span class="list-count" aria-live="polite"></span>
+            <button class="show-more" type="button">Show more...</button>
+        </div>
     </main>
     <script>
+
         (function () {
             var storageKey = "gah-index-theme";
             var button = document.querySelector(".theme-toggle");
 
             function setTheme(theme, persist) {
                 document.documentElement.dataset.theme = theme;
+
                 if (persist) {
                     try {
                         localStorage.setItem(storageKey, theme);
@@ -255,14 +325,75 @@
                         // Continue with the in-page theme even when storage is blocked.
                     }
                 }
+
                 button.textContent = theme === "dark" ? "Light" : "Dark";
             }
 
             setTheme(document.documentElement.dataset.theme || "light", false);
+
             button.addEventListener("click", function () {
                 var currentTheme = document.documentElement.dataset.theme;
                 setTheme(currentTheme === "dark" ? "light" : "dark", true);
             });
+        })();
+    </script>
+    <script>
+
+        (function () {
+            var table = document.querySelector("[data-progressive-list]");
+
+            if (!table) {
+                return;
+            }
+
+            var rows = Array.prototype.slice.call(
+                table.querySelectorAll("tbody tr[data-list-row]")
+            );
+            var controls = document.querySelector(".list-controls");
+            var button = document.querySelector(".show-more");
+            var count = document.querySelector(".list-count");
+
+            if (!rows.length || !controls || !button || !count) {
+                return;
+            }
+
+            var media = window.matchMedia("(max-width: 640px)");
+            var visibleRows = 0;
+
+            function batchSize() {
+                return media.matches ? 12 : 25;
+            }
+
+            function updateRows(nextVisibleRows) {
+                var currentBatchSize = batchSize();
+                visibleRows = currentBatchSize <= 0 ?
+                    rows.length :
+                    Math.min(nextVisibleRows, rows.length);
+
+                rows.forEach(function (row, index) {
+                    row.hidden = index >= visibleRows;
+                });
+
+                count.textContent = "Showing " + visibleRows + " of " + rows.length;
+                controls.hidden = currentBatchSize <= 0 || rows.length <= currentBatchSize;
+                button.hidden = currentBatchSize <= 0 || visibleRows >= rows.length;
+            }
+
+            button.addEventListener("click", function () {
+                updateRows(visibleRows + batchSize());
+            });
+
+            function fitViewportBatch() {
+                updateRows(Math.max(visibleRows, batchSize()));
+            }
+
+            updateRows(batchSize());
+
+            if (media.addEventListener) {
+                media.addEventListener("change", fitViewportBatch);
+            } else if (media.addListener) {
+                media.addListener(fitViewportBatch);
+            }
         })();
     </script>
 </body>

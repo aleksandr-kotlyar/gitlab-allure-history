@@ -1,0 +1,6 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri Jun 05 04:22:06 GMT 2026","Fri Jun 05 04:22:06 GMT 2026","1","tests","test_prune_reports","","","","test_prune_reports_keeps_latest-jobs_by_numeric_id",""
+"passed","Fri Jun 05 04:22:06 GMT 2026","Fri Jun 05 04:22:06 GMT 2026","0","tests","test_prune_reports","","","","test_prune_reports_ignores_missing_path",""
+"passed","Fri Jun 05 04:22:06 GMT 2026","Fri Jun 05 04:22:06 GMT 2026","1","tests","test_generate_index","","","","test_index_sorts_legacy_reports_by_numeric_job_id_descending",""
+"passed","Fri Jun 05 04:22:06 GMT 2026","Fri Jun 05 04:22:06 GMT 2026","0","tests","test_generate_index","","","","test_index_hides_history_directory",""
+"passed","Fri Jun 05 04:22:06 GMT 2026","Fri Jun 05 04:22:06 GMT 2026","1","tests","test_generate_index","","","","test_index_sorts_reports_by_modified_at_descending",""

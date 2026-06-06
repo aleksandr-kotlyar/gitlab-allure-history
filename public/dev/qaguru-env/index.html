@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gitlab-allure-history/dev/qaguru-env</title>
+    <script>
+
+        (function () {
+            var storedTheme = null;
+            try {
+                storedTheme = localStorage.getItem("gah-index-theme");
+            } catch (error) {
+                storedTheme = null;
+            }
+
+            var prefersDark = window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+            var theme = storedTheme || (prefersDark ? "dark" : "light");
+
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+    <style>
+
+        :root {
+            color-scheme: light dark;
+            --bg: #f6f8fa;
+            --panel: #ffffff;
+            --text: #24292f;
+            --muted: #57606a;
+            --border: #d0d7de;
+            --row: #f6f8fa;
+            --link: #0969da;
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #0d1117;
+            --panel: #161b22;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --border: #30363d;
+            --row: #21262d;
+            --link: #58a6ff;
+        }
+
+        :root[data-theme="light"] {
+            color-scheme: light;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.5;
+        }
+
+        main {
+            width: min(960px, calc(100% - 32px));
+            margin: 32px auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            margin: -8px 0 12px;
+            padding: 8px 0 12px;
+            background: var(--bg);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 650;
+            overflow-wrap: anywhere;
+        }
+
+        .breadcrumbs {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            min-width: 0;
+        }
+
+        .breadcrumb-separator {
+            margin: 0 4px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            min-width: 72px;
+            min-height: 34px;
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .theme-toggle:hover {
+            background: var(--row);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
+        }
+
+        table {
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            border-spacing: 0;
+            background: var(--panel);
+            box-shadow: 0 1px 2px rgba(27, 31, 36, 0.04);
+        }
+
+        th,
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: var(--row);
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        tr:hover td {
+            background: var(--row);
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .name-cell {
+            width: 70%;
+        }
+
+        .modified-cell {
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .list-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .show-more {
+            min-width: 104px;
+            min-height: 34px;
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .show-more:hover {
+            background: var(--row);
+        }
+
+        .show-more:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                width: min(100% - 20px, 960px);
+                margin: 16px auto;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .theme-toggle {
+                min-width: 68px;
+            }
+
+            th {
+                display: none;
+            }
+
+            td {
+                display: block;
+                border-bottom: 0;
+            }
+
+            tr {
+                display: block;
+                border-bottom: 1px solid var(--border);
+            }
+
+            tr:last-child {
+                border-bottom: 0;
+            }
+
+            .name-cell {
+                width: 100%;
+                padding-bottom: 2px;
+            }
+
+            .modified-cell {
+                padding-top: 0;
+                text-align: left;
+            }
+
+            .list-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .show-more {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --bg: #0d1117;
+                --panel: #161b22;
+                --text: #e6edf3;
+                --muted: #8b949e;
+                --border: #30363d;
+                --row: #21262d;
+                --link: #58a6ff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="page-header">
+            <h1 class="breadcrumbs" aria-label="Current location"><a href="../../">gitlab-allure-history</a><span class="breadcrumb-separator">/</span><a href="../">dev</a><span class="breadcrumb-separator">/</span><span aria-current="page">qaguru-env</span></h1>
+            <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
+        </div>
+        <table data-progressive-list>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr data-list-row>
+                <td class="name-cell"><a href="job_7440587470/">job_7440587470/</a></td>
+                <td class="modified-cell">26-Jul-2024 19:01</td>
+            </tr>
+            <tr data-list-row>
+                <td class="name-cell"><a href="job_7440544676/">job_7440544676/</a></td>
+                <td class="modified-cell">26-Jul-2024 18:53</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="list-controls" hidden>
+            <span class="list-count" aria-live="polite"></span>
+            <button class="show-more" type="button">Show more...</button>
+        </div>
+    </main>
+    <script>
+
+        (function () {
+            var storageKey = "gah-index-theme";
+            var button = document.querySelector(".theme-toggle");
+
+            function setTheme(theme, persist) {
+                document.documentElement.dataset.theme = theme;
+
+                if (persist) {
+                    try {
+                        localStorage.setItem(storageKey, theme);
+                    } catch (error) {
+                        // Continue with the in-page theme even when storage is blocked.
+                    }
+                }
+
+                button.textContent = theme === "dark" ? "Light" : "Dark";
+            }
+
+            setTheme(document.documentElement.dataset.theme || "light", false);
+
+            button.addEventListener("click", function () {
+                var currentTheme = document.documentElement.dataset.theme;
+                setTheme(currentTheme === "dark" ? "light" : "dark", true);
+            });
+        })();
+    </script>
+    <script>
+
+        (function () {
+            var table = document.querySelector("[data-progressive-list]");
+
+            if (!table) {
+                return;
+            }
+
+            var rows = Array.prototype.slice.call(
+                table.querySelectorAll("tbody tr[data-list-row]")
+            );
+            var controls = document.querySelector(".list-controls");
+            var button = document.querySelector(".show-more");
+            var count = document.querySelector(".list-count");
+
+            if (!rows.length || !controls || !button || !count) {
+                return;
+            }
+
+            var media = window.matchMedia("(max-width: 640px)");
+            var visibleRows = 0;
+
+            function batchSize() {
+                return media.matches ? 12 : 25;
+            }
+
+            function updateRows(nextVisibleRows) {
+                var currentBatchSize = batchSize();
+                visibleRows = currentBatchSize <= 0 ?
+                    rows.length :
+                    Math.min(nextVisibleRows, rows.length);
+
+                rows.forEach(function (row, index) {
+                    row.hidden = index >= visibleRows;
+                });
+
+                count.textContent = "Showing " + visibleRows + " of " + rows.length;
+                controls.hidden = currentBatchSize <= 0 || rows.length <= currentBatchSize;
+                button.hidden = currentBatchSize <= 0 || visibleRows >= rows.length;
+            }
+
+            button.addEventListener("click", function () {
+                updateRows(visibleRows + batchSize());
+            });
+
+            function fitViewportBatch() {
+                updateRows(Math.max(visibleRows, batchSize()));
+            }
+
+            updateRows(batchSize());
+
+            if (media.addEventListener) {
+                media.addEventListener("change", fitViewportBatch);
+            } else if (media.addListener) {
+                media.addListener(fitViewportBatch);
+            }
+        })();
+    </script>
+</body>
+</html>
