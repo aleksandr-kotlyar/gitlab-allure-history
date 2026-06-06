@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from datetime import datetime
 from html import escape
@@ -16,7 +17,9 @@ HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
 ROOT_INDEX_DIR = "public"
 PUBLIC_TITLE = "gitlab-allure-history"
 PINNED_ENTRY_NAMES = {"master"}
-DESKTOP_LIST_BATCH_SIZE = 20
+DESKTOP_LIST_BATCH_SIZE_ENV = "GAH_INDEX_DESKTOP_BATCH_SIZE"
+MOBILE_LIST_BATCH_SIZE_ENV = "GAH_INDEX_MOBILE_BATCH_SIZE"
+DESKTOP_LIST_BATCH_SIZE = 25
 MOBILE_LIST_BATCH_SIZE = 12
 
 STYLE = """
@@ -325,7 +328,7 @@ THEME_TOGGLE_SCRIPT = """
         })();
 """
 
-LIST_REVEAL_SCRIPT = """
+LIST_REVEAL_SCRIPT_TEMPLATE = """
         (function () {
             var table = document.querySelector("[data-progressive-list]");
 
@@ -352,15 +355,18 @@ LIST_REVEAL_SCRIPT = """
             }
 
             function updateRows(nextVisibleRows) {
-                visibleRows = Math.min(nextVisibleRows, rows.length);
+                var currentBatchSize = batchSize();
+                visibleRows = currentBatchSize <= 0 ?
+                    rows.length :
+                    Math.min(nextVisibleRows, rows.length);
 
                 rows.forEach(function (row, index) {
                     row.hidden = index >= visibleRows;
                 });
 
                 count.textContent = "Showing " + visibleRows + " of " + rows.length;
-                controls.hidden = rows.length <= batchSize();
-                button.hidden = visibleRows >= rows.length;
+                controls.hidden = currentBatchSize <= 0 || rows.length <= currentBatchSize;
+                button.hidden = currentBatchSize <= 0 || visibleRows >= rows.length;
             }
 
             button.addEventListener("click", function () {
@@ -379,11 +385,34 @@ LIST_REVEAL_SCRIPT = """
                 media.addListener(fitViewportBatch);
             }
         })();
-""".replace(
-    "__DESKTOP_BATCH_SIZE__", str(DESKTOP_LIST_BATCH_SIZE)
-).replace(
-    "__MOBILE_BATCH_SIZE__", str(MOBILE_LIST_BATCH_SIZE)
-)
+"""
+
+
+def configured_list_batch_size(env_name: str, default: int) -> int:
+    raw_value = os.environ.get(env_name)
+
+    if raw_value is None:
+        return default
+
+    try:
+        return int(raw_value.strip())
+    except ValueError:
+        return default
+
+
+def configured_list_batch_sizes() -> tuple[int, int]:
+    return (
+        configured_list_batch_size(DESKTOP_LIST_BATCH_SIZE_ENV, DESKTOP_LIST_BATCH_SIZE),
+        configured_list_batch_size(MOBILE_LIST_BATCH_SIZE_ENV, MOBILE_LIST_BATCH_SIZE),
+    )
+
+
+def list_reveal_script(desktop_batch_size: int, mobile_batch_size: int) -> str:
+    return LIST_REVEAL_SCRIPT_TEMPLATE.replace(
+        "__DESKTOP_BATCH_SIZE__", str(desktop_batch_size)
+    ).replace(
+        "__MOBILE_BATCH_SIZE__", str(mobile_batch_size)
+    )
 
 
 def job_id(entry: Path) -> int | None:
@@ -568,8 +597,12 @@ def empty_row() -> list[str]:
     ]
 
 
-def list_controls_html(entries: list[Path]) -> str:
-    if not entries:
+def list_controls_html(
+    entries: list[Path],
+    desktop_batch_size: int,
+    mobile_batch_size: int,
+) -> str:
+    if not entries or (desktop_batch_size <= 0 and mobile_batch_size <= 0):
         return ""
 
     return """
@@ -581,6 +614,7 @@ def list_controls_html(entries: list[Path]) -> str:
 
 def build_index_html(folder: Path, entries: list[Path]) -> str:
     title = display_path(folder)
+    desktop_batch_size, mobile_batch_size = configured_list_batch_sizes()
     rows: list[str] = []
 
     if entries:
@@ -621,13 +655,13 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
 {body}
             </tbody>
         </table>
-{list_controls_html(entries)}
+{list_controls_html(entries, desktop_batch_size, mobile_batch_size)}
     </main>
     <script>
 {THEME_TOGGLE_SCRIPT.rstrip()}
     </script>
     <script>
-{LIST_REVEAL_SCRIPT.rstrip()}
+{list_reveal_script(desktop_batch_size, mobile_batch_size).rstrip()}
     </script>
 </body>
 </html>

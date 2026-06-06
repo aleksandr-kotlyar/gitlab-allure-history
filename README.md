@@ -130,6 +130,13 @@ Required:
 
 - `GIT_PUSH_TOKEN`: token with permission to push to the repository.
 
+Optional:
+
+- `GAH_INDEX_DESKTOP_BATCH_SIZE`: number of index rows shown before `Show more...` on desktop. Defaults to `25`.
+- `GAH_INDEX_MOBILE_BATCH_SIZE`: number of index rows shown before `Show more...` on mobile. Defaults to `12`.
+
+Set either index batch size to `0` to show all rows for that viewport without progressive reveal controls.
+
 Provided by GitLab CI:
 
 - `CI_COMMIT_REF_SLUG`: used as the branch report folder.
