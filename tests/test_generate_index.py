@@ -1,4 +1,4 @@
-from generate_index import index_folder
+from generate_index import index_folder, index_tree
 
 
 def test_index_folder_creates_empty_index(tmp_path):
@@ -11,6 +11,7 @@ def test_index_folder_creates_empty_index(tmp_path):
     assert "No reports yet." in html
     assert "Index of" not in html
     assert "gitlab-allure-history" in html
+    assert 'aria-current="page">gitlab-allure-history</span>' in html
 
 
 def test_index_escapes_labels_and_encodes_links(tmp_path):
@@ -60,6 +61,40 @@ def test_index_pins_master_first(tmp_path):
 
     html = index_path.read_text(encoding="utf-8")
     assert html.index("master/") < html.index("feature/")
+
+
+def test_index_links_parent_breadcrumbs(tmp_path):
+    report_dir = tmp_path / "public" / "master" / "job_101"
+    report_dir.mkdir(parents=True)
+
+    index_path = index_folder(report_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert '<a href="../../">gitlab-allure-history</a>' in html
+    assert '<a href="../">master</a>' in html
+    assert 'aria-current="page">job_101</span>' in html
+
+
+def test_index_tree_updates_navigation_indexes_without_touching_reports(tmp_path):
+    public_dir = tmp_path / "public"
+    branch_dir = public_dir / "master"
+    report_dir = branch_dir / "job_101"
+    history_dir = branch_dir / "history"
+    feature_dir = public_dir / "feature"
+    report_dir.mkdir(parents=True)
+    history_dir.mkdir()
+    feature_dir.mkdir()
+    report_index = report_dir / "index.html"
+    report_index.write_text("allure report", encoding="utf-8")
+
+    index_paths = index_tree(public_dir)
+
+    assert public_dir / "index.html" in index_paths
+    assert branch_dir / "index.html" in index_paths
+    assert feature_dir / "index.html" in index_paths
+    assert report_dir / "index.html" not in index_paths
+    assert not (history_dir / "index.html").exists()
+    assert report_index.read_text(encoding="utf-8") == "allure report"
 
 
 def test_index_handles_branch_report_folder(tmp_path):

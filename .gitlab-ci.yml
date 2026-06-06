@@ -186,8 +186,7 @@ allure:
 
       python3 prune_reports.py "$BRANCH_PUBLIC_DIR" "$REPORTS_TO_KEEP"
 
-      python3 generate_index.py "$PAGES_PUBLIC_DIR"
-      python3 generate_index.py "$BRANCH_PUBLIC_DIR"
+      python3 generate_index.py --recursive "$PAGES_PUBLIC_DIR"
 
     - |
       git -C pages-worktree config user.name "GitLab Runner"
