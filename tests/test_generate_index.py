@@ -1,4 +1,9 @@
-from generate_index import index_folder, index_tree
+from generate_index import (
+    DESKTOP_LIST_BATCH_SIZE,
+    MOBILE_LIST_BATCH_SIZE,
+    index_folder,
+    index_tree,
+)
 
 
 def test_index_folder_creates_empty_index(tmp_path):
@@ -12,6 +17,7 @@ def test_index_folder_creates_empty_index(tmp_path):
     assert "Index of" not in html
     assert "gitlab-allure-history" in html
     assert 'aria-current="page">gitlab-allure-history</span>' in html
+    assert "Show more..." not in html
 
 
 def test_index_escapes_labels_and_encodes_links(tmp_path):
@@ -118,3 +124,22 @@ def test_index_handles_branch_report_folder(tmp_path):
     html = index_path.read_text(encoding="utf-8")
     assert 'href="history/"' not in html
     assert 'href="job_101/"' in html
+
+
+def test_index_adds_show_more_controls_for_populated_lists(tmp_path):
+    public_dir = tmp_path / "public"
+    public_dir.mkdir()
+
+    total_entries = DESKTOP_LIST_BATCH_SIZE + 1
+    for index in range(total_entries):
+        (public_dir / f"branch-{index:02d}").mkdir()
+
+    index_path = index_folder(public_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert html.count("<tr data-list-row>") == total_entries
+    assert '<table data-progressive-list>' in html
+    assert '<div class="list-controls" hidden>' in html
+    assert '<span class="list-count" aria-live="polite"></span>' in html
+    assert '<button class="show-more" type="button">Show more...</button>' in html
+    assert f"media.matches ? {MOBILE_LIST_BATCH_SIZE} : {DESKTOP_LIST_BATCH_SIZE}" in html

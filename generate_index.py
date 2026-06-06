@@ -16,6 +16,8 @@ HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
 ROOT_INDEX_DIR = "public"
 PUBLIC_TITLE = "gitlab-allure-history"
 PINNED_ENTRY_NAMES = {"master"}
+DESKTOP_LIST_BATCH_SIZE = 20
+MOBILE_LIST_BATCH_SIZE = 12
 
 STYLE = """
         :root {
@@ -151,6 +153,10 @@ STYLE = """
             background: var(--row);
         }
 
+        [hidden] {
+            display: none !important;
+        }
+
         .name-cell {
             width: 70%;
         }
@@ -169,6 +175,39 @@ STYLE = """
 
         a:hover {
             text-decoration: underline;
+        }
+
+        .list-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .show-more {
+            min-width: 104px;
+            min-height: 34px;
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .show-more:hover {
+            background: var(--row);
+        }
+
+        .show-more:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
         }
 
         @media (max-width: 640px) {
@@ -216,6 +255,15 @@ STYLE = """
             .modified-cell {
                 padding-top: 0;
                 text-align: left;
+            }
+
+            .list-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .show-more {
+                width: 100%;
             }
         }
 
@@ -276,6 +324,66 @@ THEME_TOGGLE_SCRIPT = """
             });
         })();
 """
+
+LIST_REVEAL_SCRIPT = """
+        (function () {
+            var table = document.querySelector("[data-progressive-list]");
+
+            if (!table) {
+                return;
+            }
+
+            var rows = Array.prototype.slice.call(
+                table.querySelectorAll("tbody tr[data-list-row]")
+            );
+            var controls = document.querySelector(".list-controls");
+            var button = document.querySelector(".show-more");
+            var count = document.querySelector(".list-count");
+
+            if (!rows.length || !controls || !button || !count) {
+                return;
+            }
+
+            var media = window.matchMedia("(max-width: 640px)");
+            var visibleRows = 0;
+
+            function batchSize() {
+                return media.matches ? __MOBILE_BATCH_SIZE__ : __DESKTOP_BATCH_SIZE__;
+            }
+
+            function updateRows(nextVisibleRows) {
+                visibleRows = Math.min(nextVisibleRows, rows.length);
+
+                rows.forEach(function (row, index) {
+                    row.hidden = index >= visibleRows;
+                });
+
+                count.textContent = "Showing " + visibleRows + " of " + rows.length;
+                controls.hidden = rows.length <= batchSize();
+                button.hidden = visibleRows >= rows.length;
+            }
+
+            button.addEventListener("click", function () {
+                updateRows(visibleRows + batchSize());
+            });
+
+            function fitViewportBatch() {
+                updateRows(Math.max(visibleRows, batchSize()));
+            }
+
+            updateRows(batchSize());
+
+            if (media.addEventListener) {
+                media.addEventListener("change", fitViewportBatch);
+            } else if (media.addListener) {
+                media.addListener(fitViewportBatch);
+            }
+        })();
+""".replace(
+    "__DESKTOP_BATCH_SIZE__", str(DESKTOP_LIST_BATCH_SIZE)
+).replace(
+    "__MOBILE_BATCH_SIZE__", str(MOBILE_LIST_BATCH_SIZE)
+)
 
 
 def job_id(entry: Path) -> int | None:
@@ -442,7 +550,7 @@ def breadcrumb_html(folder: Path) -> str:
 
 def entry_row(entry: Path) -> list[str]:
     return [
-        "            <tr>",
+        '            <tr data-list-row>',
         '                <td class="name-cell"><a href="{href}">{label}</a></td>'.format(
             href=escape(link_for(entry), quote=True),
             label=escape(label_for(entry)),
@@ -458,6 +566,17 @@ def empty_row() -> list[str]:
         '                <td class="name-cell" colspan="2">No reports yet.</td>',
         "            </tr>",
     ]
+
+
+def list_controls_html(entries: list[Path]) -> str:
+    if not entries:
+        return ""
+
+    return """
+        <div class="list-controls" hidden>
+            <span class="list-count" aria-live="polite"></span>
+            <button class="show-more" type="button">Show more...</button>
+        </div>""".rstrip()
 
 
 def build_index_html(folder: Path, entries: list[Path]) -> str:
@@ -491,7 +610,7 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
             {breadcrumb_html(folder)}
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
-        <table>
+        <table data-progressive-list>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -502,9 +621,13 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
 {body}
             </tbody>
         </table>
+{list_controls_html(entries)}
     </main>
     <script>
 {THEME_TOGGLE_SCRIPT.rstrip()}
+    </script>
+    <script>
+{LIST_REVEAL_SCRIPT.rstrip()}
     </script>
 </body>
 </html>
