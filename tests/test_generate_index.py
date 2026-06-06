@@ -75,6 +75,17 @@ def test_index_links_parent_breadcrumbs(tmp_path):
     assert 'aria-current="page">job_101</span>' in html
 
 
+def test_index_omits_parent_table_row_when_breadcrumbs_are_available(tmp_path):
+    branch_dir = tmp_path / "public" / "master"
+    (branch_dir / "job_101").mkdir(parents=True)
+
+    index_path = index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert '<td class="name-cell"><a href="../">../</a></td>' not in html
+    assert '<a href="../">gitlab-allure-history</a>' in html
+
+
 def test_index_tree_updates_navigation_indexes_without_touching_reports(tmp_path):
     public_dir = tmp_path / "public"
     branch_dir = public_dir / "master"
