@@ -1,6 +1,8 @@
 from generate_index import (
     DESKTOP_LIST_BATCH_SIZE,
+    DESKTOP_LIST_BATCH_SIZE_ENV,
     MOBILE_LIST_BATCH_SIZE,
+    MOBILE_LIST_BATCH_SIZE_ENV,
     index_folder,
     index_tree,
 )
@@ -143,3 +145,36 @@ def test_index_adds_show_more_controls_for_populated_lists(tmp_path):
     assert '<span class="list-count" aria-live="polite"></span>' in html
     assert '<button class="show-more" type="button">Show more...</button>' in html
     assert f"media.matches ? {MOBILE_LIST_BATCH_SIZE} : {DESKTOP_LIST_BATCH_SIZE}" in html
+
+
+def test_index_uses_configured_show_more_batch_sizes(tmp_path, monkeypatch):
+    public_dir = tmp_path / "public"
+    public_dir.mkdir()
+    monkeypatch.setenv(DESKTOP_LIST_BATCH_SIZE_ENV, "7")
+    monkeypatch.setenv(MOBILE_LIST_BATCH_SIZE_ENV, "4")
+
+    for index in range(8):
+        (public_dir / f"branch-{index:02d}").mkdir()
+
+    index_path = index_folder(public_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert "Show more..." in html
+    assert "media.matches ? 4 : 7" in html
+
+
+def test_index_disables_show_more_with_zero_batch_sizes(tmp_path, monkeypatch):
+    public_dir = tmp_path / "public"
+    public_dir.mkdir()
+    monkeypatch.setenv(DESKTOP_LIST_BATCH_SIZE_ENV, "0")
+    monkeypatch.setenv(MOBILE_LIST_BATCH_SIZE_ENV, "0")
+
+    for index in range(DESKTOP_LIST_BATCH_SIZE + 1):
+        (public_dir / f"branch-{index:02d}").mkdir()
+
+    index_path = index_folder(public_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert "Show more..." not in html
+    assert '<div class="list-controls" hidden>' not in html
+    assert html.count("<tr data-list-row>") == DESKTOP_LIST_BATCH_SIZE + 1
