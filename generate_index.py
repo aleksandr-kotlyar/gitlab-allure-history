@@ -15,6 +15,7 @@ HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
 
 ROOT_INDEX_DIR = "public"
 PUBLIC_TITLE = "gitlab-allure-history"
+PINNED_ENTRY_NAMES = {"master"}
 
 STYLE = """
         :root {
@@ -65,7 +66,12 @@ STYLE = """
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin: 0 0 16px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            margin: -8px 0 12px;
+            padding: 8px 0 12px;
+            background: var(--bg);
         }
 
         h1 {
@@ -312,14 +318,21 @@ def entry_sort_key(entry: Path) -> tuple[object, ...]:
     entry_job_id = job_id(entry)
     modified_at = read_modified_at(entry)
     parsed_modified_at = parse_modified_at(modified_at)
+    pinned_rank = 0 if entry.name in PINNED_ENTRY_NAMES else 1
 
     if parsed_modified_at is not None:
-        return (0, -parsed_modified_at.timestamp(), -(entry_job_id or 0), entry.name)
+        return (
+            pinned_rank,
+            0,
+            -parsed_modified_at.timestamp(),
+            -(entry_job_id or 0),
+            entry.name,
+        )
 
     if entry_job_id is not None:
-        return (1, -entry_job_id, entry.name)
+        return (pinned_rank, 1, -entry_job_id, entry.name)
 
-    return (2, not entry.is_dir(), entry.name.casefold(), entry.name)
+    return (pinned_rank, 2, not entry.is_dir(), entry.name.casefold(), entry.name)
 
 
 def iter_entries(folder: Path) -> list[Path]:

@@ -46,6 +46,22 @@ def test_index_sorts_directories_before_files(tmp_path):
     assert html.index("A_file.txt") < html.index("z_file.txt")
 
 
+def test_index_pins_master_first(tmp_path):
+    public_dir = tmp_path / "public"
+    public_dir.mkdir()
+    master_dir = public_dir / "master"
+    feature_dir = public_dir / "feature"
+    master_dir.mkdir()
+    feature_dir.mkdir()
+    (master_dir / ".modified_at").write_text("2026-06-05T22:15:00Z\n", encoding="utf-8")
+    (feature_dir / ".modified_at").write_text("2026-06-06T08:00:00Z\n", encoding="utf-8")
+
+    index_path = index_folder(public_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert html.index("master/") < html.index("feature/")
+
+
 def test_index_handles_branch_report_folder(tmp_path):
     branch_dir = tmp_path / "public" / "feature-login"
     (branch_dir / "history").mkdir(parents=True)
