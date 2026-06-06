@@ -81,6 +81,19 @@ STYLE = """
             overflow-wrap: anywhere;
         }
 
+        .breadcrumbs {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            min-width: 0;
+        }
+
+        .breadcrumb-separator {
+            margin: 0 4px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
         .theme-toggle {
             min-width: 72px;
             min-height: 34px;
@@ -342,6 +355,28 @@ def iter_entries(folder: Path) -> list[Path]:
     )
 
 
+def is_indexable_folder(folder: Path) -> bool:
+    return folder.is_dir() and folder.name not in HIDDEN_INDEX_ENTRIES and job_id(folder) is None
+
+
+def iter_index_folders(root: Path) -> list[Path]:
+    folders: list[Path] = []
+
+    def collect(folder: Path) -> None:
+        folders.append(folder)
+
+        children = sorted(
+            (entry for entry in folder.iterdir() if is_indexable_folder(entry)),
+            key=lambda entry: (entry.name.casefold(), entry.name),
+        )
+
+        for child in children:
+            collect(child)
+
+    collect(root)
+    return folders
+
+
 def link_for(entry: Path) -> str:
     suffix = "/" if entry.is_dir() else ""
     return quote(entry.name, safe="") + suffix
@@ -362,6 +397,47 @@ def display_path(folder: Path) -> str:
     suffix_parts = parts[public_index + 1 :]
 
     return "/".join([PUBLIC_TITLE, *suffix_parts])
+
+
+def public_suffix_parts(folder: Path) -> list[str] | None:
+    parts = folder.as_posix().split("/")
+
+    if ROOT_INDEX_DIR not in parts:
+        return None
+
+    public_index = len(parts) - 1 - parts[::-1].index(ROOT_INDEX_DIR)
+    return parts[public_index + 1 :]
+
+
+def breadcrumb_html(folder: Path) -> str:
+    suffix_parts = public_suffix_parts(folder)
+
+    if suffix_parts is None:
+        return f"<h1>{escape(folder.as_posix())}</h1>"
+
+    crumbs = [PUBLIC_TITLE, *suffix_parts]
+    last_index = len(crumbs) - 1
+    html_parts: list[str] = ['<h1 class="breadcrumbs" aria-label="Current location">']
+
+    for index, crumb in enumerate(crumbs):
+        if index:
+            html_parts.append('<span class="breadcrumb-separator">/</span>')
+
+        levels_up = last_index - index
+
+        if levels_up:
+            href = "../" * levels_up
+            html_parts.append(
+                '<a href="{href}">{label}</a>'.format(
+                    href=escape(href, quote=True),
+                    label=escape(crumb),
+                )
+            )
+        else:
+            html_parts.append(f'<span aria-current="page">{escape(crumb)}</span>')
+
+    html_parts.append("</h1>")
+    return "".join(html_parts)
 
 
 def show_parent_link(folder: Path) -> bool:
@@ -428,7 +504,7 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
 <body>
     <main>
         <div class="page-header">
-            <h1>{escape(title)}</h1>
+            {breadcrumb_html(folder)}
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
         <table>
@@ -463,9 +539,20 @@ def index_folder(folder: str | Path) -> Path:
     return index_path
 
 
+def index_tree(root: str | Path) -> list[Path]:
+    path = Path(root)
+    path.mkdir(parents=True, exist_ok=True)
+
+    return [index_folder(folder) for folder in iter_index_folders(path)]
+
+
 def main(argv: list[str]) -> int:
+    if len(argv) == 3 and argv[1] == "--recursive":
+        index_tree(argv[2])
+        return 0
+
     if len(argv) != 2:
-        print("Usage: python3 generate_index.py <folder>", file=sys.stderr)
+        print("Usage: python3 generate_index.py [--recursive] <folder>", file=sys.stderr)
         return 2
 
     index_folder(argv[1])
