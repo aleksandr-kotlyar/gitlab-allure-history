@@ -1,5 +1,12 @@
 include:
-  - local: templates/gitlab-allure-history.yml
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
+    inputs:
+      build-runtime-image: "true"
+    rules:
+      - if: $CI_COMMIT_TAG
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
+    rules:
+      - if: $CI_COMMIT_TAG == null
 
 default:
   image: $ALLURE_HISTORY_IMAGE
@@ -40,3 +47,16 @@ test_demo:
     paths:
       - allure-results
       - report-demo.xml
+
+create_release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+  script:
+    - echo "Creating release $CI_COMMIT_TAG"
+  release:
+    tag_name: $CI_COMMIT_TAG
+    description: "Release $CI_COMMIT_TAG of the gitlab-allure-history component."
