@@ -40,8 +40,10 @@ def test_project_pipeline_dogfoods_reusable_template():
         "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG"
         in pipeline
     )
+    assert "allure-history-image-tag: $CI_COMMIT_TAG" in pipeline
     assert 'build-runtime-image: "true"' in pipeline
     assert "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA" in pipeline
+    assert 'allure-history-image-tag: "2026.2.1"' in pipeline
     assert "if: $CI_COMMIT_TAG == null" in pipeline
     assert "create_release:" in pipeline
     assert "tag_name: $CI_COMMIT_TAG" in pipeline
@@ -53,13 +55,14 @@ def test_template_uses_url_safe_branch_slug_and_component_versioned_image_tag():
     assert '"$[[ inputs.build-runtime-image ]]" == "true" && $CI_COMMIT_TAG' in template
     assert "IMAGE_TAG: $CI_COMMIT_TAG" in template
     assert (
-        "ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ component.version ]]"
+        "ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ inputs.allure-history-image-tag ]]"
         in template
     )
     assert "docker build -t \"$CI_REGISTRY_IMAGE:$IMAGE_TAG\" ." in template
     assert "docker push \"$CI_REGISTRY_IMAGE:$IMAGE_TAG\"" in template
     assert "docker tag \"$CI_REGISTRY_IMAGE:$IMAGE_TAG\"" not in template
     assert "IMAGE_TAG: $CI_COMMIT_SHA" not in template
+    assert "ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ component.version ]]" not in template
     assert "ALLURE_HISTORY_IMAGE: $CI_COMMIT_REF_SLUG" not in template
     assert "REPORT_BRANCH=\"${CI_COMMIT_REF_SLUG:-detached}\"" in template
     assert "CI_COMMIT_REF_NAME" not in template
@@ -69,10 +72,11 @@ def test_template_defines_component_inputs():
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
 
     assert template.startswith("spec:\n")
-    assert "  component: [version]\n" in template
+    assert "  component: [version]\n" not in template
     assert "  inputs:\n" in template
     assert "    environment:\n" in template
     assert "    allure-history-image:\n" in template
+    assert "    allure-history-image-tag:\n" in template
     assert "    pages-branch:\n" in template
     assert "    reports-to-keep:\n" in template
     assert "    build-runtime-image:\n" in template
@@ -87,4 +91,5 @@ def test_readme_external_include_uses_pinned_component_version():
         "gitlab-allure-history@<pinned-version-tag>"
         in readme
     )
+    assert "allure-history-image-tag: <pinned-version-tag>" in readme
     assert "Avoid moving references such as branches or `~latest`" in readme
