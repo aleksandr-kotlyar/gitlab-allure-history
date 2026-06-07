@@ -21,8 +21,8 @@ RUN wget -q -O /tmp/allure-commandline.tgz "https://repo.maven.apache.org/maven2
     && rm /tmp/allure-commandline.tgz
 ENV PATH="/allure-${ALLURE_VERSION}/bin:${PATH}"
 
-ARG GAH_TOOLS_DIR=/opt/gitlab-allure-history
-COPY generate_index.py prune_reports.py ${GAH_TOOLS_DIR}/
+ARG ALLURE_HISTORY_TOOLS_DIR=/opt/gitlab-allure-history
+COPY generate_index.py prune_reports.py ${ALLURE_HISTORY_TOOLS_DIR}/
 
 ENV PATH="/app/venv/bin:$PATH"
 WORKDIR /app

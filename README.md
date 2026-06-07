@@ -121,7 +121,7 @@ include:
     file: /templates/gitlab-allure-history.yml
 ```
 
-For another project, make sure previous-stage test jobs upload `allure-results` as artifacts. The default `ALLURE_HISTORY_IMAGE` contains the report helper scripts, Java, Git, and Allure commandline. Override `ALLURE_HISTORY_IMAGE` if you want to use a project-owned image; in that case, include `generate_index.py` and `prune_reports.py` in the image at `GAH_TOOLS_DIR`.
+For another project, make sure previous-stage test jobs upload `allure-results` as artifacts. The default `ALLURE_HISTORY_IMAGE` contains the report helper scripts, Java, Git, and Allure commandline. Override `ALLURE_HISTORY_IMAGE` if you want to use a project-owned image; in that case, include `generate_index.py` and `prune_reports.py` in the image at `ALLURE_HISTORY_TOOLS_DIR`.
 
 The template also includes a web-only `build_python` job. It runs only when the project has a `Dockerfile`, and publishes `$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG`.
 
@@ -168,9 +168,9 @@ Required:
 Optional:
 
 - `ALLURE_HISTORY_IMAGE`: CI image used by the report job. Defaults to this repository's published image.
-- `GAH_INDEX_DESKTOP_BATCH_SIZE`: number of index rows shown before `Show more...` on desktop. Defaults to `25`.
-- `GAH_INDEX_MOBILE_BATCH_SIZE`: number of index rows shown before `Show more...` on mobile. Defaults to `12`.
-- `GAH_TOOLS_DIR`: directory inside the CI image containing `generate_index.py` and `prune_reports.py`. Defaults to `/opt/gitlab-allure-history`.
+- `ALLURE_HISTORY_INDEX_DESKTOP_BATCH_SIZE`: number of index rows shown before `Show more...` on desktop. Defaults to `25`.
+- `ALLURE_HISTORY_INDEX_MOBILE_BATCH_SIZE`: number of index rows shown before `Show more...` on mobile. Defaults to `12`.
+- `ALLURE_HISTORY_TOOLS_DIR`: directory inside the CI image containing `generate_index.py` and `prune_reports.py`. Defaults to `/opt/gitlab-allure-history`.
 - `REPORTS_TO_KEEP`: number of report snapshots kept per environment and branch. Defaults to `30`.
 
 Set either index batch size to `0` to show all rows for that viewport without progressive reveal controls.

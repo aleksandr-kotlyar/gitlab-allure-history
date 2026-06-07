@@ -1,7 +1,7 @@
 variables:
   ENV: dev
   ALLURE_HISTORY_IMAGE: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v6
-  GAH_TOOLS_DIR: /opt/gitlab-allure-history
+  ALLURE_HISTORY_TOOLS_DIR: /opt/gitlab-allure-history
   PAGES_BRANCH: gl-pages
   REPORTS_TO_KEEP: "30"
 
@@ -88,21 +88,21 @@ allure:
       fi
 
     - |
-      if [ -f "${GAH_TOOLS_DIR}/prune_reports.py" ]; then
-        PRUNE_REPORTS_PY="${GAH_TOOLS_DIR}/prune_reports.py"
+      if [ -f "${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py" ]; then
+        PRUNE_REPORTS_PY="${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py"
       elif [ -f prune_reports.py ]; then
         PRUNE_REPORTS_PY="prune_reports.py"
       else
-        echo "Missing prune_reports.py. Provide it in ${GAH_TOOLS_DIR} through the CI image or keep it in the repository root."
+        echo "Missing prune_reports.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
         exit 1
       fi
 
-      if [ -f "${GAH_TOOLS_DIR}/generate_index.py" ]; then
-        GENERATE_INDEX_PY="${GAH_TOOLS_DIR}/generate_index.py"
+      if [ -f "${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py" ]; then
+        GENERATE_INDEX_PY="${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py"
       elif [ -f generate_index.py ]; then
         GENERATE_INDEX_PY="generate_index.py"
       else
-        echo "Missing generate_index.py. Provide it in ${GAH_TOOLS_DIR} through the CI image or keep it in the repository root."
+        echo "Missing generate_index.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
         exit 1
       fi
 
