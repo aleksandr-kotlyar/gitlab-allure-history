@@ -1,0 +1,1 @@
+Reports path does not exist: /tmp/pytest-of-root/pytest-0/test_prune_reports_ignores_mis0/missing
