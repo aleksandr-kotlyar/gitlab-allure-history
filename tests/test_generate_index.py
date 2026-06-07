@@ -1,3 +1,5 @@
+import json
+
 from generate_index import (
     DESKTOP_LIST_BATCH_SIZE,
     DESKTOP_LIST_BATCH_SIZE_ENV,
@@ -6,6 +8,15 @@ from generate_index import (
     index_folder,
     index_tree,
 )
+
+
+def write_summary(report_dir, statistic, duration):
+    widgets_dir = report_dir / "widgets"
+    widgets_dir.mkdir()
+    (widgets_dir / "summary.json").write_text(
+        json.dumps({"statistic": statistic, "time": {"duration": duration}}),
+        encoding="utf-8",
+    )
 
 
 def test_index_folder_creates_empty_index(tmp_path):
@@ -161,6 +172,127 @@ def test_index_marks_latest_report_and_moves_badge_on_regeneration(tmp_path):
         'href="job_102/">job_102/</a> <span class="latest-badge">latest</span>'
         not in html
     )
+
+
+def test_report_index_shows_allure_summary_columns(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    report_dir = branch_dir / "job_101"
+    report_dir.mkdir(parents=True)
+    write_summary(
+        report_dir,
+        {
+            "failed": 1,
+            "broken": 0,
+            "skipped": 1,
+            "passed": 2,
+            "unknown": 0,
+            "total": 4,
+        },
+        65_000,
+    )
+
+    index_path = index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert "<th>Status</th>" in html
+    assert "<th>Counts</th>" in html
+    assert "<th>Duration</th>" in html
+    assert "--allure-passed: #97cc64;" in html
+    assert "--allure-failed: #fd5a3e;" in html
+    assert "--allure-broken: #ffd050;" in html
+    assert "--allure-skipped: #aaaaaa;" in html
+    assert "--allure-unknown: #d35ebe;" in html
+    assert '<span class="status-badge">failed</span>' in html
+    assert (
+        'class="count-badge" data-status="failed" title="1 failed" '
+        'aria-label="1 failed">1</span>'
+    ) in html
+    assert (
+        'class="count-badge" data-status="skipped" title="1 skipped" '
+        'aria-label="1 skipped">1</span>'
+    ) in html
+    assert (
+        'class="count-badge" data-status="passed" title="2 passed" '
+        'aria-label="2 passed">2</span>'
+    ) in html
+    assert 'title="0 broken"' not in html
+    assert 'aria-label="0 broken"' not in html
+    assert 'title="0 unknown"' not in html
+    assert 'aria-label="0 unknown"' not in html
+    assert "4 total" not in html
+    assert 'data-label="Duration">1m 05s</td>' in html
+
+
+def test_report_index_falls_back_when_allure_summary_is_missing_or_invalid(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    missing_summary = branch_dir / "job_101"
+    invalid_summary = branch_dir / "job_102"
+    missing_summary.mkdir(parents=True)
+    (invalid_summary / "widgets").mkdir(parents=True)
+    (invalid_summary / "widgets" / "summary.json").write_text(
+        "not json",
+        encoding="utf-8",
+    )
+
+    index_path = index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert html.count('<span class="status-badge">n/a</span>') == 2
+    assert html.count('data-label="Counts">n/a</td>') == 2
+    assert html.count('data-label="Duration">n/a</td>') == 2
+
+
+def test_report_index_omits_zero_count_badges(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    report_dir = branch_dir / "job_101"
+    report_dir.mkdir(parents=True)
+    write_summary(
+        report_dir,
+        {
+            "failed": 0,
+            "broken": 0,
+            "skipped": 0,
+            "passed": 1,
+            "unknown": 0,
+            "total": 1,
+        },
+        1_000,
+    )
+
+    index_path = index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert html.count('class="count-badge"') == 1
+    assert 'data-status="passed" title="1 passed" aria-label="1 passed">1</span>' in html
+    assert 'title="0 failed"' not in html
+    assert 'title="0 broken"' not in html
+    assert 'title="0 skipped"' not in html
+    assert 'title="0 unknown"' not in html
+
+
+def test_navigation_indexes_exclude_report_summary_columns(tmp_path):
+    public_dir = tmp_path / "public"
+    env_dir = public_dir / "dev"
+    branch_dir = env_dir / "feature-login"
+    report_dir = branch_dir / "job_101"
+    report_dir.mkdir(parents=True)
+    write_summary(
+        report_dir,
+        {"failed": 0, "broken": 0, "skipped": 0, "passed": 1, "unknown": 0, "total": 1},
+        1_000,
+    )
+
+    root_index_path = index_folder(public_dir)
+    env_index_path = index_folder(env_dir)
+
+    root_html = root_index_path.read_text(encoding="utf-8")
+    env_html = env_index_path.read_text(encoding="utf-8")
+    assert "<th>Status</th>" not in root_html
+    assert "<th>Counts</th>" not in root_html
+    assert "<th>Duration</th>" not in root_html
+    assert "<th>Status</th>" not in env_html
+    assert "<th>Counts</th>" not in env_html
+    assert "<th>Duration</th>" not in env_html
 
 
 def test_env_index_links_each_branch_to_latest_report(tmp_path):
