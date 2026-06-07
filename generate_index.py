@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import os
 import sys
+from dataclasses import dataclass
 from datetime import datetime
 from html import escape
 from pathlib import Path
@@ -11,6 +13,7 @@ from urllib.parse import quote
 INDEX_FILENAME = "index.html"
 JOB_PREFIX = "job_"
 MODIFIED_AT_FILENAME = ".modified_at"
+SUMMARY_FILENAME = "widgets/summary.json"
 HISTORY_DIRNAME = "history"
 HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
 
@@ -35,6 +38,11 @@ STYLE = """
             --latest-bg: #d9f1ff;
             --latest-border: #a6ddff;
             --latest-text: #075985;
+            --allure-passed: #97cc64;
+            --allure-failed: #fd5a3e;
+            --allure-broken: #ffd050;
+            --allure-skipped: #aaaaaa;
+            --allure-unknown: #d35ebe;
         }
 
         :root[data-theme="dark"] {
@@ -233,6 +241,71 @@ STYLE = """
             white-space: nowrap;
         }
 
+        .summary-cell {
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .summary-counts-cell {
+            white-space: normal;
+        }
+
+        .summary-counts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .count-badge {
+            display: inline-flex;
+            min-width: 28px;
+            min-height: 22px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 1px 9px 2px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .count-badge[data-status="passed"] {
+            background: var(--allure-passed);
+        }
+
+        .count-badge[data-status="failed"] {
+            background: var(--allure-failed);
+        }
+
+        .count-badge[data-status="broken"] {
+            background: var(--allure-broken);
+            color: #24292f;
+        }
+
+        .count-badge[data-status="skipped"] {
+            background: var(--allure-skipped);
+        }
+
+        .count-badge[data-status="unknown"] {
+            background: var(--allure-unknown);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            min-height: 22px;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 1px 8px 2px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 650;
+            line-height: 1.3;
+            text-transform: lowercase;
+        }
+
         a {
             color: var(--link);
             text-decoration: none;
@@ -320,6 +393,21 @@ STYLE = """
             .modified-cell {
                 padding-top: 0;
                 text-align: left;
+            }
+
+            td[data-label] {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            td[data-label]::before {
+                content: attr(data-label);
+                flex: 0 0 auto;
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
             }
 
             .list-controls {
@@ -450,6 +538,19 @@ LIST_REVEAL_SCRIPT_TEMPLATE = """
 """
 
 
+@dataclass(frozen=True)
+class SummaryCount:
+    status: str
+    count: int
+
+
+@dataclass(frozen=True)
+class ReportSummary:
+    status: str
+    counts: tuple[SummaryCount, ...]
+    duration: str
+
+
 def configured_list_batch_size(env_name: str, default: int) -> int:
     raw_value = os.environ.get(env_name)
 
@@ -524,6 +625,118 @@ def format_entry_modified_at(entry: Path) -> str:
         return modified_at
 
     return format_datetime(datetime.fromtimestamp(entry.stat().st_mtime))
+
+
+def numeric_value(value: object) -> float | None:
+    if isinstance(value, bool):
+        return None
+
+    if isinstance(value, (int, float)):
+        return float(value)
+
+    if isinstance(value, str):
+        try:
+            return float(value.strip())
+        except ValueError:
+            return None
+
+    return None
+
+
+def integer_value(value: object) -> int:
+    parsed_value = numeric_value(value)
+
+    if parsed_value is None or parsed_value < 0:
+        return 0
+
+    return int(parsed_value)
+
+
+def format_duration(duration_ms: object) -> str:
+    parsed_duration = numeric_value(duration_ms)
+
+    if parsed_duration is None or parsed_duration < 0:
+        return "n/a"
+
+    total_seconds = int(round(parsed_duration / 1000))
+
+    if total_seconds < 1:
+        return f"{int(parsed_duration)} ms"
+
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    if hours:
+        return f"{hours}h {minutes:02d}m {seconds:02d}s"
+
+    if minutes:
+        return f"{minutes}m {seconds:02d}s"
+
+    return f"{seconds}s"
+
+
+def summary_counts(
+    statistic: dict[str, object],
+) -> tuple[int, tuple[SummaryCount, ...]]:
+    status_names = ("failed", "broken", "skipped", "passed", "unknown")
+    counts = {name: integer_value(statistic.get(name)) for name in status_names}
+    total = integer_value(statistic.get("total"))
+
+    if total == 0:
+        total = sum(counts.values())
+
+    nonzero_counts = tuple(
+        SummaryCount(status=name, count=count)
+        for name, count in counts.items()
+        if count > 0
+    )
+
+    return total, nonzero_counts
+
+
+def summary_status(statistic: dict[str, object], total: int) -> str:
+    if total == 0:
+        return "no tests"
+
+    for status in ("failed", "broken", "unknown"):
+        if integer_value(statistic.get(status)) > 0:
+            return status
+
+    if integer_value(statistic.get("passed")) == total:
+        return "passed"
+
+    if integer_value(statistic.get("skipped")) == total:
+        return "skipped"
+
+    return "mixed"
+
+
+def read_report_summary(report: Path) -> ReportSummary | None:
+    summary_path = report / SUMMARY_FILENAME
+
+    if not summary_path.is_file():
+        return None
+
+    try:
+        raw_summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+    if not isinstance(raw_summary, dict):
+        return None
+
+    raw_statistic = raw_summary.get("statistic")
+    statistic = raw_statistic if isinstance(raw_statistic, dict) else {}
+    total, count_parts = summary_counts(statistic)
+
+    raw_time = raw_summary.get("time")
+    time = raw_time if isinstance(raw_time, dict) else {}
+
+    return ReportSummary(
+        status=summary_status(statistic, total),
+        counts=count_parts,
+        duration=format_duration(time.get("duration")),
+    )
 
 
 def entry_sort_key(entry: Path) -> tuple[object, ...]:
@@ -732,22 +945,86 @@ def latest_report_meta_html(folder: Path, entry: Path) -> str:
     )
 
 
-def entry_row(folder: Path, entry: Path, latest_report: Path | None) -> list[str]:
+def include_report_summary(entries: list[Path]) -> bool:
+    return any(is_report_folder(entry) for entry in entries)
+
+
+def summary_counts_html(counts: tuple[SummaryCount, ...]) -> str:
+    if not counts:
+        return ""
+
+    badges = []
+
+    for item in counts:
+        label = f"{item.count} {item.status}"
+        badges.append(
+            (
+                '<span class="count-badge" data-status="{status}" '
+                'title="{label}" aria-label="{label}">{count}</span>'
+            ).format(
+                status=escape(item.status, quote=True),
+                label=escape(label, quote=True),
+                count=escape(str(item.count)),
+            )
+        )
+
+    return '<div class="summary-counts">' + "".join(badges) + "</div>"
+
+
+def report_summary_cells(entry: Path) -> list[str]:
+    summary = read_report_summary(entry) if is_report_folder(entry) else None
+
+    if summary is None:
+        status = "n/a"
+        counts = "n/a"
+        duration = "n/a"
+    else:
+        status = summary.status
+        counts = summary_counts_html(summary.counts)
+        duration = summary.duration
+
+    return [
+        (
+            '                <td class="summary-cell" data-label="Status">'
+            '<span class="status-badge">{status}</span></td>'
+        ).format(status=escape(status)),
+        (
+            '                <td class="summary-cell summary-counts-cell" '
+            'data-label="Counts">{counts}</td>'
+        ).format(counts=counts if summary is not None else escape(counts)),
+        (
+            '                <td class="summary-cell" data-label="Duration">'
+            "{duration}</td>"
+        ).format(duration=escape(duration)),
+    ]
+
+
+def entry_row(
+    folder: Path,
+    entry: Path,
+    latest_report: Path | None,
+    show_report_summary: bool,
+) -> list[str]:
     title = entry_title_html(entry, latest_report == entry)
     meta = latest_report_meta_html(folder, entry)
+    summary_cells = report_summary_cells(entry) if show_report_summary else []
 
     return [
         '            <tr data-list-row>',
         f'                <td class="name-cell">{title}{meta}</td>',
-        f'                <td class="modified-cell">{escape(format_entry_modified_at(entry))}</td>',
+        *summary_cells,
+        (
+            '                <td class="modified-cell" data-label="Modified">'
+            f"{escape(format_entry_modified_at(entry))}</td>"
+        ),
         "            </tr>",
     ]
 
 
-def empty_row() -> list[str]:
+def empty_row(column_count: int) -> list[str]:
     return [
         "            <tr>",
-        '                <td class="name-cell" colspan="2">No reports yet.</td>',
+        f'                <td class="name-cell" colspan="{column_count}">No reports yet.</td>',
         "            </tr>",
     ]
 
@@ -771,13 +1048,23 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
     title = display_path(folder)
     desktop_batch_size, mobile_batch_size = configured_list_batch_sizes()
     latest_report = latest_report_for(folder)
+    show_report_summary = include_report_summary(entries)
+    column_count = 5 if show_report_summary else 2
+    summary_headers = (
+        """
+                    <th>Status</th>
+                    <th>Counts</th>
+                    <th>Duration</th>""".rstrip()
+        if show_report_summary
+        else ""
+    )
     rows: list[str] = []
 
     if entries:
         for entry in entries:
-            rows.extend(entry_row(folder, entry, latest_report))
+            rows.extend(entry_row(folder, entry, latest_report, show_report_summary))
     else:
-        rows.extend(empty_row())
+        rows.extend(empty_row(column_count))
 
     body = "\n".join(rows)
 
@@ -804,6 +1091,7 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
             <thead>
                 <tr>
                     <th>Name</th>
+{summary_headers}
                     <th>Modified</th>
                 </tr>
             </thead>
