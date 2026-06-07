@@ -1,6 +1,6 @@
 variables:
   ENV: dev
-  ALLURE_HISTORY_IMAGE: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v6
+  ALLURE_HISTORY_IMAGE: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:2026.2.1
   ALLURE_HISTORY_TOOLS_DIR: /opt/gitlab-allure-history
   PAGES_BRANCH: gl-pages
   REPORTS_TO_KEEP: "30"
@@ -22,7 +22,7 @@ build_python:
   services:
     - docker:29.3.1-dind
   variables:
-    IMAGE_TAG: $CI_COMMIT_REF_SLUG
+    ALLURE_HISTORY_IMAGE: $CI_COMMIT_REF_SLUG
   script:
     - set -euo pipefail
     - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
