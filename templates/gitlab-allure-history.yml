@@ -88,19 +88,19 @@ allure:
       fi
 
     - |
-      if [ -f "${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py" ]; then
-        PRUNE_REPORTS_PY="${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py"
-      elif [ -f prune_reports.py ]; then
+      if [ -f prune_reports.py ]; then
         PRUNE_REPORTS_PY="prune_reports.py"
+      elif [ -f "${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py" ]; then
+        PRUNE_REPORTS_PY="${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py"
       else
         echo "Missing prune_reports.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
         exit 1
       fi
 
-      if [ -f "${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py" ]; then
-        GENERATE_INDEX_PY="${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py"
-      elif [ -f generate_index.py ]; then
+      if [ -f generate_index.py ]; then
         GENERATE_INDEX_PY="generate_index.py"
+      elif [ -f "${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py" ]; then
+        GENERATE_INDEX_PY="${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py"
       else
         echo "Missing generate_index.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
         exit 1

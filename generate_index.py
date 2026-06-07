@@ -32,6 +32,9 @@ STYLE = """
             --border: #d0d7de;
             --row: #f6f8fa;
             --link: #0969da;
+            --latest-bg: #d9f1ff;
+            --latest-border: #a6ddff;
+            --latest-text: #075985;
         }
 
         :root[data-theme="dark"] {
@@ -43,6 +46,9 @@ STYLE = """
             --border: #30363d;
             --row: #21262d;
             --link: #58a6ff;
+            --latest-bg: #102a3a;
+            --latest-border: #1f5f7a;
+            --latest-text: #8bd7ff;
         }
 
         :root[data-theme="light"] {
@@ -162,6 +168,62 @@ STYLE = """
 
         .name-cell {
             width: 70%;
+        }
+
+        .entry-title {
+            display: flex;
+            min-width: 0;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .entry-link {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .latest-badge {
+            display: inline-flex;
+            min-height: 20px;
+            flex: 0 0 auto;
+            align-items: center;
+            border: 1px solid var(--latest-border);
+            border-radius: 999px;
+            padding: 1px 8px 2px;
+            background: var(--latest-bg);
+            color: var(--latest-text);
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.3;
+            text-transform: lowercase;
+        }
+
+        .entry-meta {
+            display: flex;
+            min-width: 0;
+            align-items: baseline;
+            gap: 5px;
+            margin-top: 1px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-label {
+            flex: 0 0 auto;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .entry-meta-link {
+            min-width: 0;
+            color: var(--muted);
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-link:hover {
+            color: var(--link);
         }
 
         .modified-cell {
@@ -492,6 +554,37 @@ def iter_entries(folder: Path) -> list[Path]:
     )
 
 
+def is_report_folder(folder: Path) -> bool:
+    return folder.is_dir() and job_id(folder) is not None
+
+
+def iter_report_folders(folder: Path) -> list[Path]:
+    reports: list[Path] = []
+
+    if not folder.is_dir():
+        return reports
+
+    if is_report_folder(folder):
+        return [folder]
+
+    for entry in folder.iterdir():
+        if entry.name in HIDDEN_INDEX_ENTRIES or not entry.is_dir():
+            continue
+
+        reports.extend(iter_report_folders(entry))
+
+    return reports
+
+
+def latest_report_for(folder: Path) -> Path | None:
+    reports = iter_report_folders(folder)
+
+    if not reports:
+        return None
+
+    return sorted(reports, key=entry_sort_key)[0]
+
+
 def is_indexable_folder(folder: Path) -> bool:
     return folder.is_dir() and folder.name not in HIDDEN_INDEX_ENTRIES and job_id(folder) is None
 
@@ -522,6 +615,32 @@ def link_for(entry: Path) -> str:
 def label_for(entry: Path) -> str:
     suffix = "/" if entry.is_dir() else ""
     return entry.name + suffix
+
+
+def link_for_path(path: Path) -> str:
+    return "/".join(quote(part, safe="") for part in path.parts) + "/"
+
+
+def latest_report_link(folder: Path, report: Path) -> str:
+    return link_for_path(report.relative_to(folder))
+
+
+def latest_report_label(report: Path) -> str:
+    suffix_parts = public_suffix_parts(report)
+
+    if suffix_parts is not None:
+        return "/".join([*suffix_parts, ""])
+
+    return report.as_posix() + "/"
+
+
+def latest_report_context_label(entry: Path, report: Path) -> str:
+    try:
+        suffix = report.relative_to(entry)
+    except ValueError:
+        return latest_report_label(report)
+
+    return suffix.as_posix() + "/"
 
 
 def display_path(folder: Path) -> str:
@@ -577,13 +696,49 @@ def breadcrumb_html(folder: Path) -> str:
     return "".join(html_parts)
 
 
-def entry_row(entry: Path) -> list[str]:
+def entry_title_html(entry: Path, is_latest: bool) -> str:
+    badge = ' <span class="latest-badge">latest</span>' if is_latest else ""
+
+    return (
+        '<div class="entry-title">'
+        '<a class="entry-link" href="{href}">{label}</a>'
+        "{badge}"
+        "</div>"
+    ).format(
+        href=escape(link_for(entry), quote=True),
+        label=escape(label_for(entry)),
+        badge=badge,
+    )
+
+
+def latest_report_meta_html(folder: Path, entry: Path) -> str:
+    if not entry.is_dir() or is_report_folder(entry):
+        return ""
+
+    latest_report = latest_report_for(entry)
+
+    if latest_report is None:
+        return ""
+
+    return (
+        '<div class="entry-meta">'
+        '<span class="entry-meta-label">latest:</span>'
+        '<a class="entry-meta-link" href="{href}" title="{title}">{label}</a>'
+        "</div>"
+    ).format(
+        href=escape(latest_report_link(folder, latest_report), quote=True),
+        title=escape(latest_report_label(latest_report), quote=True),
+        label=escape(latest_report_context_label(entry, latest_report)),
+    )
+
+
+def entry_row(folder: Path, entry: Path, latest_report: Path | None) -> list[str]:
+    title = entry_title_html(entry, latest_report == entry)
+    meta = latest_report_meta_html(folder, entry)
+
     return [
         '            <tr data-list-row>',
-        '                <td class="name-cell"><a href="{href}">{label}</a></td>'.format(
-            href=escape(link_for(entry), quote=True),
-            label=escape(label_for(entry)),
-        ),
+        f'                <td class="name-cell">{title}{meta}</td>',
         f'                <td class="modified-cell">{escape(format_entry_modified_at(entry))}</td>',
         "            </tr>",
     ]
@@ -615,11 +770,12 @@ def list_controls_html(
 def build_index_html(folder: Path, entries: list[Path]) -> str:
     title = display_path(folder)
     desktop_batch_size, mobile_batch_size = configured_list_batch_sizes()
+    latest_report = latest_report_for(folder)
     rows: list[str] = []
 
     if entries:
         for entry in entries:
-            rows.extend(entry_row(entry))
+            rows.extend(entry_row(folder, entry, latest_report))
     else:
         rows.extend(empty_row())
 

@@ -128,6 +128,78 @@ def test_index_handles_branch_report_folder(tmp_path):
     assert 'href="job_101/"' in html
 
 
+def test_index_marks_latest_report_and_moves_badge_on_regeneration(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    job_101 = branch_dir / "job_101"
+    job_102 = branch_dir / "job_102"
+    job_101.mkdir(parents=True)
+    job_102.mkdir()
+    (job_101 / ".modified_at").write_text("2026-06-05T22:15:00Z\n", encoding="utf-8")
+    (job_102 / ".modified_at").write_text("2026-06-06T08:00:00Z\n", encoding="utf-8")
+
+    index_path = index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert html.count('class="latest-badge">latest</span>') == 1
+    assert (
+        'href="job_102/">job_102/</a> <span class="latest-badge">latest</span>'
+        in html
+    )
+
+    job_103 = branch_dir / "job_103"
+    job_103.mkdir()
+    (job_103 / ".modified_at").write_text("2026-06-07T09:30:00Z\n", encoding="utf-8")
+    index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert html.count('class="latest-badge">latest</span>') == 1
+    assert (
+        'href="job_103/">job_103/</a> <span class="latest-badge">latest</span>'
+        in html
+    )
+    assert (
+        'href="job_102/">job_102/</a> <span class="latest-badge">latest</span>'
+        not in html
+    )
+
+
+def test_env_index_links_each_branch_to_latest_report(tmp_path):
+    env_dir = tmp_path / "public" / "dev"
+    branch_dir = env_dir / "feature-login"
+    report_dir = branch_dir / "job_101"
+    report_dir.mkdir(parents=True)
+
+    index_path = index_folder(env_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert (
+        '<span class="entry-meta-label">latest:</span>'
+        '<a class="entry-meta-link" href="feature-login/job_101/" '
+        'title="dev/feature-login/job_101/">job_101/</a>'
+    ) in html
+
+
+def test_root_index_links_each_env_to_latest_report_inside_env(tmp_path):
+    public_dir = tmp_path / "public"
+    old_report = public_dir / "dev" / "master" / "job_101"
+    latest_report = public_dir / "dev" / "feature-login" / "job_102"
+    old_report.mkdir(parents=True)
+    latest_report.mkdir(parents=True)
+    (old_report / ".modified_at").write_text("2026-06-05T22:15:00Z\n", encoding="utf-8")
+    (latest_report / ".modified_at").write_text(
+        "2026-06-06T08:00:00Z\n", encoding="utf-8"
+    )
+
+    index_path = index_folder(public_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert (
+        '<span class="entry-meta-label">latest:</span>'
+        '<a class="entry-meta-link" href="dev/feature-login/job_102/" '
+        'title="dev/feature-login/job_102/">feature-login/job_102/</a>'
+    ) in html
+
+
 def test_index_adds_show_more_controls_for_populated_lists(tmp_path):
     public_dir = tmp_path / "public"
     public_dir.mkdir()
