@@ -36,7 +36,7 @@ No report server, database, web framework, or external storage service is requir
 - Uses GitLab Pages as simple static hosting.
 - Keeps blocking quality gates separate from non-blocking demo tests.
 - Provides a small HTML index so report history is navigable.
-- Stays readable enough to copy and adapt.
+- Stays readable enough to include, copy, and adapt.
 
 ## How It Works
 
@@ -87,11 +87,28 @@ The open demo pipeline uses `ENV` and `CI_COMMIT_REF_SLUG` for report folders, s
 1. Create a GitLab project or mirror this repository to GitLab.
 2. Create a storage branch named `gl-pages`.
 3. Enable GitLab Pages and make sure GitLab Runner is available for the project.
-4. Add a CI/CD variable named `GIT_PUSH_TOKEN`.
-5. Run a pipeline on a normal branch.
-6. Open the GitLab Pages URL and navigate through the generated index.
+4. Add the reusable template to your `.gitlab-ci.yml`.
+5. Add a CI/CD variable named `GIT_PUSH_TOKEN`.
+6. Run a pipeline on a normal branch.
+7. Open the GitLab Pages URL and navigate through the generated index.
 
-For a copied project, also update the CI image if you do not want to use the example image from this repository. The Dockerfile shows the required runtime: Python, pytest dependencies, Java, Git, and Allure commandline.
+This repository dogfoods the same template with a local include:
+
+```yaml
+include:
+  - local: templates/gitlab-allure-history.yml
+```
+
+Another project can include the template from this repository:
+
+```yaml
+include:
+  - project: aleksandr-kotlyar/gitlab-allure-history
+    ref: master
+    file: /templates/gitlab-allure-history.yml
+```
+
+For another project, make sure the repository or CI image provides `generate_index.py` and `prune_reports.py`. Also override the CI image if you do not want to use the example image from this repository. The Dockerfile shows the required runtime: Python, pytest dependencies, Java, Git, and Allure commandline.
 
 ## Required GitLab Setup
 
@@ -186,7 +203,8 @@ python3 generate_index.py public
 
 ## Key Files
 
-- `.gitlab-ci.yml`: GitLab pipeline for tests, Allure report generation, history reuse, and Pages publishing.
+- `.gitlab-ci.yml`: dogfooding GitLab pipeline that includes this repository's reusable template.
+- `templates/gitlab-allure-history.yml`: reusable GitLab CI template for tests, Allure report generation, history reuse, and Pages publishing.
 - `Dockerfile`: example runtime image with Python, Java, Git, and Allure commandline.
 - `generate_index.py`: small static HTML index generator for the `public/` report tree.
 - `pytest.ini`: pytest markers and Allure result configuration.
@@ -204,7 +222,7 @@ python3 generate_index.py public
 - The CI serializes the Pages publishing job with `resource_group`, but manual pushes to `gl-pages` can still race with CI.
 - `CI_COMMIT_REF_SLUG` keeps report paths URL-safe, but different branch names can theoretically normalize to the same slug.
 - The CI keeps the latest 30 report snapshots per branch by default.
-- This template is intentionally not a reusable GitLab component, report portal, or framework.
+- This template is intentionally not a packaged GitLab CI/CD component, report portal, or framework.
 
 ## Troubleshooting
 
