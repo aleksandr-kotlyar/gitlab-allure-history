@@ -66,18 +66,21 @@ Reports are persisted in the `gl-pages` branch:
 ```text
 public/
   index.html
-  <branch-slug>/
+  <env>/
     index.html
-    history/
-    job_<test-job-id>/
+    <branch-slug>/
+      index.html
+      history/
+      job_<test-job-id>/
 ```
 
-- `public/<branch-slug>/job_<test-job-id>/` is one report snapshot.
-- `public/<branch-slug>/history/` is copied into the next run to preserve Allure trends.
-- `public/index.html` lists branch folders.
-- `public/<branch-slug>/index.html` lists reports for that branch.
+- `public/<env>/<branch-slug>/job_<test-job-id>/` is one report snapshot.
+- `public/<env>/<branch-slug>/history/` is copied into the next run to preserve Allure trends.
+- `public/index.html` lists environment folders.
+- `public/<env>/index.html` lists branch folders for that environment.
+- `public/<env>/<branch-slug>/index.html` lists reports for that branch.
 
-The CI uses `CI_COMMIT_REF_SLUG` for folder names. This keeps paths safe for GitLab Pages, but it also means branch names are normalized by GitLab before they become report paths.
+The open demo pipeline uses `ENV` and `CI_COMMIT_REF_SLUG` for report folders, so the demo branch publishes to paths such as `public/dev/open-demo/`.
 
 ## Quick Start
 
@@ -139,6 +142,7 @@ Set either index batch size to `0` to show all rows for that viewport without pr
 
 Provided by GitLab CI:
 
+- `ENV`: used as the report environment folder. Defaults to `dev` in the open demo pipeline.
 - `CI_COMMIT_REF_SLUG`: used as the branch report folder.
 - `CI_JOB_ID`: used for the report snapshot folder.
 - `CI_PAGES_URL`: used in Allure executor metadata.
@@ -198,7 +202,7 @@ python3 generate_index.py public
 
 - Report history depends on a writable `gl-pages` storage branch.
 - The CI serializes the Pages publishing job with `resource_group`, but manual pushes to `gl-pages` can still race with CI.
-- `CI_COMMIT_REF_SLUG` keeps report paths safe, but different branch names can theoretically normalize to the same slug.
+- `CI_COMMIT_REF_SLUG` keeps report paths URL-safe, but different branch names can theoretically normalize to the same slug.
 - The CI keeps the latest 30 report snapshots per branch by default.
 - This template is intentionally not a reusable GitLab component, report portal, or framework.
 
@@ -220,7 +224,7 @@ The first run for a branch has no previous Allure history. The report still publ
 
 ### Pages Index Shows A Slug Instead Of The Original Branch Name
 
-This is expected. The template stores reports by `CI_COMMIT_REF_SLUG` to avoid unsafe paths in static hosting.
+This is expected. The template stores reports by `CI_COMMIT_REF_SLUG` to keep static paths URL-safe.
 
 ### Demo Tests Fail
 
@@ -230,7 +234,7 @@ This is expected. `test_demo` is marked `allow_failure: true` in GitLab CI and e
 
 Useful extensions for real projects:
 
-- keep only the last N reports per branch;
+- tune how many report snapshots are kept per branch;
 - add links from merge requests to the latest report;
 - publish only from selected branches;
 - add screenshots or videos as Allure attachments;
