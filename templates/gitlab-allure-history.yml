@@ -113,7 +113,7 @@ allure:
       import json
       import os
 
-      report_url = "{}/{}/{}/".format(
+      report_url = "{}/{}/{}/{}/".format(
           os.environ["CI_PAGES_URL"].rstrip("/"),
           os.environ["REPORT_ENV"],
           os.environ["REPORT_BRANCH"],
