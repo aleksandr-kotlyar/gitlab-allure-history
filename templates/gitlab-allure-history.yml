@@ -1,20 +1,47 @@
+spec:
+  component: [version]
+  inputs:
+    environment:
+      default: dev
+      description: Report environment folder under public/.
+    allure-history-image:
+      default: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history
+      description: Runtime image repository. The component version is appended as the image tag.
+    allure-history-tools-dir:
+      default: /opt/gitlab-allure-history
+      description: Directory in the runtime image containing generate_index.py and prune_reports.py.
+    pages-branch:
+      default: gl-pages
+      description: Branch used to store generated Pages content and Allure history.
+    reports-to-keep:
+      default: "30"
+      description: Number of report snapshots kept per environment and branch.
+    build-runtime-image:
+      default: "false"
+      options:
+        - "true"
+        - "false"
+      description: Build and push this project's tagged runtime image before tests in tag pipelines.
+---
+
 variables:
-  ENV: dev
-  ALLURE_HISTORY_IMAGE: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:2026.2.1
-  ALLURE_HISTORY_TOOLS_DIR: /opt/gitlab-allure-history
-  PAGES_BRANCH: gl-pages
-  REPORTS_TO_KEEP: "30"
+  ENV: $[[ inputs.environment ]]
+  ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ component.version ]]
+  ALLURE_HISTORY_TOOLS_DIR: $[[ inputs.allure-history-tools-dir ]]
+  PAGES_BRANCH: $[[ inputs.pages-branch ]]
+  REPORTS_TO_KEEP: $[[ inputs.reports-to-keep ]]
 
 stages:
   - build
   - test
   - report
+  - release
 
 build_python:
   image: docker:29.3.1
   stage: build
   rules:
-    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: '"$[[ inputs.build-runtime-image ]]" == "true" && $CI_COMMIT_TAG'
       exists:
         - Dockerfile
       when: always
@@ -22,7 +49,7 @@ build_python:
   services:
     - docker:29.3.1-dind
   variables:
-    IMAGE_TAG: $CI_COMMIT_REF_SLUG
+    IMAGE_TAG: $CI_COMMIT_TAG
   script:
     - set -euo pipefail
     - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
