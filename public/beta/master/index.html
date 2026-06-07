@@ -32,6 +32,9 @@
             --border: #d0d7de;
             --row: #f6f8fa;
             --link: #0969da;
+            --latest-bg: #d9f1ff;
+            --latest-border: #a6ddff;
+            --latest-text: #075985;
         }
 
         :root[data-theme="dark"] {
@@ -43,6 +46,9 @@
             --border: #30363d;
             --row: #21262d;
             --link: #58a6ff;
+            --latest-bg: #102a3a;
+            --latest-border: #1f5f7a;
+            --latest-text: #8bd7ff;
         }
 
         :root[data-theme="light"] {
@@ -162,6 +168,46 @@
 
         .name-cell {
             width: 70%;
+        }
+
+        .entry-title {
+            display: flex;
+            min-width: 0;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .entry-link {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .latest-badge {
+            display: inline-flex;
+            min-height: 20px;
+            flex: 0 0 auto;
+            align-items: center;
+            border: 1px solid var(--latest-border);
+            border-radius: 999px;
+            padding: 1px 8px 2px;
+            background: var(--latest-bg);
+            color: var(--latest-text);
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.3;
+            text-transform: lowercase;
+        }
+
+        .entry-meta {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-label {
+            font-weight: 600;
         }
 
         .modified-cell {
@@ -298,7 +344,7 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_14731183364/">job_14731183364/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14731183364/">job_14731183364/</a> <span class="latest-badge">latest</span></div></td>
                 <td class="modified-cell">07-Jun-2026 07:12</td>
             </tr>
             </tbody>
