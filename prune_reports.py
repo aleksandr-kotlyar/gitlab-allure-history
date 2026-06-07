@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 
-DEFAULT_REPORTS_TO_KEEP = 20
+DEFAULT_REPORTS_TO_KEEP = 30
 
 
 def job_id(report_dir):

@@ -199,7 +199,7 @@ python3 generate_index.py public
 - Report history depends on a writable `gl-pages` storage branch.
 - The CI serializes the Pages publishing job with `resource_group`, but manual pushes to `gl-pages` can still race with CI.
 - `CI_COMMIT_REF_SLUG` keeps report paths safe, but different branch names can theoretically normalize to the same slug.
-- Old report snapshots are not deleted automatically. Add retention logic only if your project needs it.
+- The CI keeps the latest 30 report snapshots per branch by default.
 - This template is intentionally not a reusable GitLab component, report portal, or framework.
 
 ## Troubleshooting
