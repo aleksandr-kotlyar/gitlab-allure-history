@@ -112,16 +112,33 @@ test_gate:
       - allure-results
 ```
 
-Another project can include the template from this repository:
+Another project can include the template from this repository. Pin a tag or commit SHA in real projects so CI behavior does not change unexpectedly:
 
 ```yaml
 include:
   - project: aleksandr-kotlyar/gitlab-allure-history
-    ref: master
+    ref: <pinned-tag-or-commit-sha>
     file: /templates/gitlab-allure-history.yml
+
+stages:
+  - test
+  - report
+
+test:
+  stage: test
+  image: python:3.14.5-alpine
+  script:
+    - pip install -r requirements.txt
+    - pytest --alluredir=allure-results
+  artifacts:
+    when: always
+    paths:
+      - allure-results
 ```
 
-For another project, make sure previous-stage test jobs upload `allure-results` as artifacts. The default `ALLURE_HISTORY_IMAGE` contains the report helper scripts, Java, Git, and Allure commandline. Override `ALLURE_HISTORY_IMAGE` if you want to use a project-owned image; in that case, include `generate_index.py` and `prune_reports.py` in the image at `ALLURE_HISTORY_TOOLS_DIR`.
+For another project, make sure previous-stage test jobs upload `allure-results/` as artifacts. A test job may also upload a `jobid` file containing the test job ID; when it is absent, the report job uses its own `CI_JOB_ID` for the immutable `job_<id>` snapshot folder.
+
+The default `ALLURE_HISTORY_IMAGE` contains the report helper scripts, Java, Git, Python, and Allure commandline. Override `ALLURE_HISTORY_IMAGE` if you want to use a project-owned image; in that case, include `generate_index.py` and `prune_reports.py` in the image at `ALLURE_HISTORY_TOOLS_DIR`, and provide `git`, `python3`, and the `allure` command.
 
 The template also includes a web-only `build_python` job. It runs only when the project has a `Dockerfile`, and publishes `$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG`.
 

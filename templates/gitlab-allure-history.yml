@@ -22,7 +22,7 @@ build_python:
   services:
     - docker:29.3.1-dind
   variables:
-    ALLURE_HISTORY_IMAGE: $CI_COMMIT_REF_SLUG
+    IMAGE_TAG: $CI_COMMIT_REF_SLUG
   script:
     - set -euo pipefail
     - printf '%s' "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
@@ -54,9 +54,24 @@ allure:
         exit 1
       fi
 
+      if ! command -v git >/dev/null 2>&1; then
+        echo "Missing git in ALLURE_HISTORY_IMAGE (${ALLURE_HISTORY_IMAGE}). Use the default image or provide git in your custom image."
+        exit 1
+      fi
+
+      if ! command -v python3 >/dev/null 2>&1; then
+        echo "Missing python3 in ALLURE_HISTORY_IMAGE (${ALLURE_HISTORY_IMAGE}). Use the default image or provide python3 in your custom image."
+        exit 1
+      fi
+
+      if ! command -v allure >/dev/null 2>&1; then
+        echo "Missing allure command in ALLURE_HISTORY_IMAGE (${ALLURE_HISTORY_IMAGE}). Use the default image or provide Allure commandline in your custom image."
+        exit 1
+      fi
+
     - |
       if ! git clone --single-branch --branch "$PAGES_BRANCH" "$CI_REPOSITORY_URL" pages-worktree; then
-        echo "Failed to clone '${PAGES_BRANCH}'. Create the branch before publishing reports."
+        echo "Failed to clone '${PAGES_BRANCH}' from this project. Create the '${PAGES_BRANCH}' branch before publishing reports."
         exit 1
       fi
 
@@ -80,6 +95,11 @@ allure:
 
       mkdir -p allure-results "$BRANCH_PUBLIC_DIR"
 
+      if [ -z "$(find allure-results -mindepth 1 -print -quit)" ]; then
+        echo "Missing Allure results. At least one earlier job must upload allure-results/ as an artifact."
+        exit 1
+      fi
+
       if [ -d "$HISTORY_DIR" ]; then
         cp -r "$HISTORY_DIR" allure-results/history
         echo "Restored previous Allure history from ${HISTORY_DIR}."
@@ -93,7 +113,7 @@ allure:
       elif [ -f "${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py" ]; then
         PRUNE_REPORTS_PY="${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py"
       else
-        echo "Missing prune_reports.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
+        echo "Missing prune_reports.py. Provide it in ALLURE_HISTORY_TOOLS_DIR (${ALLURE_HISTORY_TOOLS_DIR}) through the CI image or keep it in the repository root."
         exit 1
       fi
 
@@ -102,7 +122,7 @@ allure:
       elif [ -f "${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py" ]; then
         GENERATE_INDEX_PY="${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py"
       else
-        echo "Missing generate_index.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
+        echo "Missing generate_index.py. Provide it in ALLURE_HISTORY_TOOLS_DIR (${ALLURE_HISTORY_TOOLS_DIR}) through the CI image or keep it in the repository root."
         exit 1
       fi
 
