@@ -233,6 +233,30 @@
             white-space: nowrap;
         }
 
+        .summary-cell {
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .summary-counts-cell {
+            white-space: normal;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            min-height: 22px;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 1px 8px 2px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 650;
+            line-height: 1.3;
+            text-transform: lowercase;
+        }
+
         a {
             color: var(--link);
             text-decoration: none;
@@ -322,6 +346,21 @@
                 text-align: left;
             }
 
+            td[data-label] {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            td[data-label]::before {
+                content: attr(data-label);
+                flex: 0 0 auto;
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
             .list-controls {
                 align-items: stretch;
                 flex-direction: column;
@@ -355,17 +394,27 @@
             <thead>
                 <tr>
                     <th>Name</th>
+
+                    <th>Status</th>
+                    <th>Counts</th>
+                    <th>Duration</th>
                     <th>Modified</th>
                 </tr>
             </thead>
             <tbody>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_7195032394/">job_7195032394/</a> <span class="latest-badge">latest</span></div></td>
-                <td class="modified-cell">26-Jun-2024 16:41</td>
+                <td class="summary-cell" data-label="Status"><span class="status-badge">failed</span></td>
+                <td class="summary-cell summary-counts-cell" data-label="Counts">4 total, 1 failed, 1 broken, 1 skipped, 1 passed</td>
+                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="modified-cell" data-label="Modified">26-Jun-2024 16:41</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_7195010906/">job_7195010906/</a></div></td>
-                <td class="modified-cell">26-Jun-2024 16:38</td>
+                <td class="summary-cell" data-label="Status"><span class="status-badge">failed</span></td>
+                <td class="summary-cell summary-counts-cell" data-label="Counts">4 total, 1 failed, 1 broken, 1 skipped, 1 passed</td>
+                <td class="summary-cell" data-label="Duration">19 ms</td>
+                <td class="modified-cell" data-label="Modified">26-Jun-2024 16:38</td>
             </tr>
             </tbody>
         </table>

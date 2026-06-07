@@ -233,6 +233,30 @@
             white-space: nowrap;
         }
 
+        .summary-cell {
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .summary-counts-cell {
+            white-space: normal;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            min-height: 22px;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 1px 8px 2px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 650;
+            line-height: 1.3;
+            text-transform: lowercase;
+        }
+
         a {
             color: var(--link);
             text-decoration: none;
@@ -322,6 +346,21 @@
                 text-align: left;
             }
 
+            td[data-label] {
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            td[data-label]::before {
+                content: attr(data-label);
+                flex: 0 0 auto;
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
             .list-controls {
                 align-items: stretch;
                 flex-direction: column;
@@ -355,77 +394,82 @@
             <thead>
                 <tr>
                     <th>Name</th>
+
                     <th>Modified</th>
                 </tr>
             </thead>
             <tbody>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master/">master/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="master/job_14731455688/" title="dev/master/job_14731455688/">job_14731455688/</a></div></td>
-                <td class="modified-cell">07-Jun-2026 08:34</td>
+                <td class="modified-cell" data-label="Modified">07-Jun-2026 08:34</td>
+            </tr>
+            <tr data-list-row>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="report-summary-index/">report-summary-index/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="report-summary-index/job_14731526820/" title="dev/report-summary-index/job_14731526820/">job_14731526820/</a></div></td>
+                <td class="modified-cell" data-label="Modified">07-Jun-2026 08:58</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-links/">latest-report-links/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="latest-report-links/job_14731440786/" title="dev/latest-report-links/job_14731440786/">job_14731440786/</a></div></td>
-                <td class="modified-cell">07-Jun-2026 08:29</td>
+                <td class="modified-cell" data-label="Modified">07-Jun-2026 08:29</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="open-demo/">open-demo/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="open-demo/job_14730845621/" title="dev/open-demo/job_14730845621/">job_14730845621/</a></div></td>
-                <td class="modified-cell">07-Jun-2026 05:36</td>
+                <td class="modified-cell" data-label="Modified">07-Jun-2026 05:36</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-last-thirty/">keep-last-thirty/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="keep-last-thirty/job_14730837850/" title="dev/keep-last-thirty/job_14730837850/">job_14730837850/</a></div></td>
-                <td class="modified-cell">07-Jun-2026 03:55</td>
+                <td class="modified-cell" data-label="Modified">07-Jun-2026 03:55</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="column-modified-time/">column-modified-time/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="column-modified-time/job_14706952700/" title="dev/column-modified-time/job_14706952700/">job_14706952700/</a></div></td>
-                <td class="modified-cell">05-Jun-2026 04:38</td>
+                <td class="modified-cell" data-label="Modified">05-Jun-2026 04:38</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="improve-allure-pages-template/">improve-allure-pages-template/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="improve-allure-pages-template/job_14704211080/" title="dev/improve-allure-pages-template/job_14704211080/">job_14704211080/</a></div></td>
-                <td class="modified-cell">04-Jun-2026 22:25</td>
+                <td class="modified-cell" data-label="Modified">04-Jun-2026 22:25</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru-env/">qaguru-env/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="qaguru-env/job_7440587470/" title="dev/qaguru-env/job_7440587470/">job_7440587470/</a></div></td>
-                <td class="modified-cell">26-Jul-2024 19:01</td>
+                <td class="modified-cell" data-label="Modified">26-Jul-2024 19:01</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru/">qaguru/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="qaguru/job_7440070150/" title="dev/qaguru/job_7440070150/">job_7440070150/</a></div></td>
-                <td class="modified-cell">26-Jul-2024 17:43</td>
+                <td class="modified-cell" data-label="Modified">26-Jul-2024 17:43</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="v6/">v6/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="v6/job_7195068136/" title="dev/v6/job_7195068136/">job_7195068136/</a></div></td>
-                <td class="modified-cell">26-Jun-2024 16:46</td>
+                <td class="modified-cell" data-label="Modified">26-Jun-2024 16:46</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="update-python-2024-06-27/">update-python-2024-06-27/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="update-python-2024-06-27/job_7195032394/" title="dev/update-python-2024-06-27/job_7195032394/">job_7195032394/</a></div></td>
-                <td class="modified-cell">26-Jun-2024 16:41</td>
+                <td class="modified-cell" data-label="Modified">26-Jun-2024 16:41</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="test-job/">test-job/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="test-job/job_7194862324/" title="dev/test-job/job_7194862324/">job_7194862324/</a></div></td>
-                <td class="modified-cell">26-Jun-2024 16:20</td>
+                <td class="modified-cell" data-label="Modified">26-Jun-2024 16:20</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="build-job/">build-job/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="build-job/job_7194849687/" title="dev/build-job/job_7194849687/">job_7194849687/</a></div></td>
-                <td class="modified-cell">26-Jun-2024 16:18</td>
+                <td class="modified-cell" data-label="Modified">26-Jun-2024 16:18</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="revert-15-keep-history-in-branch/">revert-15-keep-history-in-branch/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="revert-15-keep-history-in-branch/job_1078048173/" title="dev/revert-15-keep-history-in-branch/job_1078048173/">job_1078048173/</a></div></td>
-                <td class="modified-cell">06-Mar-2021 16:05</td>
+                <td class="modified-cell" data-label="Modified">06-Mar-2021 16:05</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-history-in-branch/">keep-history-in-branch/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="keep-history-in-branch/job_1078040909/" title="dev/keep-history-in-branch/job_1078040909/">job_1078040909/</a></div></td>
-                <td class="modified-cell">06-Mar-2021 15:56</td>
+                <td class="modified-cell" data-label="Modified">06-Mar-2021 15:56</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="publish-gl-pages-only/">publish-gl-pages-only/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="publish-gl-pages-only/job_1077999720/" title="dev/publish-gl-pages-only/job_1077999720/">job_1077999720/</a></div></td>
-                <td class="modified-cell">06-Mar-2021 15:02</td>
+                <td class="modified-cell" data-label="Modified">06-Mar-2021 15:02</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="readme/">readme/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="readme/job_1077984307/" title="dev/readme/job_1077984307/">job_1077984307/</a></div></td>
-                <td class="modified-cell">06-Mar-2021 14:33</td>
+                <td class="modified-cell" data-label="Modified">06-Mar-2021 14:33</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="deploy-gitlab-pages/">deploy-gitlab-pages/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="deploy-gitlab-pages/job_1074983921/" title="dev/deploy-gitlab-pages/job_1074983921/">job_1074983921/</a></div></td>
-                <td class="modified-cell">05-Mar-2021 05:51</td>
+                <td class="modified-cell" data-label="Modified">05-Mar-2021 05:51</td>
             </tr>
             </tbody>
         </table>
