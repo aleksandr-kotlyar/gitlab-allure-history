@@ -199,15 +199,31 @@
         }
 
         .entry-meta {
-            margin-top: 3px;
+            display: flex;
+            min-width: 0;
+            align-items: baseline;
+            gap: 5px;
+            margin-top: 1px;
             color: var(--muted);
-            font-size: 13px;
-            line-height: 1.35;
+            font-size: 12px;
+            line-height: 1.25;
             overflow-wrap: anywhere;
         }
 
         .entry-meta-label {
-            font-weight: 600;
+            flex: 0 0 auto;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .entry-meta-link {
+            min-width: 0;
+            color: var(--muted);
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-link:hover {
+            color: var(--link);
         }
 
         .modified-cell {
@@ -344,11 +360,11 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master/">master/</a></div><div class="entry-meta"><span class="entry-meta-label">Latest report:</span> <a href="master/job_14731183364/">beta/master/job_14731183364/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master/">master/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="master/job_14731183364/" title="beta/master/job_14731183364/">job_14731183364/</a></div></td>
                 <td class="modified-cell">07-Jun-2026 07:12</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="open-demo/">open-demo/</a></div><div class="entry-meta"><span class="entry-meta-label">Latest report:</span> <a href="open-demo/job_14729086765/">beta/open-demo/job_14729086765/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="open-demo/">open-demo/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="open-demo/job_14729086765/" title="beta/open-demo/job_14729086765/">job_14729086765/</a></div></td>
                 <td class="modified-cell">06-Jun-2026 21:04</td>
             </tr>
             </tbody>
