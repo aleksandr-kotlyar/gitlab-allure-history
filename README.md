@@ -99,10 +99,13 @@ This repository dogfoods the component from the current commit:
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
     inputs:
+      allure-history-image-tag: $CI_COMMIT_TAG
       build-runtime-image: "true"
     rules:
       - if: $CI_COMMIT_TAG
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
+    inputs:
+      allure-history-image-tag: "2026.2.6"
     rules:
       - if: $CI_COMMIT_TAG == null
 
@@ -125,6 +128,7 @@ Another project can include the component from this repository. Pin a release ta
 include:
   - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@<pinned-version-tag>
     inputs:
+      allure-history-image-tag: <pinned-version-tag>
       environment: dev
       pages-branch: gl-pages
       reports-to-keep: "30"
@@ -147,9 +151,9 @@ test:
 
 For another project, make sure previous-stage test jobs upload `allure-results/` as artifacts. A test job may also upload a `jobid` file containing the test job ID; when it is absent, the report job uses its own `CI_JOB_ID` for the immutable `job_<id>` snapshot folder.
 
-The default runtime image contains the report helper scripts, Java, Git, Python, and Allure commandline. The component appends the pinned component version to the `allure-history-image` repository input, so `@<pinned-version-tag>` uses `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:<pinned-version-tag>`. If you use a project-owned image repository, publish images with the same tags as the component versions, include `generate_index.py` and `prune_reports.py` in the image at `allure-history-tools-dir`, and provide `git`, `python3`, and the `allure` command.
+The default runtime image contains the report helper scripts, Java, Git, Python, and Allure commandline. Set `allure-history-image-tag` to the same value as the pinned component tag, so `@<pinned-version-tag>` uses `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:<pinned-version-tag>`. If you use a project-owned image repository, publish images with the same tags as the component versions, include `generate_index.py` and `prune_reports.py` in the image at `allure-history-tools-dir`, and provide `git`, `python3`, and the `allure` command.
 
-The component includes an opt-in `build_python` job for this repository's release pipeline. With `build-runtime-image: "true"`, it runs only in tag pipelines and builds `$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG`. This repository includes the component by `$CI_COMMIT_TAG` in tag pipelines so `$[[ component.version ]]` and the image tag are the same release value.
+The component includes an opt-in `build_python` job for this repository's release pipeline. With `build-runtime-image: "true"`, it runs only in tag pipelines and builds `$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG`. This repository passes `$CI_COMMIT_TAG` to `allure-history-image-tag` in tag pipelines so the component version and the image tag are the same release value.
 
 ## Required GitLab Setup
 
@@ -194,7 +198,8 @@ Required:
 Component inputs:
 
 - `environment`: report environment folder. Defaults to `dev`.
-- `allure-history-image`: runtime image repository. Defaults to `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history`; the pinned component version is appended as the image tag.
+- `allure-history-image`: runtime image repository. Defaults to `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history`.
+- `allure-history-image-tag`: runtime image tag. Set this to the same pinned tag used in `include:component`.
 - `allure-history-tools-dir`: directory inside the CI image containing `generate_index.py` and `prune_reports.py`. Defaults to `/opt/gitlab-allure-history`.
 - `pages-branch`: branch used to store generated Pages content and Allure history. Defaults to `gl-pages`.
 - `reports-to-keep`: number of report snapshots kept per environment and branch. Defaults to `30`.
@@ -273,6 +278,8 @@ Use an immutable component version in application projects:
 ```yaml
 include:
   - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@<pinned-version-tag>
+    inputs:
+      allure-history-image-tag: <pinned-version-tag>
 ```
 
 Prefer a release tag for normal use, or a full commit SHA when you need maximum immutability. Avoid moving references such as branches or `~latest` for production pipelines because they can change CI behavior without a merge request in the consuming project.

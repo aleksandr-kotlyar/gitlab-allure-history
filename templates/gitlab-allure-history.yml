@@ -1,12 +1,13 @@
 spec:
-  component: [version]
   inputs:
     environment:
       default: dev
       description: Report environment folder under public/.
     allure-history-image:
       default: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history
-      description: Runtime image repository. The component version is appended as the image tag.
+      description: Runtime image repository.
+    allure-history-image-tag:
+      description: Runtime image tag. Use the same pinned tag as the component version.
     allure-history-tools-dir:
       default: /opt/gitlab-allure-history
       description: Directory in the runtime image containing generate_index.py and prune_reports.py.
@@ -26,7 +27,7 @@ spec:
 
 variables:
   ENV: $[[ inputs.environment ]]
-  ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ component.version ]]
+  ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ inputs.allure-history-image-tag ]]
   ALLURE_HISTORY_TOOLS_DIR: $[[ inputs.allure-history-tools-dir ]]
   PAGES_BRANCH: $[[ inputs.pages-branch ]]
   REPORTS_TO_KEEP: $[[ inputs.reports-to-keep ]]
