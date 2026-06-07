@@ -1,0 +1,18 @@
+[
+  {
+    "buildOrder": 7440026160,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/qaguru/job_7440026160/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 17
+    }
+  },
+  {
+    "buildOrder": 7440025057,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/qaguru/job_7440025057/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 18
+    }
+  }
+]

@@ -1,0 +1,225 @@
+{
+  "d1f192e8c25ad01ec53ffddccab1b87c": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "6264145cf260e6a6",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/6264145cf260e6a6",
+        "status": "passed",
+        "time": {
+          "start": 1780609410637,
+          "stop": 1780609410637,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "d6b279e1c4f4c7ba89556e18e19ffd9d": {
+    "statistic": {
+      "failed": 1,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 0,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "f68532d75f0c985",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/f68532d75f0c985",
+        "status": "failed",
+        "statusDetails": "AssertionError: assert False",
+        "time": {
+          "start": 1780609411668,
+          "stop": 1780609411669,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "01ca86dd6b230223d73e266200839bba": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "a0b899ca85198149",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/a0b899ca85198149",
+        "status": "passed",
+        "time": {
+          "start": 1780609410654,
+          "stop": 1780609410655,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "df582b23248aae7d50379c97a1e78594": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "bbc2501779ebf241",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/bbc2501779ebf241",
+        "status": "passed",
+        "time": {
+          "start": 1780609410647,
+          "stop": 1780609410647,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "4ce9eea7a8389ff0dc706217ee7f22b9": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "63810e7adfa0f046",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/63810e7adfa0f046",
+        "status": "passed",
+        "time": {
+          "start": 1780609411662,
+          "stop": 1780609411662,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "afa41a75bcafa27869095f741e247bb5": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "d70f00d559e0b683",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/d70f00d559e0b683",
+        "status": "passed",
+        "time": {
+          "start": 1780609410652,
+          "stop": 1780609410652,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "11fe46fe221564fa0c632e6aed0a790c": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 1,
+      "passed": 0,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "82007434791846b7",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/82007434791846b7",
+        "status": "skipped",
+        "statusDetails": "Skipped: skip",
+        "time": {
+          "start": 1780609411687,
+          "stop": 1780609411687,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "fbc05e3270ac6bbf172ac35147aee0bb": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "4e2d63b4566f4c31",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/4e2d63b4566f4c31",
+        "status": "passed",
+        "time": {
+          "start": 1780609410649,
+          "stop": 1780609410650,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "5724e9dbd28def9f35909740df661b18": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "9b4954985e2fc912",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/9b4954985e2fc912",
+        "status": "passed",
+        "time": {
+          "start": 1780609410643,
+          "stop": 1780609410643,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "7a369908580c44fabcce927d3973bc73": {
+    "statistic": {
+      "failed": 0,
+      "broken": 1,
+      "skipped": 0,
+      "passed": 0,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "87b33df180ee4d4",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816//#testresult/87b33df180ee4d4",
+        "status": "broken",
+        "statusDetails": "ValueError: broken",
+        "time": {
+          "start": 1780609411685,
+          "stop": 1780609411685,
+          "duration": 0
+        }
+      }
+    ]
+  }
+}

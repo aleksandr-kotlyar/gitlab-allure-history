@@ -1,0 +1,15 @@
+[
+  {
+    "buildOrder": 7194849687,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/build-job/job_7194849687/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "failed": 1,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 1,
+      "unknown": 0,
+      "total": 4
+    }
+  }
+]

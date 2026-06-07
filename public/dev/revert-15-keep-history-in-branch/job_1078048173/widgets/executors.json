@@ -1,0 +1,12 @@
+[
+  {
+    "name": "GitLabCI",
+    "type": "gitlab",
+    "url": "gitlab.io/gitlab-allure-history/public/revert-15-keep-history-in-branch",
+    "buildOrder": 1078048173,
+    "buildName": "GitLab Job Run 1078048173",
+    "buildUrl": "https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/pipelines/266449224",
+    "reportName": "Allure Report with history",
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/revert-15-keep-history-in-branch/job_1078048173/"
+  }
+]
