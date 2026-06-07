@@ -1,2 +1,42 @@
 include:
   - local: templates/gitlab-allure-history.yml
+
+default:
+  image: $ALLURE_HISTORY_IMAGE
+
+test_gate:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  script:
+    - set -euo pipefail
+    - echo "$CI_JOB_ID" > jobid
+    - pytest -m "not demo" --env="$ENV" --junitxml=report-gate.xml
+  artifacts:
+    when: always
+    expire_in: 2 hours
+    paths:
+      - allure-results
+      - jobid
+      - report-gate.xml
+
+test_demo:
+  stage: test
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  script:
+    - set -euo pipefail
+    - pytest -m "demo" --env="$ENV" --junitxml=report-demo.xml
+  artifacts:
+    when: always
+    expire_in: 2 hours
+    paths:
+      - allure-results
+      - report-demo.xml

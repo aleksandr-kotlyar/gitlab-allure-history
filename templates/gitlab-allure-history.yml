@@ -1,7 +1,7 @@
-image: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v6
-
 variables:
   ENV: dev
+  ALLURE_HISTORY_IMAGE: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:v6
+  ALLURE_HISTORY_TOOLS_DIR: /opt/gitlab-allure-history
   PAGES_BRANCH: gl-pages
   REPORTS_TO_KEEP: "30"
 
@@ -10,11 +10,13 @@ stages:
   - test
   - report
 
-build:
+build_python:
   image: docker:29.3.1
   stage: build
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
+      exists:
+        - Dockerfile
       when: always
     - when: never
   services:
@@ -27,50 +29,9 @@ build:
     - docker build -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
     - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
 
-test_gate:
-  stage: test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "web"
-      when: never
-    - if: $CI_PIPELINE_SOURCE != "web"
-      when: always
-  script:
-    - set -euo pipefail
-    - echo "$CI_JOB_ID" > jobid
-    - pytest -m "not demo" --env="$ENV" --junitxml=report-gate.xml
-  artifacts:
-    when: always
-    expire_in: 2 hours
-    paths:
-      - allure-results
-      - jobid
-      - report-gate.xml
-
-test_demo:
-  stage: test
-  allow_failure: true
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "web"
-      when: never
-    - if: $CI_PIPELINE_SOURCE != "web"
-      when: always
-  script:
-    - set -euo pipefail
-    - pytest -m "demo" --env="$ENV" --junitxml=report-demo.xml
-  artifacts:
-    when: always
-    expire_in: 2 hours
-    paths:
-      - allure-results
-      - report-demo.xml
-
 allure:
+  image: $ALLURE_HISTORY_IMAGE
   stage: report
-  needs:
-    - job: test_gate
-      artifacts: true
-    - job: test_demo
-      artifacts: true
   resource_group: pages-publish
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
@@ -100,12 +61,12 @@ allure:
       fi
 
     - |
-      test -s jobid || {
-        echo "Missing jobid artifact from test_gate."
-        exit 1
-      }
+      if [ -s jobid ]; then
+        JOB_ID="$(cat jobid)"
+      else
+        JOB_ID="$CI_JOB_ID"
+      fi
 
-      JOB_ID="$(cat jobid)"
       REPORT_DIR="job_${JOB_ID}"
       REPORT_ENV="${ENV:-dev}"
       REPORT_BRANCH="${CI_COMMIT_REF_SLUG:-detached}"
@@ -125,6 +86,27 @@ allure:
       else
         echo "No previous Allure history for '${REPORT_ENV}/${REPORT_BRANCH}'."
       fi
+
+    - |
+      if [ -f "${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py" ]; then
+        PRUNE_REPORTS_PY="${ALLURE_HISTORY_TOOLS_DIR}/prune_reports.py"
+      elif [ -f prune_reports.py ]; then
+        PRUNE_REPORTS_PY="prune_reports.py"
+      else
+        echo "Missing prune_reports.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
+        exit 1
+      fi
+
+      if [ -f "${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py" ]; then
+        GENERATE_INDEX_PY="${ALLURE_HISTORY_TOOLS_DIR}/generate_index.py"
+      elif [ -f generate_index.py ]; then
+        GENERATE_INDEX_PY="generate_index.py"
+      else
+        echo "Missing generate_index.py. Provide it in ${ALLURE_HISTORY_TOOLS_DIR} through the CI image or keep it in the repository root."
+        exit 1
+      fi
+
+      export PRUNE_REPORTS_PY GENERATE_INDEX_PY
 
     - |
       python3 - <<'PY'
@@ -188,9 +170,9 @@ allure:
         META_DIR="$(dirname "$META_DIR")"
       done
 
-      python3 prune_reports.py "$BRANCH_PUBLIC_DIR" "$REPORTS_TO_KEEP"
+      python3 "$PRUNE_REPORTS_PY" "$BRANCH_PUBLIC_DIR" "$REPORTS_TO_KEEP"
 
-      python3 generate_index.py --recursive "$PAGES_PUBLIC_DIR"
+      python3 "$GENERATE_INDEX_PY" --recursive "$PAGES_PUBLIC_DIR"
 
     - |
       git -C pages-worktree config user.name "GitLab Runner"
