@@ -1,0 +1,38 @@
+[
+  {
+    "buildOrder": 14706861586,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/column-modified-time/job_14706861586/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 7,
+      "retry": 0
+    }
+  },
+  {
+    "buildOrder": 14706838676,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/column-modified-time/job_14706838676/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 5,
+      "retry": 0
+    }
+  },
+  {
+    "buildOrder": 14706657548,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/column-modified-time/job_14706657548/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 2,
+      "retry": 0
+    }
+  },
+  {
+    "buildOrder": 14706324738,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/column-modified-time/job_14706324738/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 2,
+      "retry": 0
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "buildOrder": 14730837850,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "failed": 1,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 16,
+      "unknown": 0,
+      "total": 19
+    }
+  },
+  {
+    "buildOrder": 14730837830,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "failed": 1,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 16,
+      "unknown": 0,
+      "total": 19
+    }
+  }
+]

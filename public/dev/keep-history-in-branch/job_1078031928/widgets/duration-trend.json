@@ -1,0 +1,50 @@
+[
+  {
+    "buildOrder": 1078031928,
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/keep-history-in-branch/job_1078031928/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 30
+    }
+  },
+  {
+    "buildOrder": 1078025735,
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/keep-history-in-branch/job_1078025735/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 30
+    }
+  },
+  {
+    "buildOrder": 1078023062,
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/keep-history-in-branch/job_1078023062/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 30
+    }
+  },
+  {
+    "buildOrder": 1078020539,
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/keep-history-in-branch/job_1078020539/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 29
+    }
+  },
+  {
+    "buildOrder": 1078018642,
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/keep-history-in-branch/job_1078018642/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 31
+    }
+  },
+  {
+    "buildOrder": 1078016719,
+    "reportUrl": "gitlab.io/gitlab-allure-history/public/dev/keep-history-in-branch/job_1078016719/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "duration": 30
+    }
+  }
+]

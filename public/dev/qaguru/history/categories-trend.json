@@ -1,0 +1,38 @@
+[
+  {
+    "buildOrder": 7440070150,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/qaguru/job_7440070150/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "Product defects": 1,
+      "Test defects": 1
+    }
+  },
+  {
+    "buildOrder": 7440052888,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/qaguru/job_7440052888/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "Product defects": 1,
+      "Test defects": 1
+    }
+  },
+  {
+    "buildOrder": 7440026160,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/qaguru/job_7440026160/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "Product defects": 1,
+      "Test defects": 1
+    }
+  },
+  {
+    "buildOrder": 7440025057,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/qaguru/job_7440025057/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "Product defects": 1,
+      "Test defects": 1
+    }
+  }
+]

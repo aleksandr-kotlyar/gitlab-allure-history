@@ -1,0 +1,28 @@
+[
+  {
+    "buildOrder": 7195032394,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/update-python-2024-06-27/job_7195032394/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "failed": 1,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 1,
+      "unknown": 0,
+      "total": 4
+    }
+  },
+  {
+    "buildOrder": 7195010906,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/update-python-2024-06-27/job_7195010906/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "failed": 1,
+      "broken": 1,
+      "skipped": 1,
+      "passed": 1,
+      "unknown": 0,
+      "total": 4
+    }
+  }
+]

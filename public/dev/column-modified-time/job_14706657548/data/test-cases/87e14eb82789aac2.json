@@ -1,0 +1,160 @@
+{
+  "uid": "87e14eb82789aac2",
+  "name": "test_prune_reports_ignores_missing_path",
+  "fullName": "tests.test_prune_reports#test_prune_reports_ignores_missing_path",
+  "historyId": "a9b52339f9bb0a5cc4486c2f667c5361",
+  "time": {
+    "start": 1780632143746,
+    "stop": 1780632143747,
+    "duration": 1
+  },
+  "status": "passed",
+  "flaky": false,
+  "newFailed": false,
+  "newBroken": false,
+  "newPassed": false,
+  "retriesCount": 0,
+  "retriesStatusChange": false,
+  "beforeStages": [
+    {
+      "name": "tmp_path_factory",
+      "time": {
+        "start": 1780632143735,
+        "stop": 1780632143735,
+        "duration": 0
+      },
+      "status": "passed",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "shouldDisplayMessage": false,
+      "attachmentsCount": 0,
+      "stepsCount": 0,
+      "hasContent": false,
+      "attachmentStep": false
+    },
+    {
+      "name": "tmp_path",
+      "time": {
+        "start": 1780632143746,
+        "stop": 1780632143746,
+        "duration": 0
+      },
+      "status": "passed",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "shouldDisplayMessage": false,
+      "attachmentsCount": 0,
+      "stepsCount": 0,
+      "hasContent": false,
+      "attachmentStep": false
+    }
+  ],
+  "testStage": {
+    "status": "passed",
+    "steps": [],
+    "attachments": [
+      {
+        "uid": "77955128fe26893b",
+        "name": "stdout",
+        "source": "77955128fe26893b.txt",
+        "type": "text/plain",
+        "size": 98
+      }
+    ],
+    "parameters": [],
+    "shouldDisplayMessage": false,
+    "attachmentsCount": 1,
+    "stepsCount": 0,
+    "hasContent": true,
+    "attachmentStep": false
+  },
+  "afterStages": [
+    {
+      "name": "tmp_path::0",
+      "time": {
+        "start": 1780632143747,
+        "stop": 1780632143747,
+        "duration": 0
+      },
+      "status": "passed",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "shouldDisplayMessage": false,
+      "attachmentsCount": 0,
+      "stepsCount": 0,
+      "hasContent": false,
+      "attachmentStep": false
+    }
+  ],
+  "labels": [
+    {
+      "name": "parentSuite",
+      "value": "tests"
+    },
+    {
+      "name": "suite",
+      "value": "test_prune_reports"
+    },
+    {
+      "name": "host",
+      "value": "runner-j2nyww-sk-project-24847075-concurrent-0"
+    },
+    {
+      "name": "thread",
+      "value": "13-MainThread"
+    },
+    {
+      "name": "framework",
+      "value": "pytest"
+    },
+    {
+      "name": "language",
+      "value": "cpython3"
+    },
+    {
+      "name": "package",
+      "value": "tests.test_prune_reports"
+    },
+    {
+      "name": "resultFormat",
+      "value": "allure2"
+    }
+  ],
+  "parameters": [],
+  "links": [],
+  "hidden": false,
+  "retry": false,
+  "extra": {
+    "severity": "normal",
+    "retries": [],
+    "categories": [],
+    "history": {
+      "statistic": {
+        "failed": 0,
+        "broken": 0,
+        "skipped": 0,
+        "passed": 2,
+        "unknown": 0,
+        "total": 2
+      },
+      "items": [
+        {
+          "uid": "a775f17bf3f944ab",
+          "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/column-modified-time/job_14706324738//#testresult/a775f17bf3f944ab",
+          "status": "passed",
+          "time": {
+            "start": 1780629612675,
+            "stop": 1780629612675,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    "tags": []
+  },
+  "source": "87e14eb82789aac2.json",
+  "parameterValues": []
+}

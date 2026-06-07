@@ -1,0 +1,93 @@
+{
+  "d6b279e1c4f4c7ba89556e18e19ffd9d": {
+    "statistic": {
+      "failed": 1,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 0,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "971f83631bb0309d",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/v6/job_7195068136//#testresult/971f83631bb0309d",
+        "status": "failed",
+        "statusDetails": "AssertionError: assert False",
+        "time": {
+          "start": 1719420365118,
+          "stop": 1719420365118,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "4ce9eea7a8389ff0dc706217ee7f22b9": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 1,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "25a559fc0f6191f6",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/v6/job_7195068136//#testresult/25a559fc0f6191f6",
+        "status": "passed",
+        "time": {
+          "start": 1719420365116,
+          "stop": 1719420365116,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "11fe46fe221564fa0c632e6aed0a790c": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 1,
+      "passed": 0,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "4ac205d35807a52a",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/v6/job_7195068136//#testresult/4ac205d35807a52a",
+        "status": "skipped",
+        "statusDetails": "Skipped: skip",
+        "time": {
+          "start": 1719420365133,
+          "stop": 1719420365133,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "7a369908580c44fabcce927d3973bc73": {
+    "statistic": {
+      "failed": 0,
+      "broken": 1,
+      "skipped": 0,
+      "passed": 0,
+      "unknown": 0,
+      "total": 1
+    },
+    "items": [
+      {
+        "uid": "efae896de6552d97",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/v6/job_7195068136//#testresult/efae896de6552d97",
+        "status": "broken",
+        "statusDetails": "ValueError: broken",
+        "time": {
+          "start": 1719420365131,
+          "stop": 1719420365131,
+          "duration": 0
+        }
+      }
+    ]
+  }
+}

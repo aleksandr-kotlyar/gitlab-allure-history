@@ -1,0 +1,29 @@
+[
+  {
+    "buildOrder": 14704211080,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14704211080/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 12,
+      "retry": 0
+    }
+  },
+  {
+    "buildOrder": 14704195113,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14704195113/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 12,
+      "retry": 0
+    }
+  },
+  {
+    "buildOrder": 14703756816,
+    "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/improve-allure-pages-template/job_14703756816/",
+    "reportName": "Allure Report with history",
+    "data": {
+      "run": 10,
+      "retry": 0
+    }
+  }
+]

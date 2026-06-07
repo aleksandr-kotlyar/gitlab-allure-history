@@ -1,1 +1,1002 @@
-{"1a852b746035bc5bff9c1629eb960383":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"277e3df27d6420ee","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/277e3df27d6420ee","status":"passed","time":{"start":1780804559224,"stop":1780804559225,"duration":1}},{"uid":"26a69024d546d5f8","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/26a69024d546d5f8","status":"passed","time":{"start":1780804545337,"stop":1780804545339,"duration":2}}]},"15f90f9023a8e9e63f1463b059f0fcb0":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"c170ef66964d1630","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/c170ef66964d1630","status":"passed","time":{"start":1780804559235,"stop":1780804559236,"duration":1}},{"uid":"a30035b68b3e041d","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/a30035b68b3e041d","status":"passed","time":{"start":1780804545351,"stop":1780804545352,"duration":1}}]},"4ce9eea7a8389ff0dc706217ee7f22b9":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"4386ba70445db8d6","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4386ba70445db8d6","status":"passed","time":{"start":1780804559101,"stop":1780804559101,"duration":0}},{"uid":"21fee9cb20844f49","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/21fee9cb20844f49","status":"passed","time":{"start":1780804545114,"stop":1780804545114,"duration":0}}]},"afa41a75bcafa27869095f741e247bb5":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"53b4c8d55ed9e694","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/53b4c8d55ed9e694","status":"passed","time":{"start":1780804559214,"stop":1780804559215,"duration":1}},{"uid":"f004ec6447d34c7b","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/f004ec6447d34c7b","status":"passed","time":{"start":1780804545325,"stop":1780804545326,"duration":1}}]},"11fe46fe221564fa0c632e6aed0a790c":{"statistic":{"failed":0,"broken":0,"skipped":2,"passed":0,"unknown":0,"total":2},"items":[{"uid":"d407b1b24a49e9d7","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/d407b1b24a49e9d7","status":"skipped","statusDetails":"Skipped: skip","time":{"start":1780804559120,"stop":1780804559120,"duration":0}},{"uid":"1d904ab4abce78ce","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/1d904ab4abce78ce","status":"skipped","statusDetails":"Skipped: skip","time":{"start":1780804545139,"stop":1780804545139,"duration":0}}]},"1d6d151f228f33bd1cd56ee841b86d93":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"38e728db1f42ac97","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/38e728db1f42ac97","status":"passed","time":{"start":1780804559219,"stop":1780804559220,"duration":1}},{"uid":"4222eca4c07fc1df","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4222eca4c07fc1df","status":"passed","time":{"start":1780804545332,"stop":1780804545332,"duration":0}}]},"fbc05e3270ac6bbf172ac35147aee0bb":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"a445464ac6c85aa3","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/a445464ac6c85aa3","status":"passed","time":{"start":1780804559211,"stop":1780804559211,"duration":0}},{"uid":"3b3c5a8e2d8fa1a5","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/3b3c5a8e2d8fa1a5","status":"passed","time":{"start":1780804545321,"stop":1780804545322,"duration":1}}]},"24a41a1244b389d2b27bb707873ebea8":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"3205e4d98bb6b3d9","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/3205e4d98bb6b3d9","status":"passed","time":{"start":1780804559243,"stop":1780804559244,"duration":1}},{"uid":"c60c7b0190b55fd","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/c60c7b0190b55fd","status":"passed","time":{"start":1780804545361,"stop":1780804545363,"duration":2}}]},"b280f9fe783bd2b1ebf488de2238bfc8":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"241bb5a57883bacc","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/241bb5a57883bacc","status":"passed","time":{"start":1780804559222,"stop":1780804559222,"duration":0}},{"uid":"62a355ce343792d2","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/62a355ce343792d2","status":"passed","time":{"start":1780804545334,"stop":1780804545335,"duration":1}}]},"d1f192e8c25ad01ec53ffddccab1b87c":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"6158b5d9eddea185","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/6158b5d9eddea185","status":"passed","time":{"start":1780804559196,"stop":1780804559196,"duration":0}},{"uid":"7245625a62483c76","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/7245625a62483c76","status":"passed","time":{"start":1780804545305,"stop":1780804545305,"duration":0}}]},"d6b279e1c4f4c7ba89556e18e19ffd9d":{"statistic":{"failed":2,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":2},"items":[{"uid":"f4dbb061775fdaaf","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/f4dbb061775fdaaf","status":"failed","statusDetails":"AssertionError: assert False","time":{"start":1780804559107,"stop":1780804559107,"duration":0}},{"uid":"55d55181bb87a9e9","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/55d55181bb87a9e9","status":"failed","statusDetails":"AssertionError: assert False","time":{"start":1780804545121,"stop":1780804545121,"duration":0}}]},"a9b52339f9bb0a5cc4486c2f667c5361":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"20077fc5c37fdd1","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/20077fc5c37fdd1","status":"passed","time":{"start":1780804559246,"stop":1780804559247,"duration":1}},{"uid":"e0d3c0cf0f44ce35","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e0d3c0cf0f44ce35","status":"passed","time":{"start":1780804545365,"stop":1780804545365,"duration":0}}]},"01ca86dd6b230223d73e266200839bba":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"4fcc4659b93cbb6a","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4fcc4659b93cbb6a","status":"passed","time":{"start":1780804559227,"stop":1780804559228,"duration":1}},{"uid":"e18819d3c935973e","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e18819d3c935973e","status":"passed","time":{"start":1780804545341,"stop":1780804545342,"duration":1}}]},"8ae961583dbffe769a737bbdc4674f00":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"8fbe6b6ce10ee369","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/8fbe6b6ce10ee369","status":"passed","time":{"start":1780804559230,"stop":1780804559233,"duration":3}},{"uid":"9a1ac556cdde13bd","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/9a1ac556cdde13bd","status":"passed","time":{"start":1780804545344,"stop":1780804545348,"duration":4}}]},"fb24905ef116dc7738c4ca57a9c8f626":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"e37dafb1ae639b45","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e37dafb1ae639b45","status":"passed","time":{"start":1780804559238,"stop":1780804559241,"duration":3}},{"uid":"e613009120da7910","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e613009120da7910","status":"passed","time":{"start":1780804545355,"stop":1780804545359,"duration":4}}]},"df582b23248aae7d50379c97a1e78594":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"4f843c0d8a90a9f2","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4f843c0d8a90a9f2","status":"passed","time":{"start":1780804559208,"stop":1780804559209,"duration":1}},{"uid":"66cadb96f51fd9e4","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/66cadb96f51fd9e4","status":"passed","time":{"start":1780804545319,"stop":1780804545319,"duration":0}}]},"638c6133b3c35719d2183a08f961b863":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"5fb411b92c9bce1e","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/5fb411b92c9bce1e","status":"passed","time":{"start":1780804559216,"stop":1780804559217,"duration":1}},{"uid":"6236f69bc894d108","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/6236f69bc894d108","status":"passed","time":{"start":1780804545328,"stop":1780804545329,"duration":1}}]},"5724e9dbd28def9f35909740df661b18":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2},"items":[{"uid":"ae8d5ed93ad79e3c","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/ae8d5ed93ad79e3c","status":"passed","time":{"start":1780804559204,"stop":1780804559204,"duration":0}},{"uid":"671304eb56f41818","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/671304eb56f41818","status":"passed","time":{"start":1780804545314,"stop":1780804545314,"duration":0}}]},"7a369908580c44fabcce927d3973bc73":{"statistic":{"failed":0,"broken":2,"skipped":0,"passed":0,"unknown":0,"total":2},"items":[{"uid":"28c98b73e50bda6a","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/28c98b73e50bda6a","status":"broken","statusDetails":"ValueError: broken","time":{"start":1780804559118,"stop":1780804559118,"duration":0}},{"uid":"3914ff3d7f00e514","reportUrl":"https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/3914ff3d7f00e514","status":"broken","statusDetails":"ValueError: broken","time":{"start":1780804545136,"stop":1780804545136,"duration":0}}]}}
+{
+  "1a852b746035bc5bff9c1629eb960383": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "aa3a876143262ea5",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/aa3a876143262ea5",
+        "status": "passed",
+        "time": {
+          "start": 1780810350184,
+          "stop": 1780810350185,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "2c4960239bfcfbc4",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/2c4960239bfcfbc4",
+        "status": "passed",
+        "time": {
+          "start": 1780810350277,
+          "stop": 1780810350278,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "277e3df27d6420ee",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/277e3df27d6420ee",
+        "status": "passed",
+        "time": {
+          "start": 1780804559224,
+          "stop": 1780804559225,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "26a69024d546d5f8",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/26a69024d546d5f8",
+        "status": "passed",
+        "time": {
+          "start": 1780804545337,
+          "stop": 1780804545339,
+          "duration": 2
+        }
+      }
+    ]
+  },
+  "15f90f9023a8e9e63f1463b059f0fcb0": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "8ee83a0caa2fa460",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/8ee83a0caa2fa460",
+        "status": "passed",
+        "time": {
+          "start": 1780810350193,
+          "stop": 1780810350194,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "af94080df0bdbf84",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/af94080df0bdbf84",
+        "status": "passed",
+        "time": {
+          "start": 1780810350288,
+          "stop": 1780810350289,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "c170ef66964d1630",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/c170ef66964d1630",
+        "status": "passed",
+        "time": {
+          "start": 1780804559235,
+          "stop": 1780804559236,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "a30035b68b3e041d",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/a30035b68b3e041d",
+        "status": "passed",
+        "time": {
+          "start": 1780804545351,
+          "stop": 1780804545352,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "4ce9eea7a8389ff0dc706217ee7f22b9": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "6a4fdaace499e6c6",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/6a4fdaace499e6c6",
+        "status": "passed",
+        "time": {
+          "start": 1780810350909,
+          "stop": 1780810350909,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "88d81310b21ff4c9",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/88d81310b21ff4c9",
+        "status": "passed",
+        "time": {
+          "start": 1780810350238,
+          "stop": 1780810350238,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "4386ba70445db8d6",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4386ba70445db8d6",
+        "status": "passed",
+        "time": {
+          "start": 1780804559101,
+          "stop": 1780804559101,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "21fee9cb20844f49",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/21fee9cb20844f49",
+        "status": "passed",
+        "time": {
+          "start": 1780804545114,
+          "stop": 1780804545114,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "afa41a75bcafa27869095f741e247bb5": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "fe97325b6604d0aa",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/fe97325b6604d0aa",
+        "status": "passed",
+        "time": {
+          "start": 1780810350175,
+          "stop": 1780810350175,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "702d7cf0809a5590",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/702d7cf0809a5590",
+        "status": "passed",
+        "time": {
+          "start": 1780810350265,
+          "stop": 1780810350266,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "53b4c8d55ed9e694",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/53b4c8d55ed9e694",
+        "status": "passed",
+        "time": {
+          "start": 1780804559214,
+          "stop": 1780804559215,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "f004ec6447d34c7b",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/f004ec6447d34c7b",
+        "status": "passed",
+        "time": {
+          "start": 1780804545325,
+          "stop": 1780804545326,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "11fe46fe221564fa0c632e6aed0a790c": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 2,
+      "passed": 0,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "35f0ed7683be6b62",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/35f0ed7683be6b62",
+        "status": "skipped",
+        "statusDetails": "Skipped: skip",
+        "time": {
+          "start": 1780810350928,
+          "stop": 1780810350928,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "a93d9975972f2d35",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/a93d9975972f2d35",
+        "status": "skipped",
+        "statusDetails": "Skipped: skip",
+        "time": {
+          "start": 1780810350258,
+          "stop": 1780810350258,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "d407b1b24a49e9d7",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/d407b1b24a49e9d7",
+        "status": "skipped",
+        "statusDetails": "Skipped: skip",
+        "time": {
+          "start": 1780804559120,
+          "stop": 1780804559120,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "1d904ab4abce78ce",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/1d904ab4abce78ce",
+        "status": "skipped",
+        "statusDetails": "Skipped: skip",
+        "time": {
+          "start": 1780804545139,
+          "stop": 1780804545139,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "1d6d151f228f33bd1cd56ee841b86d93": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "f869327e0a3378cf",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/f869327e0a3378cf",
+        "status": "passed",
+        "time": {
+          "start": 1780810350179,
+          "stop": 1780810350180,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "ca6f020377c2c2bf",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/ca6f020377c2c2bf",
+        "status": "passed",
+        "time": {
+          "start": 1780810350271,
+          "stop": 1780810350271,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "38e728db1f42ac97",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/38e728db1f42ac97",
+        "status": "passed",
+        "time": {
+          "start": 1780804559219,
+          "stop": 1780804559220,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "4222eca4c07fc1df",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4222eca4c07fc1df",
+        "status": "passed",
+        "time": {
+          "start": 1780804545332,
+          "stop": 1780804545332,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "fbc05e3270ac6bbf172ac35147aee0bb": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "a24d70a3bd2ac6a5",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/a24d70a3bd2ac6a5",
+        "status": "passed",
+        "time": {
+          "start": 1780810350172,
+          "stop": 1780810350173,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "d6c8b97cecfe6522",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/d6c8b97cecfe6522",
+        "status": "passed",
+        "time": {
+          "start": 1780810350262,
+          "stop": 1780810350263,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "a445464ac6c85aa3",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/a445464ac6c85aa3",
+        "status": "passed",
+        "time": {
+          "start": 1780804559211,
+          "stop": 1780804559211,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "3b3c5a8e2d8fa1a5",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/3b3c5a8e2d8fa1a5",
+        "status": "passed",
+        "time": {
+          "start": 1780804545321,
+          "stop": 1780804545322,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "24a41a1244b389d2b27bb707873ebea8": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "c72a8ef78841cced",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/c72a8ef78841cced",
+        "status": "passed",
+        "time": {
+          "start": 1780810350200,
+          "stop": 1780810350201,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "f033929727f549aa",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/f033929727f549aa",
+        "status": "passed",
+        "time": {
+          "start": 1780810350296,
+          "stop": 1780810350297,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "3205e4d98bb6b3d9",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/3205e4d98bb6b3d9",
+        "status": "passed",
+        "time": {
+          "start": 1780804559243,
+          "stop": 1780804559244,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "c60c7b0190b55fd",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/c60c7b0190b55fd",
+        "status": "passed",
+        "time": {
+          "start": 1780804545361,
+          "stop": 1780804545363,
+          "duration": 2
+        }
+      }
+    ]
+  },
+  "b280f9fe783bd2b1ebf488de2238bfc8": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "b6dc96fe5daae3cc",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/b6dc96fe5daae3cc",
+        "status": "passed",
+        "time": {
+          "start": 1780810350182,
+          "stop": 1780810350182,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "9945f9ab91d45dfe",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/9945f9ab91d45dfe",
+        "status": "passed",
+        "time": {
+          "start": 1780810350274,
+          "stop": 1780810350274,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "241bb5a57883bacc",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/241bb5a57883bacc",
+        "status": "passed",
+        "time": {
+          "start": 1780804559222,
+          "stop": 1780804559222,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "62a355ce343792d2",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/62a355ce343792d2",
+        "status": "passed",
+        "time": {
+          "start": 1780804545334,
+          "stop": 1780804545335,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "d1f192e8c25ad01ec53ffddccab1b87c": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "b54ef3df550c9ee3",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/b54ef3df550c9ee3",
+        "status": "passed",
+        "time": {
+          "start": 1780810350160,
+          "stop": 1780810350160,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "1460a1ee43a84c86",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/1460a1ee43a84c86",
+        "status": "passed",
+        "time": {
+          "start": 1780810350249,
+          "stop": 1780810350249,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "6158b5d9eddea185",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/6158b5d9eddea185",
+        "status": "passed",
+        "time": {
+          "start": 1780804559196,
+          "stop": 1780804559196,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "7245625a62483c76",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/7245625a62483c76",
+        "status": "passed",
+        "time": {
+          "start": 1780804545305,
+          "stop": 1780804545305,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "d6b279e1c4f4c7ba89556e18e19ffd9d": {
+    "statistic": {
+      "failed": 2,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 0,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "572380256751e8e7",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/572380256751e8e7",
+        "status": "failed",
+        "statusDetails": "AssertionError: assert False",
+        "time": {
+          "start": 1780810350916,
+          "stop": 1780810350916,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "21b208898d606967",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/21b208898d606967",
+        "status": "failed",
+        "statusDetails": "AssertionError: assert False",
+        "time": {
+          "start": 1780810350245,
+          "stop": 1780810350245,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "f4dbb061775fdaaf",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/f4dbb061775fdaaf",
+        "status": "failed",
+        "statusDetails": "AssertionError: assert False",
+        "time": {
+          "start": 1780804559107,
+          "stop": 1780804559107,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "55d55181bb87a9e9",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/55d55181bb87a9e9",
+        "status": "failed",
+        "statusDetails": "AssertionError: assert False",
+        "time": {
+          "start": 1780804545121,
+          "stop": 1780804545121,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "a9b52339f9bb0a5cc4486c2f667c5361": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "9792d6af095922ee",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/9792d6af095922ee",
+        "status": "passed",
+        "time": {
+          "start": 1780810350202,
+          "stop": 1780810350202,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "fe6b1fb3253087d8",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/fe6b1fb3253087d8",
+        "status": "passed",
+        "time": {
+          "start": 1780810350299,
+          "stop": 1780810350299,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "20077fc5c37fdd1",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/20077fc5c37fdd1",
+        "status": "passed",
+        "time": {
+          "start": 1780804559246,
+          "stop": 1780804559247,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "e0d3c0cf0f44ce35",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e0d3c0cf0f44ce35",
+        "status": "passed",
+        "time": {
+          "start": 1780804545365,
+          "stop": 1780804545365,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "01ca86dd6b230223d73e266200839bba": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "6557a76c5e5f8163",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/6557a76c5e5f8163",
+        "status": "passed",
+        "time": {
+          "start": 1780810350187,
+          "stop": 1780810350187,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "56825bf779dbd45a",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/56825bf779dbd45a",
+        "status": "passed",
+        "time": {
+          "start": 1780810350280,
+          "stop": 1780810350281,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "4fcc4659b93cbb6a",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4fcc4659b93cbb6a",
+        "status": "passed",
+        "time": {
+          "start": 1780804559227,
+          "stop": 1780804559228,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "e18819d3c935973e",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e18819d3c935973e",
+        "status": "passed",
+        "time": {
+          "start": 1780804545341,
+          "stop": 1780804545342,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "8ae961583dbffe769a737bbdc4674f00": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "4e792e7a055575ce",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/4e792e7a055575ce",
+        "status": "passed",
+        "time": {
+          "start": 1780810350189,
+          "stop": 1780810350191,
+          "duration": 2
+        }
+      },
+      {
+        "uid": "869fd24a0565edab",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/869fd24a0565edab",
+        "status": "passed",
+        "time": {
+          "start": 1780810350283,
+          "stop": 1780810350286,
+          "duration": 3
+        }
+      },
+      {
+        "uid": "8fbe6b6ce10ee369",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/8fbe6b6ce10ee369",
+        "status": "passed",
+        "time": {
+          "start": 1780804559230,
+          "stop": 1780804559233,
+          "duration": 3
+        }
+      },
+      {
+        "uid": "9a1ac556cdde13bd",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/9a1ac556cdde13bd",
+        "status": "passed",
+        "time": {
+          "start": 1780804545344,
+          "stop": 1780804545348,
+          "duration": 4
+        }
+      }
+    ]
+  },
+  "fb24905ef116dc7738c4ca57a9c8f626": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "e31a6c9e3bd79104",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/e31a6c9e3bd79104",
+        "status": "passed",
+        "time": {
+          "start": 1780810350196,
+          "stop": 1780810350198,
+          "duration": 2
+        }
+      },
+      {
+        "uid": "aec709b86dbf6d1f",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/aec709b86dbf6d1f",
+        "status": "passed",
+        "time": {
+          "start": 1780810350291,
+          "stop": 1780810350293,
+          "duration": 2
+        }
+      },
+      {
+        "uid": "e37dafb1ae639b45",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e37dafb1ae639b45",
+        "status": "passed",
+        "time": {
+          "start": 1780804559238,
+          "stop": 1780804559241,
+          "duration": 3
+        }
+      },
+      {
+        "uid": "e613009120da7910",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/e613009120da7910",
+        "status": "passed",
+        "time": {
+          "start": 1780804545355,
+          "stop": 1780804545359,
+          "duration": 4
+        }
+      }
+    ]
+  },
+  "df582b23248aae7d50379c97a1e78594": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "86b90cdfab194c89",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/86b90cdfab194c89",
+        "status": "passed",
+        "time": {
+          "start": 1780810350170,
+          "stop": 1780810350170,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "71c7f28503c31cc4",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/71c7f28503c31cc4",
+        "status": "passed",
+        "time": {
+          "start": 1780810350260,
+          "stop": 1780810350260,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "4f843c0d8a90a9f2",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/4f843c0d8a90a9f2",
+        "status": "passed",
+        "time": {
+          "start": 1780804559208,
+          "stop": 1780804559209,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "66cadb96f51fd9e4",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/66cadb96f51fd9e4",
+        "status": "passed",
+        "time": {
+          "start": 1780804545319,
+          "stop": 1780804545319,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "638c6133b3c35719d2183a08f961b863": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "610b403742ae8779",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/610b403742ae8779",
+        "status": "passed",
+        "time": {
+          "start": 1780810350177,
+          "stop": 1780810350178,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "1f118341f381cfd1",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/1f118341f381cfd1",
+        "status": "passed",
+        "time": {
+          "start": 1780810350268,
+          "stop": 1780810350268,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "5fb411b92c9bce1e",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/5fb411b92c9bce1e",
+        "status": "passed",
+        "time": {
+          "start": 1780804559216,
+          "stop": 1780804559217,
+          "duration": 1
+        }
+      },
+      {
+        "uid": "6236f69bc894d108",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/6236f69bc894d108",
+        "status": "passed",
+        "time": {
+          "start": 1780804545328,
+          "stop": 1780804545329,
+          "duration": 1
+        }
+      }
+    ]
+  },
+  "5724e9dbd28def9f35909740df661b18": {
+    "statistic": {
+      "failed": 0,
+      "broken": 0,
+      "skipped": 0,
+      "passed": 2,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "6ef7264d51ef09fa",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/6ef7264d51ef09fa",
+        "status": "passed",
+        "time": {
+          "start": 1780810350166,
+          "stop": 1780810350166,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "1255d935d2a651fc",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/1255d935d2a651fc",
+        "status": "passed",
+        "time": {
+          "start": 1780810350255,
+          "stop": 1780810350255,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "ae8d5ed93ad79e3c",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/ae8d5ed93ad79e3c",
+        "status": "passed",
+        "time": {
+          "start": 1780804559204,
+          "stop": 1780804559204,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "671304eb56f41818",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/671304eb56f41818",
+        "status": "passed",
+        "time": {
+          "start": 1780804545314,
+          "stop": 1780804545314,
+          "duration": 0
+        }
+      }
+    ]
+  },
+  "7a369908580c44fabcce927d3973bc73": {
+    "statistic": {
+      "failed": 0,
+      "broken": 2,
+      "skipped": 0,
+      "passed": 0,
+      "unknown": 0,
+      "total": 2
+    },
+    "items": [
+      {
+        "uid": "901d7c60424e154e",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837850//#testresult/901d7c60424e154e",
+        "status": "broken",
+        "statusDetails": "ValueError: broken",
+        "time": {
+          "start": 1780810350926,
+          "stop": 1780810350926,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "a5a3cfcdf6a2a45a",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty/job_14730837830//#testresult/a5a3cfcdf6a2a45a",
+        "status": "broken",
+        "statusDetails": "ValueError: broken",
+        "time": {
+          "start": 1780810350256,
+          "stop": 1780810350256,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "28c98b73e50bda6a",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/28c98b73e50bda6a",
+        "status": "broken",
+        "statusDetails": "ValueError: broken",
+        "time": {
+          "start": 1780804559118,
+          "stop": 1780804559118,
+          "duration": 0
+        }
+      },
+      {
+        "uid": "3914ff3d7f00e514",
+        "reportUrl": "https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/dev/keep-last-thirty//#testresult/3914ff3d7f00e514",
+        "status": "broken",
+        "statusDetails": "ValueError: broken",
+        "time": {
+          "start": 1780804545136,
+          "stop": 1780804545136,
+          "duration": 0
+        }
+      }
+    ]
+  }
+}
