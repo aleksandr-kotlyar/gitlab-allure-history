@@ -32,6 +32,9 @@
             --border: #d0d7de;
             --row: #f6f8fa;
             --link: #0969da;
+            --latest-bg: #d9f1ff;
+            --latest-border: #a6ddff;
+            --latest-text: #075985;
         }
 
         :root[data-theme="dark"] {
@@ -43,6 +46,9 @@
             --border: #30363d;
             --row: #21262d;
             --link: #58a6ff;
+            --latest-bg: #102a3a;
+            --latest-border: #1f5f7a;
+            --latest-text: #8bd7ff;
         }
 
         :root[data-theme="light"] {
@@ -162,6 +168,62 @@
 
         .name-cell {
             width: 70%;
+        }
+
+        .entry-title {
+            display: flex;
+            min-width: 0;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .entry-link {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .latest-badge {
+            display: inline-flex;
+            min-height: 20px;
+            flex: 0 0 auto;
+            align-items: center;
+            border: 1px solid var(--latest-border);
+            border-radius: 999px;
+            padding: 1px 8px 2px;
+            background: var(--latest-bg);
+            color: var(--latest-text);
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.3;
+            text-transform: lowercase;
+        }
+
+        .entry-meta {
+            display: flex;
+            min-width: 0;
+            align-items: baseline;
+            gap: 5px;
+            margin-top: 1px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-label {
+            flex: 0 0 auto;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .entry-meta-link {
+            min-width: 0;
+            color: var(--muted);
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-link:hover {
+            color: var(--link);
         }
 
         .modified-cell {
@@ -298,95 +360,95 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_14730845621/">job_14730845621/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14730845621/">job_14730845621/</a> <span class="latest-badge">latest</span></div></td>
                 <td class="modified-cell">07-Jun-2026 05:36</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_14730845606/">job_14730845606/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14730845606/">job_14730845606/</a></div></td>
                 <td class="modified-cell">07-Jun-2026 05:36</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_14728850843/">job_14728850843/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14728850843/">job_14728850843/</a></div></td>
                 <td class="modified-cell">06-Jun-2026 20:07</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10467987379/">job_10467987379/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10467987379/">job_10467987379/</a></div></td>
                 <td class="modified-cell">25-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10453265953/">job_10453265953/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10453265953/">job_10453265953/</a></div></td>
                 <td class="modified-cell">24-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10439714801/">job_10439714801/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10439714801/">job_10439714801/</a></div></td>
                 <td class="modified-cell">23-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10427977470/">job_10427977470/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10427977470/">job_10427977470/</a></div></td>
                 <td class="modified-cell">22-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10424342737/">job_10424342737/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10424342737/">job_10424342737/</a></div></td>
                 <td class="modified-cell">21-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10417784677/">job_10417784677/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10417784677/">job_10417784677/</a></div></td>
                 <td class="modified-cell">20-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10406982321/">job_10406982321/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10406982321/">job_10406982321/</a></div></td>
                 <td class="modified-cell">19-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10394522769/">job_10394522769/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10394522769/">job_10394522769/</a></div></td>
                 <td class="modified-cell">18-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10380667090/">job_10380667090/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10380667090/">job_10380667090/</a></div></td>
                 <td class="modified-cell">17-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10366222183/">job_10366222183/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10366222183/">job_10366222183/</a></div></td>
                 <td class="modified-cell">16-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10355076609/">job_10355076609/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10355076609/">job_10355076609/</a></div></td>
                 <td class="modified-cell">15-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10352155299/">job_10352155299/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10352155299/">job_10352155299/</a></div></td>
                 <td class="modified-cell">14-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10347699648/">job_10347699648/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10347699648/">job_10347699648/</a></div></td>
                 <td class="modified-cell">13-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10336101363/">job_10336101363/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10336101363/">job_10336101363/</a></div></td>
                 <td class="modified-cell">12-Jun-2025 19:00</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10322479435/">job_10322479435/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10322479435/">job_10322479435/</a></div></td>
                 <td class="modified-cell">11-Jun-2025 18:04</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10309174048/">job_10309174048/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10309174048/">job_10309174048/</a></div></td>
                 <td class="modified-cell">10-Jun-2025 18:04</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10296169909/">job_10296169909/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10296169909/">job_10296169909/</a></div></td>
                 <td class="modified-cell">09-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10287942224/">job_10287942224/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10287942224/">job_10287942224/</a></div></td>
                 <td class="modified-cell">08-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10285068566/">job_10285068566/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10285068566/">job_10285068566/</a></div></td>
                 <td class="modified-cell">07-Jun-2025 18:03</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><a href="job_10280691992/">job_10280691992/</a></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10280691992/">job_10280691992/</a></div></td>
                 <td class="modified-cell">06-Jun-2025 18:03</td>
             </tr>
             </tbody>
