@@ -1,0 +1,1 @@
+Pruned 2 report(s) from /tmp/pytest-of-root/pytest-0/test_prune_reports_keeps_lates0; kept 2
