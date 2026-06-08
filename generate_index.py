@@ -64,6 +64,10 @@ STYLE = """
             border-color: #e5534b;
         }
 
+        :root[data-theme="dark"] .summary-compact.passed {
+            color: #3fb950;
+        }
+
         :root[data-theme="light"] {
             color-scheme: light;
         }
@@ -254,8 +258,9 @@ STYLE = """
 
         .summary-compact {
             display: inline-block;
+            padding: 1px 8px;
             font-size: 12px;
-            font-weight: 650;
+            font-weight: 600;
             line-height: 1.5;
             white-space: nowrap;
         }
@@ -273,7 +278,7 @@ STYLE = """
         }
 
         .summary-compact.passed {
-            color: var(--allure-passed);
+            color: #1a7f37;
         }
 
         a {
@@ -404,6 +409,10 @@ STYLE = """
             :root:not([data-theme]) .summary-compact.issue {
                 color: #e5534b;
                 border-color: #e5534b;
+            }
+
+            :root:not([data-theme]) .summary-compact.passed {
+                color: #3fb950;
             }
         }
 """
