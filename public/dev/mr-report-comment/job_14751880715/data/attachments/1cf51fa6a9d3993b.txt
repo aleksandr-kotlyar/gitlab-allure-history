@@ -1,0 +1,2 @@
+Indexing: /tmp/pytest-of-root/pytest-0/test_index_marks_latest_report0/public/dev/feature-login/
+Indexing: /tmp/pytest-of-root/pytest-0/test_index_marks_latest_report0/public/dev/feature-login/
