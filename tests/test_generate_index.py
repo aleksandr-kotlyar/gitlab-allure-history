@@ -194,32 +194,20 @@ def test_report_index_shows_allure_summary_columns(tmp_path):
     index_path = index_folder(branch_dir)
 
     html = index_path.read_text(encoding="utf-8")
-    assert "<th>Status</th>" in html
-    assert "<th>Counts</th>" in html
+    assert "<th>Result</th>" in html
     assert "<th>Duration</th>" in html
     assert "--allure-passed: #97cc64;" in html
     assert "--allure-failed: #fd5a3e;" in html
     assert "--allure-broken: #ffd050;" in html
     assert "--allure-skipped: #aaaaaa;" in html
     assert "--allure-unknown: #d35ebe;" in html
-    assert '<span class="status-badge">failed</span>' in html
-    assert (
-        'class="count-badge" data-status="failed" title="1 failed" '
-        'aria-label="1 failed">1</span>'
-    ) in html
-    assert (
-        'class="count-badge" data-status="skipped" title="1 skipped" '
-        'aria-label="1 skipped">1</span>'
-    ) in html
-    assert (
-        'class="count-badge" data-status="passed" title="2 passed" '
-        'aria-label="2 passed">2</span>'
-    ) in html
-    assert 'title="0 broken"' not in html
-    assert 'aria-label="0 broken"' not in html
-    assert 'title="0 unknown"' not in html
-    assert 'aria-label="0 unknown"' not in html
-    assert "4 total" not in html
+    assert 'class="summary-compact issue"' in html
+    assert "Failed: 1" in html
+    assert "Skipped: 1" in html
+    assert "Passed: 2" in html
+    assert "1 issue" in html
+    assert "4 total" in html
+    assert 'href="job_101/#categories"' in html
     assert 'data-label="Duration">1m 05s</td>' in html
 
 
@@ -237,8 +225,7 @@ def test_report_index_falls_back_when_allure_summary_is_missing_or_invalid(tmp_p
     index_path = index_folder(branch_dir)
 
     html = index_path.read_text(encoding="utf-8")
-    assert html.count('<span class="status-badge">n/a</span>') == 2
-    assert html.count('data-label="Counts">n/a</td>') == 2
+    assert html.count('data-label="Result">n/a</td>') == 2
     assert html.count('data-label="Duration">n/a</td>') == 2
 
 
@@ -262,12 +249,10 @@ def test_report_index_omits_zero_count_badges(tmp_path):
     index_path = index_folder(branch_dir)
 
     html = index_path.read_text(encoding="utf-8")
-    assert html.count('class="count-badge"') == 1
-    assert 'data-status="passed" title="1 passed" aria-label="1 passed">1</span>' in html
-    assert 'title="0 failed"' not in html
-    assert 'title="0 broken"' not in html
-    assert 'title="0 skipped"' not in html
-    assert 'title="0 unknown"' not in html
+    assert html.count('class="summary-compact') == 1
+    assert 'summary-compact passed' in html
+    assert "1 passed" in html
+    assert "Passed: 1" in html
 
 
 def test_navigation_indexes_exclude_report_summary_columns(tmp_path):
@@ -287,11 +272,9 @@ def test_navigation_indexes_exclude_report_summary_columns(tmp_path):
 
     root_html = root_index_path.read_text(encoding="utf-8")
     env_html = env_index_path.read_text(encoding="utf-8")
-    assert "<th>Status</th>" not in root_html
-    assert "<th>Counts</th>" not in root_html
+    assert "<th>Result</th>" not in root_html
     assert "<th>Duration</th>" not in root_html
-    assert "<th>Status</th>" not in env_html
-    assert "<th>Counts</th>" not in env_html
+    assert "<th>Result</th>" not in env_html
     assert "<th>Duration</th>" not in env_html
 
 

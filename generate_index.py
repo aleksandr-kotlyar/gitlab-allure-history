@@ -59,6 +59,11 @@ STYLE = """
             --latest-text: #8bd7ff;
         }
 
+        :root[data-theme="dark"] .summary-compact.issue {
+            color: #e5534b;
+            border-color: #e5534b;
+        }
+
         :root[data-theme="light"] {
             color-scheme: light;
         }
@@ -247,49 +252,36 @@ STYLE = """
             white-space: nowrap;
         }
 
-        .summary-counts-cell {
-            white-space: normal;
-        }
-
-        .summary-counts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .count-badge {
-            display: inline-flex;
-            min-width: 28px;
-            min-height: 22px;
-            align-items: center;
-            justify-content: center;
+        .summary-compact {
+            display: inline-block;
+            padding: 2px 10px;
             border-radius: 999px;
-            padding: 1px 9px 2px;
-            color: #ffffff;
             font-size: 12px;
-            font-weight: 700;
-            line-height: 1.3;
+            font-weight: 650;
+            line-height: 1.5;
+            white-space: nowrap;
         }
 
-        .count-badge[data-status="passed"] {
-            background: var(--allure-passed);
+        .summary-cell a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        .count-badge[data-status="failed"] {
-            background: var(--allure-failed);
+        .summary-compact.issue {
+            color: var(--allure-failed);
+            border: 1px solid var(--allure-failed);
+            background: transparent;
+            border-radius: 4px;
         }
 
-        .count-badge[data-status="broken"] {
-            background: var(--allure-broken);
-            color: #24292f;
-        }
-
-        .count-badge[data-status="skipped"] {
+        .summary-compact.skipped {
             background: var(--allure-skipped);
+            color: #ffffff;
         }
 
-        .count-badge[data-status="unknown"] {
-            background: var(--allure-unknown);
+        .summary-compact.passed {
+            background: var(--allure-passed);
+            color: #24292f;
         }
 
         .status-badge {
@@ -430,6 +422,11 @@ STYLE = """
                 --row: #21262d;
                 --link: #58a6ff;
             }
+
+            :root:not([data-theme]) .summary-compact.issue {
+                color: #e5534b;
+                border-color: #e5534b;
+            }
         }
 """
 
@@ -548,6 +545,7 @@ class SummaryCount:
 class ReportSummary:
     status: str
     counts: tuple[SummaryCount, ...]
+    total: int
     duration: str
 
 
@@ -735,6 +733,7 @@ def read_report_summary(report: Path) -> ReportSummary | None:
     return ReportSummary(
         status=summary_status(statistic, total),
         counts=count_parts,
+        total=total,
         duration=format_duration(time.get("duration")),
     )
 
@@ -949,48 +948,68 @@ def include_report_summary(entries: list[Path]) -> bool:
     return any(is_report_folder(entry) for entry in entries)
 
 
-def summary_counts_html(counts: tuple[SummaryCount, ...]) -> str:
-    if not counts:
+def summary_compact_html(summary: ReportSummary) -> str:
+    if not summary.counts:
         return ""
 
-    badges = []
+    counts_dict = {c.status: c.count for c in summary.counts}
+    failed = counts_dict.get("failed", 0)
+    broken = counts_dict.get("broken", 0)
+    skipped = counts_dict.get("skipped", 0)
+    passed = counts_dict.get("passed", 0)
+    unknown = counts_dict.get("unknown", 0)
 
-    for item in counts:
-        label = f"{item.count} {item.status}"
-        badges.append(
-            (
-                '<span class="count-badge" data-status="{status}" '
-                'title="{label}" aria-label="{label}">{count}</span>'
-            ).format(
-                status=escape(item.status, quote=True),
-                label=escape(label, quote=True),
-                count=escape(str(item.count)),
-            )
-        )
+    issues = failed + broken + unknown
 
-    return '<div class="summary-counts">' + "".join(badges) + "</div>"
+    tooltip_parts = []
+    for s in ("failed", "broken", "skipped", "passed", "unknown"):
+        c = counts_dict.get(s, 0)
+        if c > 0:
+            tooltip_parts.append(f"{s.capitalize()}: {c}")
+    tooltip = " \u00b7 ".join(tooltip_parts)
+
+    if issues > 0:
+        label = f"{issues} issue"
+        if issues != 1:
+            label += "s"
+        label += f" \u00b7 {summary.total} total"
+        css_class = "issue"
+    elif skipped > 0:
+        label = f"{skipped} skipped \u00b7 {summary.total} total"
+        css_class = "skipped"
+    else:
+        label = f"{passed} passed"
+        css_class = "passed"
+
+    return (
+        '<span class="summary-compact {css_class}" '
+        'title="{tooltip}">{label}</span>'
+    ).format(
+        css_class=escape(css_class),
+        tooltip=escape(tooltip, quote=True),
+        label=escape(label),
+    )
 
 
 def report_summary_cells(entry: Path) -> list[str]:
     summary = read_report_summary(entry) if is_report_folder(entry) else None
 
     if summary is None:
-        status = "n/a"
         counts = "n/a"
         duration = "n/a"
     else:
-        status = summary.status
-        counts = summary_counts_html(summary.counts)
+        counts = (
+            '<a href="{href}">{inner}</a>'.format(
+                href=escape(link_for(entry) + "#categories", quote=True),
+                inner=summary_compact_html(summary),
+            )
+        )
         duration = summary.duration
 
     return [
         (
-            '                <td class="summary-cell" data-label="Status">'
-            '<span class="status-badge">{status}</span></td>'
-        ).format(status=escape(status)),
-        (
-            '                <td class="summary-cell summary-counts-cell" '
-            'data-label="Counts">{counts}</td>'
+            '                <td class="summary-cell" '
+            'data-label="Result">{counts}</td>'
         ).format(counts=counts if summary is not None else escape(counts)),
         (
             '                <td class="summary-cell" data-label="Duration">'
@@ -1049,11 +1068,10 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
     desktop_batch_size, mobile_batch_size = configured_list_batch_sizes()
     latest_report = latest_report_for(folder)
     show_report_summary = include_report_summary(entries)
-    column_count = 5 if show_report_summary else 2
+    column_count = 4 if show_report_summary else 2
     summary_headers = (
         """
-                    <th>Status</th>
-                    <th>Counts</th>
+                    <th>Result</th>
                     <th>Duration</th>""".rstrip()
         if show_report_summary
         else ""
