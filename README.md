@@ -204,11 +204,13 @@ Component inputs:
 - `pages-branch`: branch used to store generated Pages content and Allure history. Defaults to `gl-pages`.
 - `reports-to-keep`: number of report snapshots kept per environment and branch. Defaults to `30`.
 - `build-runtime-image`: build and push the runtime image in tag pipelines. Defaults to `"false"` and is intended for this repository's own release pipeline.
+- `comment-mr`: post or update a merge request comment with the latest report URL. Defaults to `"false"`. Requires `CI_MERGE_REQUEST_IID` context.
 
 Optional CI variables:
 
 - `ALLURE_HISTORY_INDEX_DESKTOP_BATCH_SIZE`: number of index rows shown before `Show more...` on desktop. Defaults to `25`.
 - `ALLURE_HISTORY_INDEX_MOBILE_BATCH_SIZE`: number of index rows shown before `Show more...` on mobile. Defaults to `12`.
+- `ALLURE_HISTORY_TOKEN`: token with `api` scope for posting MR comments. Falls back to `CI_JOB_TOKEN` when unset.
 
 Set either index batch size to `0` to show all rows for that viewport without progressive reveal controls.
 
@@ -323,7 +325,7 @@ This is expected. `test_demo` is marked `allow_failure: true` in GitLab CI and e
 Useful extensions for real projects:
 
 - tune how many report snapshots are kept per branch;
-- add links from merge requests to the latest report;
+- ~~add links from merge requests to the latest report;~~ (implemented via `comment-mr` input)
 - publish only from selected branches;
 - add screenshots or videos as Allure attachments;
 - replace the example CI image with a project-owned image.
