@@ -12,6 +12,7 @@ COPY --from=compile-image /app/venv /app/venv
 
 RUN apk update && apk upgrade
 RUN apk --no-cache add \
+    curl \
     git \
     openjdk17-jre
 
