@@ -3,6 +3,8 @@ import random
 import pytest
 from allure import link
 
+_SHOULD_FAIL = random.random() < 0.5
+
 
 @link(2)
 @pytest.mark.demo
@@ -13,7 +15,7 @@ def test_pass(before_test):
 @link(2)
 @pytest.mark.demo
 def test_fail(before_test):
-    if random.random() < 0.5:
+    if not _SHOULD_FAIL:
         pytest.skip('flaky — пропущен')
     assert False
 
@@ -21,7 +23,7 @@ def test_fail(before_test):
 @link(2)
 @pytest.mark.demo
 def test_broken():
-    if random.random() < 0.5:
+    if not _SHOULD_FAIL:
         return
     raise ValueError('broken')
 
