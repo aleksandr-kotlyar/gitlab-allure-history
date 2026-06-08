@@ -254,8 +254,6 @@ STYLE = """
 
         .summary-compact {
             display: inline-block;
-            padding: 2px 10px;
-            border-radius: 999px;
             font-size: 12px;
             font-weight: 650;
             line-height: 1.5;
@@ -274,28 +272,8 @@ STYLE = """
             border-radius: 4px;
         }
 
-        .summary-compact.skipped {
-            background: var(--allure-skipped);
-            color: #ffffff;
-        }
-
         .summary-compact.passed {
-            background: var(--allure-passed);
-            color: #24292f;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            min-height: 22px;
-            align-items: center;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 1px 8px 2px;
-            color: var(--text);
-            font-size: 12px;
-            font-weight: 650;
-            line-height: 1.3;
-            text-transform: lowercase;
+            color: var(--allure-passed);
         }
 
         a {
@@ -974,9 +952,6 @@ def summary_compact_html(summary: ReportSummary) -> str:
             label += "s"
         label += f" \u00b7 {summary.total} total"
         css_class = "issue"
-    elif skipped > 0:
-        label = f"{skipped} skipped \u00b7 {summary.total} total"
-        css_class = "skipped"
     else:
         label = f"{passed} passed"
         css_class = "passed"
