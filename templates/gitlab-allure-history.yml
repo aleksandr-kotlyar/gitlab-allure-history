@@ -248,40 +248,40 @@ allure:
       cp -r pages-worktree/public public
 
     - |
-      if [ "${ALLURE_HISTORY_COMMENT_MR}" = "true" ] && [ -n "${CI_MERGE_REQUEST_IID:-}" ]; then
-        TOKEN="${ALLURE_HISTORY_TOKEN:-${CI_JOB_TOKEN}}"
-        REPORT_URL="${CI_PAGES_URL}/${REPORT_ENV}/${REPORT_BRANCH}/${REPORT_DIR}/"
-        MARKER="<!-- allure-history-report -->"
-        COMMENT_BODY="## Allure Report\n\n[View test report](${REPORT_URL})\n\n${MARKER}"
+      echo "MR comment: ALLURE_HISTORY_COMMENT_MR=${ALLURE_HISTORY_COMMENT_MR:-unset}, CI_MERGE_REQUEST_IID=${CI_MERGE_REQUEST_IID:-unset}"
 
+      if [ "${ALLURE_HISTORY_COMMENT_MR}" != "true" ]; then
+        echo "MR comment: skipping — ALLURE_HISTORY_COMMENT_MR is not 'true'."
+      elif [ -z "${CI_MERGE_REQUEST_IID:-}" ]; then
+        echo "MR comment: skipping — not in a merge request pipeline."
+      else
+        TOKEN="${GIT_PUSH_TOKEN}"
+        REPORT_URL="${CI_PAGES_URL}/${REPORT_ENV}/${REPORT_BRANCH}/${REPORT_DIR}/"
+        COMMENT_BODY=$(printf '## Allure Report\n\n[View test report](%s)\n\n<!-- allure-history-report -->' "$REPORT_URL")
+
+        echo "MR comment: looking for existing comment with marker..."
         EXISTING_NOTE_ID=$(curl -s --header "PRIVATE-TOKEN: ${TOKEN}" \
           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes?sort=desc&per_page=100" \
-          | python3 - 2>/dev/null <<'PY' || true
-        import json, sys
-        marker = "<!-- allure-history-report -->"
-        try:
-            notes = json.load(sys.stdin)
-        except:
-            sys.exit(0)
-        for note in notes:
-            if marker in note.get('body', ''):
-                print(note['id'])
-                break
-        PY
+          | python3 -c 'import json,sys;notes=json.load(sys.stdin);[print(n["id"]) for n in notes if "<!-- allure-history-report -->" in n.get("body","")]' \
+          2>/dev/null || true)
 
         if [ -n "$EXISTING_NOTE_ID" ]; then
+          echo "MR comment: updating note ${EXISTING_NOTE_ID}..."
           curl -s --request PUT \
             --header "PRIVATE-TOKEN: ${TOKEN}" \
             --data-urlencode "body=${COMMENT_BODY}" \
+            -w "\nMR comment: HTTP %{http_code}" \
             "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes/${EXISTING_NOTE_ID}" \
-            > /dev/null 2>&1 || true
-          echo "Updated MR comment note ${EXISTING_NOTE_ID} with report URL: ${REPORT_URL}"
+            || true
+          echo ""
         else
+          echo "MR comment: creating new note..."
           curl -s --request POST \
             --header "PRIVATE-TOKEN: ${TOKEN}" \
             --data-urlencode "body=${COMMENT_BODY}" \
+            -w "\nMR comment: HTTP %{http_code}" \
             "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes" \
-            > /dev/null 2>&1 || true
-          echo "Created MR comment with report URL: ${REPORT_URL}"
+            || true
+          echo ""
         fi
       fi
