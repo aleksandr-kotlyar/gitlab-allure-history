@@ -19,8 +19,7 @@ default:
 test_gate:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == "web"
-      when: never
+    - if: $IMAGE_TAG
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
   script:
@@ -39,7 +38,7 @@ test_demo:
   stage: test
   allow_failure: true
   rules:
-    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $IMAGE_TAG
       when: never
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
