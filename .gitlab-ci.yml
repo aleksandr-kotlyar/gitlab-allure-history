@@ -3,11 +3,13 @@ include:
     inputs:
       allure-history-image-tag: $CI_COMMIT_TAG
       build-runtime-image: "true"
+      comment-mr: "false"
     rules:
       - if: $CI_COMMIT_TAG
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.1"
+      allure-history-image-tag: "2026.2.8"
+      comment-mr: "true"
     rules:
       - if: $CI_COMMIT_TAG == null
 
