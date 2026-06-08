@@ -61,6 +61,10 @@
             border-color: #e5534b;
         }
 
+        :root[data-theme="dark"] .summary-compact.passed {
+            color: #3fb950;
+        }
+
         :root[data-theme="light"] {
             color-scheme: light;
         }
@@ -251,8 +255,9 @@
 
         .summary-compact {
             display: inline-block;
+            padding: 1px 8px;
             font-size: 12px;
-            font-weight: 650;
+            font-weight: 600;
             line-height: 1.5;
             white-space: nowrap;
         }
@@ -270,7 +275,7 @@
         }
 
         .summary-compact.passed {
-            color: var(--allure-passed);
+            color: #1a7f37;
         }
 
         a {
@@ -402,6 +407,10 @@
                 color: #e5534b;
                 border-color: #e5534b;
             }
+
+            :root:not([data-theme]) .summary-compact.passed {
+                color: #3fb950;
+            }
         }
     </style>
 </head>
@@ -423,7 +432,13 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14752766460/">job_14752766460/</a> <span class="latest-badge">latest</span></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14752844942/">job_14752844942/</a> <span class="latest-badge">latest</span></div></td>
+                <td class="summary-cell" data-label="Result"><a href="job_14752844942/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 28">2 issues · 31 total</span></a></td>
+                <td class="summary-cell" data-label="Duration">1s</td>
+                <td class="modified-cell" data-label="Modified">08-Jun-2026 20:46</td>
+            </tr>
+            <tr data-list-row>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14752766460/">job_14752766460/</a></div></td>
                 <td class="summary-cell" data-label="Result"><a href="job_14752766460/#categories"><span class="summary-compact passed" title="Skipped: 2 · Passed: 29">29 passed</span></a></td>
                 <td class="summary-cell" data-label="Duration">2s</td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 20:41</td>
@@ -595,12 +610,6 @@
                 <td class="summary-cell" data-label="Result"><a href="job_1078190611/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
                 <td class="summary-cell" data-label="Duration">33 ms</td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 19:31</td>
-            </tr>
-            <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_1078188141/">job_1078188141/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_1078188141/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">31 ms</td>
-                <td class="modified-cell" data-label="Modified">06-Mar-2021 19:26</td>
             </tr>
             </tbody>
         </table>
