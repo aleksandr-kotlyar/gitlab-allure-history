@@ -56,6 +56,11 @@
             --latest-text: #8bd7ff;
         }
 
+        :root[data-theme="dark"] .summary-compact.issue {
+            color: #e5534b;
+            border-color: #e5534b;
+        }
+
         :root[data-theme="light"] {
             color-scheme: light;
         }
@@ -244,49 +249,36 @@
             white-space: nowrap;
         }
 
-        .summary-counts-cell {
-            white-space: normal;
-        }
-
-        .summary-counts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .count-badge {
-            display: inline-flex;
-            min-width: 28px;
-            min-height: 22px;
-            align-items: center;
-            justify-content: center;
+        .summary-compact {
+            display: inline-block;
+            padding: 2px 10px;
             border-radius: 999px;
-            padding: 1px 9px 2px;
-            color: #ffffff;
             font-size: 12px;
-            font-weight: 700;
-            line-height: 1.3;
+            font-weight: 650;
+            line-height: 1.5;
+            white-space: nowrap;
         }
 
-        .count-badge[data-status="passed"] {
-            background: var(--allure-passed);
+        .summary-cell a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        .count-badge[data-status="failed"] {
-            background: var(--allure-failed);
+        .summary-compact.issue {
+            color: var(--allure-failed);
+            border: 1px solid var(--allure-failed);
+            background: transparent;
+            border-radius: 4px;
         }
 
-        .count-badge[data-status="broken"] {
-            background: var(--allure-broken);
-            color: #24292f;
-        }
-
-        .count-badge[data-status="skipped"] {
+        .summary-compact.skipped {
             background: var(--allure-skipped);
+            color: #ffffff;
         }
 
-        .count-badge[data-status="unknown"] {
-            background: var(--allure-unknown);
+        .summary-compact.passed {
+            background: var(--allure-passed);
+            color: #24292f;
         }
 
         .status-badge {
@@ -427,6 +419,11 @@
                 --row: #21262d;
                 --link: #58a6ff;
             }
+
+            :root:not([data-theme]) .summary-compact.issue {
+                color: #e5534b;
+                border-color: #e5534b;
+            }
         }
     </style>
 </head>
@@ -441,8 +438,7 @@
                 <tr>
                     <th>Name</th>
 
-                    <th>Status</th>
-                    <th>Counts</th>
+                    <th>Result</th>
                     <th>Duration</th>
                     <th>Modified</th>
                 </tr>
@@ -450,22 +446,19 @@
             <tbody>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14704211080/">job_14704211080/</a> <span class="latest-badge">latest</span></div></td>
-                <td class="summary-cell" data-label="Status"><span class="status-badge">failed</span></td>
-                <td class="summary-cell summary-counts-cell" data-label="Counts"><div class="summary-counts"><span class="count-badge" data-status="failed" title="1 failed" aria-label="1 failed">1</span><span class="count-badge" data-status="broken" title="1 broken" aria-label="1 broken">1</span><span class="count-badge" data-status="skipped" title="1 skipped" aria-label="1 skipped">1</span><span class="count-badge" data-status="passed" title="9 passed" aria-label="9 passed">9</span></div></td>
+                <td class="summary-cell" data-label="Result"><a href="job_14704211080/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 9">2 issues · 12 total</span></a></td>
                 <td class="summary-cell" data-label="Duration">267 ms</td>
                 <td class="modified-cell" data-label="Modified">04-Jun-2026 22:25</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14704195113/">job_14704195113/</a></div></td>
-                <td class="summary-cell" data-label="Status"><span class="status-badge">failed</span></td>
-                <td class="summary-cell summary-counts-cell" data-label="Counts"><div class="summary-counts"><span class="count-badge" data-status="failed" title="1 failed" aria-label="1 failed">1</span><span class="count-badge" data-status="broken" title="1 broken" aria-label="1 broken">1</span><span class="count-badge" data-status="skipped" title="1 skipped" aria-label="1 skipped">1</span><span class="count-badge" data-status="passed" title="9 passed" aria-label="9 passed">9</span></div></td>
+                <td class="summary-cell" data-label="Result"><a href="job_14704195113/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 9">2 issues · 12 total</span></a></td>
                 <td class="summary-cell" data-label="Duration">1s</td>
                 <td class="modified-cell" data-label="Modified">04-Jun-2026 22:23</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14703756816/">job_14703756816/</a></div></td>
-                <td class="summary-cell" data-label="Status"><span class="status-badge">failed</span></td>
-                <td class="summary-cell summary-counts-cell" data-label="Counts"><div class="summary-counts"><span class="count-badge" data-status="failed" title="1 failed" aria-label="1 failed">1</span><span class="count-badge" data-status="broken" title="1 broken" aria-label="1 broken">1</span><span class="count-badge" data-status="skipped" title="1 skipped" aria-label="1 skipped">1</span><span class="count-badge" data-status="passed" title="7 passed" aria-label="7 passed">7</span></div></td>
+                <td class="summary-cell" data-label="Result"><a href="job_14703756816/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 7">2 issues · 10 total</span></a></td>
                 <td class="summary-cell" data-label="Duration">1s</td>
                 <td class="modified-cell" data-label="Modified">04-Jun-2026 22:01</td>
             </tr>
