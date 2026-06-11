@@ -100,3 +100,4 @@ def test_project_pipeline_executes_every_consumer_as_a_child_pipeline():
         assert f"local: tests/fixtures/{name}/.gitlab-ci.yml" in pipeline
 
     assert pipeline.count("strategy: mirror") == len(CONTRACTS)
+    assert pipeline.count("  inherit:\n    variables: false") == len(CONTRACTS)

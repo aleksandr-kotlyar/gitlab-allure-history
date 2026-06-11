@@ -58,6 +58,8 @@ test_demo:
 
 consumer_contract:minimal:
   stage: test
+  inherit:
+    variables: false
   rules:
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
@@ -68,6 +70,8 @@ consumer_contract:minimal:
 
 consumer_contract:custom-env:
   stage: test
+  inherit:
+    variables: false
   rules:
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
@@ -78,6 +82,8 @@ consumer_contract:custom-env:
 
 consumer_contract:without-jobid:
   stage: test
+  inherit:
+    variables: false
   rules:
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
@@ -88,6 +94,8 @@ consumer_contract:without-jobid:
 
 consumer_contract:custom-pages-branch:
   stage: test
+  inherit:
+    variables: false
   rules:
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
