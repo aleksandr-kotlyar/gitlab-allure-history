@@ -16,6 +16,19 @@ include:
 default:
   image: $ALLURE_HISTORY_IMAGE
 
+ci_lint:
+  stage: test
+  script:
+    - set -euo pipefail
+    - test -n "${CI_LINT_TOKEN:-}"
+    - python3 validate_gitlab_ci.py
+        --api-url "$CI_API_V4_URL"
+        --project-id "$CI_PROJECT_ID"
+        --commit-sha "$CI_COMMIT_SHA"
+        --private-token "$CI_LINT_TOKEN"
+  tags:
+    - macos-local
+
 test_gate:
   stage: test
   rules:

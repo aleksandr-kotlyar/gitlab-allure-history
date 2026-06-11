@@ -91,6 +91,20 @@ def test_project_pipeline_dogfoods_reusable_template():
     assert "tag_name: $CI_COMMIT_TAG" in pipeline
 
 
+def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
+    pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "ci_lint:\n  stage: test\n" in pipeline
+    assert '    - test -n "${CI_LINT_TOKEN:-}"' in pipeline
+    assert "    - python3 validate_gitlab_ci.py" in pipeline
+    assert '        --api-url "$CI_API_V4_URL"' in pipeline
+    assert '        --project-id "$CI_PROJECT_ID"' in pipeline
+    assert '        --commit-sha "$CI_COMMIT_SHA"' in pipeline
+    assert '        --private-token "$CI_LINT_TOKEN"' in pipeline
+    assert "requires a masked `CI_LINT_TOKEN` with `api` scope" in readme
+
+
 def test_project_pipeline_smokes_published_pages_after_allure():
     pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
 
