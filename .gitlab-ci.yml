@@ -10,3 +10,5 @@ pages:
     expire_in: 1 day
     paths:
       - public
+  tags:
+    - macos-local
