@@ -180,7 +180,17 @@
         }
 
         .name-cell {
-            width: 70%;
+            width: auto;
+        }
+
+        .result-cell {
+            width: 220px;
+            white-space: nowrap;
+        }
+
+        .duration-cell {
+            width: 110px;
+            white-space: nowrap;
         }
 
         .entry-title {
@@ -240,13 +250,19 @@
         }
 
         .modified-cell {
+            width: 190px;
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             text-align: right;
             white-space: nowrap;
         }
 
-        .summary-cell {
+        .directory-index .modified-cell {
+            width: 220px;
+        }
+
+        .result-cell,
+        .duration-cell {
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
@@ -260,7 +276,8 @@
             white-space: nowrap;
         }
 
-        .summary-cell a {
+        .result-cell a,
+        .duration-cell a {
             color: inherit;
             text-decoration: none;
         }
@@ -419,27 +436,27 @@
             <h1 class="breadcrumbs" aria-label="Current location"><a href="../../">gitlab-allure-history</a><span class="breadcrumb-separator">/</span><a href="../">dev</a><span class="breadcrumb-separator">/</span><span aria-current="page">fix-allure-trend-report-links</span></h1>
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
-        <table data-progressive-list>
+        <table class="index-table has-summary" data-progressive-list>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th class="name-cell">Name</th>
 
-                    <th>Result</th>
-                    <th>Duration</th>
-                    <th>Modified</th>
+                    <th class="result-cell">Result</th>
+                    <th class="duration-cell">Duration</th>
+                    <th class="modified-cell">Modified</th>
                 </tr>
             </thead>
             <tbody>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14731643452/">job_14731643452/</a> <span class="latest-badge">latest</span></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_14731643452/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 24">2 issues · 27 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">406 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_14731643452/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 24">2 issues · 27 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">406 ms</td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:29</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14731623846/">job_14731623846/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_14731623846/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 24">2 issues · 27 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">1s</td>
+                <td class="result-cell" data-label="Result"><a href="job_14731623846/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 24">2 issues · 27 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">1s</td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:22</td>
             </tr>
             </tbody>

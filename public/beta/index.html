@@ -180,7 +180,17 @@
         }
 
         .name-cell {
-            width: 70%;
+            width: auto;
+        }
+
+        .result-cell {
+            width: 220px;
+            white-space: nowrap;
+        }
+
+        .duration-cell {
+            width: 110px;
+            white-space: nowrap;
         }
 
         .entry-title {
@@ -240,13 +250,19 @@
         }
 
         .modified-cell {
+            width: 190px;
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             text-align: right;
             white-space: nowrap;
         }
 
-        .summary-cell {
+        .directory-index .modified-cell {
+            width: 220px;
+        }
+
+        .result-cell,
+        .duration-cell {
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
@@ -260,7 +276,8 @@
             white-space: nowrap;
         }
 
-        .summary-cell a {
+        .result-cell a,
+        .duration-cell a {
             color: inherit;
             text-decoration: none;
         }
@@ -419,12 +436,12 @@
             <h1 class="breadcrumbs" aria-label="Current location"><a href="../">gitlab-allure-history</a><span class="breadcrumb-separator">/</span><span aria-current="page">beta</span></h1>
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
-        <table data-progressive-list>
+        <table class="index-table directory-index" data-progressive-list>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th class="name-cell">Name</th>
 
-                    <th>Modified</th>
+                    <th class="modified-cell">Modified</th>
                 </tr>
             </thead>
             <tbody>
