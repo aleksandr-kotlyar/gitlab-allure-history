@@ -491,7 +491,8 @@ def test_generator_footer_renders_with_version(monkeypatch):
     html = generator_footer_html()
 
     assert "gitlab-allure-history" in html
-    assert "v2026.2.8" in html
+    assert "2026.2.8" in html
+    assert "v2026.2.8" not in html
 
 
 def test_generator_footer_skips_moving_refs(monkeypatch):
@@ -500,7 +501,7 @@ def test_generator_footer_skips_moving_refs(monkeypatch):
         monkeypatch.setenv(SHOW_FOOTER_ENV, "true")
         html = generator_footer_html()
         assert "gitlab-allure-history" in html
-        assert "v" + ref not in html
+        assert ref not in html
 
 
 def test_generator_footer_escapes_version(monkeypatch):
