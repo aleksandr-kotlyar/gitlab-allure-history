@@ -18,6 +18,8 @@ consumer_contract:
     paths:
       - allure-results
       - jobid
+  tags:
+    - macos-local
 
 allure:
   rules:
@@ -31,3 +33,5 @@ verify_consumer_contract:
     - test "$PAGES_BRANCH" = "gl-pages"
     - test -d allure-results
     - test -s jobid
+  tags:
+    - macos-local

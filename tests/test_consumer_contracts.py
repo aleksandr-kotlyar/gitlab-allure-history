@@ -54,6 +54,7 @@ def test_consumer_fixture_uses_external_component_contract(name):
     assert "allure-results" in content
     assert "verify_consumer_contract:" in content
     assert "allure:\n  rules:\n    - when: never" in content
+    assert content.count("  tags:\n    - macos-local") == 2
 
 
 @pytest.mark.parametrize("name, contract", CONTRACTS.items())
