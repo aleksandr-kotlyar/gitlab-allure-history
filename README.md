@@ -308,6 +308,7 @@ The demo suite intentionally contains failed, broken, skipped, and passed exampl
 |------|---------|
 | `.gitlab-ci.yml` | Dogfooding pipeline |
 | `templates/gitlab-allure-history.yml` | Reusable CI component |
+| `tests/fixtures/consumer-*` | External consumer contracts executed as child pipelines |
 | `Dockerfile` | Runtime image with Python, Java, Git, Allure CLI |
 | `generate_index.py` | Static HTML index generator |
 | `prune_reports.py` | Removes old report snapshots |
@@ -315,6 +316,11 @@ The demo suite intentionally contains failed, broken, skipped, and passed exampl
 | `conftest.py` | Pytest fixtures |
 | `tests/` | Gate and demo tests |
 | `CHANGELOG.md` | Release history and policy |
+
+The `consumer_contract:*` CI jobs execute every consumer fixture as a child
+pipeline against the component at the current commit SHA. Fixtures disable the
+publishing job and verify the expanded inputs and upstream artifacts without
+changing Pages content.
 
 ## Demo Links
 
