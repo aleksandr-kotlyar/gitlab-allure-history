@@ -61,7 +61,6 @@ STYLE = """
 
         :root[data-theme="dark"] .summary-compact.issue {
             color: #e5534b;
-            border-color: #e5534b;
         }
 
         :root[data-theme="dark"] .summary-compact.passed {
@@ -80,7 +79,7 @@ STYLE = """
             margin: 0;
             background: var(--bg);
             color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             line-height: 1.5;
         }
 
@@ -260,7 +259,6 @@ STYLE = """
             display: inline-block;
             padding: 1px 8px;
             font-size: 12px;
-            font-weight: 600;
             line-height: 1.5;
             white-space: nowrap;
         }
@@ -271,14 +269,16 @@ STYLE = """
         }
 
         .summary-compact.issue {
-            color: var(--allure-failed);
-            border: 1px solid var(--allure-failed);
-            background: transparent;
-            border-radius: 4px;
+            color: #d93025;
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
         }
 
         .summary-compact.passed {
-            color: #1a7f37;
+            color: #2f9e44;
+            font-weight: 500;
         }
 
         a {
@@ -381,7 +381,7 @@ STYLE = """
                 flex: 0 0 auto;
                 color: var(--muted);
                 font-size: 12px;
-                font-weight: 600;
+            font-weight: 500;
                 text-transform: uppercase;
             }
 
@@ -408,7 +408,6 @@ STYLE = """
 
             :root:not([data-theme]) .summary-compact.issue {
                 color: #e5534b;
-                border-color: #e5534b;
             }
 
             :root:not([data-theme]) .summary-compact.passed {
@@ -982,9 +981,11 @@ def report_summary_cells(entry: Path) -> list[str]:
         counts = "n/a"
         duration = "n/a"
     else:
+        issues = summary.status in ("failed", "broken", "unknown")
+        suffix = "#categories" if issues else ""
         counts = (
             '<a href="{href}">{inner}</a>'.format(
-                href=escape(link_for(entry) + "#categories", quote=True),
+                href=escape(link_for(entry) + suffix, quote=True),
                 inner=summary_compact_html(summary),
             )
         )
@@ -1139,7 +1140,7 @@ def main(argv: list[str]) -> int:
         return 0
 
     if len(argv) != 2:
-        print("Usage: python3 generate_index.py [--recursive] <folder>", file=sys.stderr)
+        print("Usage: python3 _generate_index.py [--recursive] <folder>", file=sys.stderr)
         return 2
 
     index_folder(argv[1])
