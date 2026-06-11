@@ -1,4 +1,5 @@
 spec:
+  component: [version, reference]
   inputs:
     environment:
       default: dev
@@ -7,7 +8,8 @@ spec:
       default: registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history
       description: Runtime image repository.
     allure-history-image-tag:
-      description: Runtime image tag. Use the same pinned tag as the component version.
+      default: "$[[ component.version ]]"
+      description: Runtime image tag. Defaults to the component version when using a tagged reference. Required when using a SHA or branch reference.
     allure-history-tools-dir:
       default: /opt/gitlab-allure-history
       description: Directory in the runtime image containing generate_index.py and prune_reports.py.
@@ -38,6 +40,10 @@ variables:
   PAGES_BRANCH: $[[ inputs.pages-branch ]]
   REPORTS_TO_KEEP: $[[ inputs.reports-to-keep ]]
   ALLURE_HISTORY_COMMENT_MR: $[[ inputs.comment-mr ]]
+  ALLURE_HISTORY_GENERATOR_VERSION: $[[ inputs.allure-history-image-tag ]]
+  ALLURE_HISTORY_IMAGE_TAG: $[[ inputs.allure-history-image-tag ]]
+  COMPONENT_VERSION: $[[ component.version ]]
+  COMPONENT_REFERENCE: $[[ component.reference ]]
 
 stages:
   - build
@@ -101,6 +107,12 @@ allure:
 
       if ! command -v allure >/dev/null 2>&1; then
         echo "Missing allure command in ALLURE_HISTORY_IMAGE (${ALLURE_HISTORY_IMAGE}). Use the default image or provide Allure commandline in your custom image."
+        exit 1
+      fi
+
+      if [ -z "${ALLURE_HISTORY_IMAGE_TAG:-}" ]; then
+        echo "ALLURE_HISTORY_IMAGE_TAG is empty. Provide a tagged component reference (e.g. @2026.x.y), or set the allure-history-image-tag input explicitly."
+        echo "Component version: '${COMPONENT_VERSION:-unset}', reference: '${COMPONENT_REFERENCE:-unset}'"
         exit 1
       fi
 
@@ -225,6 +237,8 @@ allure:
         META_DIR="$(dirname "$META_DIR")"
       done
 
+      export GITLAB_ALLURE_HISTORY_VERSION="${GITLAB_ALLURE_HISTORY_VERSION:-${ALLURE_HISTORY_GENERATOR_VERSION:-${COMPONENT_VERSION:-unknown}}}"
+
       python3 "$PRUNE_REPORTS_PY" "$BRANCH_PUBLIC_DIR" "$REPORTS_TO_KEEP"
 
       python3 "$GENERATE_INDEX_PY" --recursive "$PAGES_PUBLIC_DIR"
@@ -252,36 +266,170 @@ allure:
 
       if [ "${ALLURE_HISTORY_COMMENT_MR}" != "true" ]; then
         echo "MR comment: skipping — ALLURE_HISTORY_COMMENT_MR is not 'true'."
-      elif [ -z "${CI_MERGE_REQUEST_IID:-}" ]; then
+        exit 0
+      fi
+
+      if [ -z "${CI_MERGE_REQUEST_IID:-}" ]; then
         echo "MR comment: skipping — not in a merge request pipeline."
-      else
-        TOKEN="${GIT_PUSH_TOKEN}"
-        REPORT_URL="${CI_PAGES_URL}/${REPORT_ENV}/${REPORT_BRANCH}/${REPORT_DIR}/"
-        COMMENT_BODY=$(printf '## Allure Report\n\n[View test report](%s)\n\n<!-- allure-history-report -->' "$REPORT_URL")
+        exit 0
+      fi
 
-        echo "MR comment: looking for existing comment with marker..."
-        EXISTING_NOTE_ID=$(curl -s --header "PRIVATE-TOKEN: ${TOKEN}" \
-          "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes?sort=desc&per_page=100" \
-          | python3 -c 'import json,sys;notes=json.load(sys.stdin);[print(n["id"]) for n in notes if "<!-- allure-history-report -->" in n.get("body","")]' \
-          2>/dev/null || true)
+      if [ -z "${ALLURE_HISTORY_TOKEN:-}" ]; then
+        echo "MR comment: skipping — ALLURE_HISTORY_TOKEN with \"developer\" role and \"api\" scope is not set."
+        exit 0
+      fi
 
-        if [ -n "$EXISTING_NOTE_ID" ]; then
-          echo "MR comment: updating note ${EXISTING_NOTE_ID}..."
-          curl -s --request PUT \
-            --header "PRIVATE-TOKEN: ${TOKEN}" \
-            --data-urlencode "body=${COMMENT_BODY}" \
-            -w "\nMR comment: HTTP %{http_code}" \
-            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes/${EXISTING_NOTE_ID}" \
-            || true
-          echo ""
-        else
-          echo "MR comment: creating new note..."
-          curl -s --request POST \
-            --header "PRIVATE-TOKEN: ${TOKEN}" \
-            --data-urlencode "body=${COMMENT_BODY}" \
-            -w "\nMR comment: HTTP %{http_code}" \
-            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes" \
-            || true
-          echo ""
+      TOKEN="${ALLURE_HISTORY_TOKEN}"
+      REPORT_URL="${CI_PAGES_URL}/${REPORT_ENV}/${REPORT_BRANCH}/${REPORT_DIR}/"
+      export REPORT_URL
+
+      COMMENT_BODY=$(python3 <<'PY'
+      import json
+      import os
+
+      report_url = os.environ["REPORT_URL"]
+
+      summary_path = os.path.join(os.environ["REPORT_DIR"], "widgets", "summary.json")
+
+      try:
+          with open(summary_path) as f:
+              data = json.load(f)
+          stat = data.get("statistic", {})
+          passed = int(stat.get("passed", 0))
+          failed = int(stat.get("failed", 0))
+          broken = int(stat.get("broken", 0))
+          skipped = int(stat.get("skipped", 0))
+          unknown = int(stat.get("unknown", 0))
+          total = int(stat.get("total", 0))
+          if total == 0:
+              total = passed + failed + broken + skipped + unknown
+      except (OSError, ValueError, KeyError, TypeError):
+          passed = failed = broken = skipped = unknown = total = 0
+
+      total_issues = failed + broken
+      categories_url = f"{report_url}#categories"
+
+      if total_issues > 0:
+          body = (
+              f"> [!caution]\n"
+              f"> \U0001f534 **FAILED** \u00b7 "
+              f"[Allure report {total_issues} issues]({categories_url}) "
+              f"(failed {failed}, broken {broken}) \u00b7 {total} total"
+          )
+      else:
+          body = (
+              f"> [!tip]\n"
+              f"> \U0001f7e2 **PASSED** \u00b7 "
+              f"[Allure report]({categories_url}) \u00b7 {total} total"
+          )
+
+      print(body)
+      PY
+      )
+
+      echo "MR comment: fetching current API user..."
+      CURRENT_USER_ID=$(curl -s --header "PRIVATE-TOKEN: ${TOKEN}" \
+        "${CI_API_V4_URL}/user" \
+        | python3 -c 'import json,sys;print(json.load(sys.stdin).get("id",""))' \
+        2>/dev/null || true)
+
+      if [ -z "${CURRENT_USER_ID}" ]; then
+        echo "MR comment: failed to authenticate with ALLURE_HISTORY_TOKEN. Skipping MR comment."
+        exit 0
+      fi
+      echo "MR comment: authenticated as user id ${CURRENT_USER_ID}"
+
+      echo "MR comment: looking for existing comment with marker by current user..."
+      NOTE_ACTION="create"
+      EXISTING_NOTE_ID=""
+
+      NOTES_JSON=$(curl -s --header "PRIVATE-TOKEN: ${TOKEN}" \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes?sort=desc&per_page=100" \
+        2>/dev/null || true)
+
+      MATCH_INFO=$(printf '%s' "${NOTES_JSON}" | python3 -c '
+      import json, sys
+      try:
+          notes = json.load(sys.stdin)
+      except (json.JSONDecodeError, TypeError):
+          print("NONE")
+          sys.exit(0)
+      uid = sys.argv[1]
+      total = len(notes)
+      report_notes = [
+          n for n in notes
+          if (
+              "[Allure report" in n.get("body", "")
+              or "allure-history-report" in n.get("body", "")
+          )
+          and not n.get("system", False)
+      ]
+      own = [n for n in report_notes if str(n.get("author", {}).get("id", "")) == uid]
+      foreign = [n for n in report_notes if str(n.get("author", {}).get("id", "")) != uid]
+      if own:
+          print("OWN:" + str(own[0]["id"]))
+      elif foreign:
+          print("FOREIGN:" + str(len(foreign)))
+      else:
+          print("NONE:" + str(len(report_notes)) + "/" + str(total))
+      ' "${CURRENT_USER_ID}" 2>/dev/null || true)
+
+      case "${MATCH_INFO}" in
+        OWN:*)
+          EXISTING_NOTE_ID="${MATCH_INFO#OWN:}"
+          NOTE_ACTION="update"
+          ;;
+        FOREIGN:*)
+          echo "MR comment: found ${MATCH_INFO#FOREIGN:} marker note(s) from other user(s); creating a new note for current token user."
+          ;;
+        NONE:*)
+          COUNT_INFO="${MATCH_INFO#NONE:}"
+          MARKER_COUNT="${COUNT_INFO%/*}"
+          TOTAL_COUNT="${COUNT_INFO#*/}"
+          echo "MR comment: no matching notes (${MARKER_COUNT} marker, ${TOTAL_COUNT} total notes on MR)."
+          ;;
+        "")
+          echo "MR comment: no notes response from API."
+          ;;
+      esac
+
+      if [ "${NOTE_ACTION}" = "update" ] && [ -n "${EXISTING_NOTE_ID}" ]; then
+        echo "MR comment: updating note ${EXISTING_NOTE_ID}..."
+        HTTP_CODE=$(curl -s --request PUT \
+          --header "PRIVATE-TOKEN: ${TOKEN}" \
+          --data-urlencode "body=${COMMENT_BODY}" \
+          -w '%{http_code}' \
+          -o /dev/null \
+          "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes/${EXISTING_NOTE_ID}" \
+          || true)
+        echo "MR comment: HTTP ${HTTP_CODE}"
+        if [ "${HTTP_CODE}" = "403" ]; then
+          echo "MR comment: note cannot be updated (HTTP 403). Falling back to creating a new note."
+          NOTE_ACTION="create"
+        elif [ "${HTTP_CODE}" = "404" ]; then
+          echo "MR comment: note no longer exists (HTTP 404). Falling back to creating a new note."
+          NOTE_ACTION="create"
+        elif [ "${HTTP_CODE}" != "200" ]; then
+          echo "MR comment: update failed (HTTP ${HTTP_CODE}), falling back to creating a new note."
+          NOTE_ACTION="create"
+        fi
+      fi
+
+      if [ "${NOTE_ACTION}" = "create" ]; then
+        echo "MR comment: creating new note..."
+        HTTP_CODE=$(curl -s --request POST \
+          --header "PRIVATE-TOKEN: ${TOKEN}" \
+          --data-urlencode "body=${COMMENT_BODY}" \
+          -w '%{http_code}' \
+          -o /dev/null \
+          "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}/notes" \
+          || true)
+        echo "MR comment: HTTP ${HTTP_CODE}"
+        if [ "${HTTP_CODE}" = "403" ]; then
+          echo "MR comment: HTTP 403. ALLURE_HISTORY_TOKEN is authenticated but not allowed to create MR notes. Check api scope, project role, protected variables, and project access."
+        elif [ "${HTTP_CODE}" = "401" ]; then
+          echo "MR comment: HTTP 401. ALLURE_HISTORY_TOKEN is not valid. Check the token value and its api scope."
+        elif [ "${HTTP_CODE}" = "000" ]; then
+          echo "MR comment: HTTP 000. Network error reaching GitLab API. Check CI/CD network settings."
         fi
       fi

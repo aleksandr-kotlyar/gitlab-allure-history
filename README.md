@@ -1,6 +1,44 @@
 # GitLab Allure History Publisher
 
-Publish pytest Allure reports with preserved history to GitLab Pages, using only GitLab CI and static files.
+[![Latest Release](https://img.shields.io/gitlab/v/release/aleksandr-kotlyar/gitlab-allure-history?sort=semver)](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/releases)
+
+Publish pytest Allure reports with preserved history to GitLab Pages, using only GitLab CI and static files. No report server, database, web framework, or external storage service is required.
+
+## Usage
+
+Include the component in your `.gitlab-ci.yml` and pin a release tag. The runtime image tag is resolved from the component version automatically:
+
+```yaml
+include:
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.7
+    inputs:
+      environment: dev
+      pages-branch: gl-pages
+      reports-to-keep: "30"
+
+stages:
+  - test
+  - report
+
+test:
+  stage: test
+  script:
+    - pip install -r requirements.txt
+    - pytest --alluredir=allure-results
+  artifacts:
+    when: always
+    paths:
+      - allure-results
+```
+
+This is the only snippet you need to copy. The component creates an `allure` job that generates the HTML report, preserves history across runs, and publishes to GitLab Pages.
+
+**Prerequisites:**
+- A `gl-pages` storage branch (create once, see below)
+- A `GIT_PUSH_TOKEN` CI variable with `write_repository` permission
+- GitLab Pages enabled for the project
+
+---
 
 ## Problem
 
@@ -16,8 +54,6 @@ GitLab Pages can host static reports, but a useful setup still needs to:
 
 ## Solution
 
-This repository is a small GitLab CI template for publishing Allure reports with history:
-
 - pytest writes `allure-results`;
 - GitLab CI generates an Allure HTML report;
 - the previous branch `history` is copied into the next run;
@@ -25,18 +61,6 @@ This repository is a small GitLab CI template for publishing Allure reports with
 - static indexes are generated for navigation;
 - the final `public/` folder is pushed to a dedicated `gl-pages` storage branch;
 - the report job publishes the same `public/` folder to GitLab Pages.
-
-No report server, database, web framework, or external storage service is required.
-
-## Value
-
-- Preserves Allure trend history between GitLab pipeline runs.
-- Keeps reports branch-based, so feature branches do not overwrite each other.
-- Stores immutable report snapshots per test job.
-- Uses GitLab Pages as simple static hosting.
-- Keeps blocking quality gates separate from non-blocking demo tests.
-- Provides a small HTML index so report history is navigable.
-- Stays readable enough to include, copy, and adapt.
 
 ## How It Works
 
@@ -54,10 +78,9 @@ flowchart TD
 
 Pipeline flow:
 
-1. `test_gate` runs stable tests and blocks the pipeline on failure.
-2. `test_demo` runs demonstration tests and is allowed to fail.
-3. `allure` downloads test artifacts, restores previous branch history, generates the report, updates indexes, and pushes Pages content.
-4. The generated `public/` tree is saved to `gl-pages` for the next run and published as the GitLab Pages artifact.
+1. `test` stage runs your tests and saves `allure-results/`.
+2. The `allure` job (from the component) downloads artifacts, restores previous branch history, generates the report, updates indexes, and pushes Pages content.
+3. The generated `public/` tree is saved to `gl-pages` for the next run and published as the GitLab Pages artifact.
 
 ## Report Storage Layout
 
@@ -66,100 +89,59 @@ Reports are persisted in the `gl-pages` branch:
 ```text
 public/
   index.html
-  <env>/
+  {environment}/
     index.html
-    <branch-slug>/
+    {branch-slug}/
       index.html
+      latest/
+        index.html
       history/
-      job_<test-job-id>/
+      job_NNN/
 ```
 
-- `public/<env>/<branch-slug>/job_<test-job-id>/` is one report snapshot.
-- `public/<env>/<branch-slug>/history/` is copied into the next run to preserve Allure trends.
+- `public/{environment}/{branch-slug}/latest/` is a stable alias that
+  redirects to the newest report snapshot.
+- `public/{environment}/{branch-slug}/job_NNN/` is an immutable report
+  snapshot for a specific pipeline run.
+- `public/{environment}/{branch-slug}/history/` is copied into the next
+  run to preserve Allure trends.
 - `public/index.html` lists environment folders.
-- `public/<env>/index.html` lists branch folders for that environment.
-- `public/<env>/<branch-slug>/index.html` lists reports for that branch.
+- `public/{environment}/index.html` lists branch folders for that
+  environment.
+- `public/{environment}/{branch-slug}/index.html` lists reports for
+  that branch.
 
-The open demo pipeline uses `ENV` and `CI_COMMIT_REF_SLUG` for report folders, so the demo branch publishes to paths such as `public/dev/open-demo/`.
+The open demo pipeline uses `ENV` and `CI_COMMIT_REF_SLUG` for report
+folders, so the demo branch publishes to paths such as
+`public/dev/open-demo/`.
 
-## Quick Start
+## Latest Report Links
 
-1. Create a GitLab project or mirror this repository to GitLab.
-2. Create a storage branch named `gl-pages`.
-3. Enable GitLab Pages and make sure GitLab Runner is available for the project.
-4. Add test jobs that generate `allure-results` and save it as a CI artifact.
-5. Add the reusable template to your `.gitlab-ci.yml`.
-6. Add a CI/CD variable named `GIT_PUSH_TOKEN`.
-7. Run a pipeline on a normal branch.
-8. Open the GitLab Pages URL and navigate through the generated index.
+Each branch report folder gets a stable `latest/` alias.
 
-This repository dogfoods the component from the current commit:
+Use:
 
-```yaml
-include:
-  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
-    inputs:
-      allure-history-image-tag: $CI_COMMIT_TAG
-      build-runtime-image: "true"
-    rules:
-      - if: $CI_COMMIT_TAG
-  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
-    inputs:
-      allure-history-image-tag: "2026.2.6"
-    rules:
-      - if: $CI_COMMIT_TAG == null
+`https://<pages-domain>/<project>/<environment>/<branch-slug>/latest/`
 
-default:
-  image: $ALLURE_HISTORY_IMAGE
+when you need a stable link to the newest report. The `latest/`
+directory contains a lightweight HTML redirect to the most recent
+immutable `job_NNN/` snapshot.
 
-test_gate:
-  stage: test
-  script:
-    - pytest --alluredir=allure-results
-  artifacts:
-    when: always
-    paths:
-      - allure-results
-```
+Use:
 
-Another project can include the component from this repository. Pin a release tag or commit SHA in real projects so CI behavior does not change unexpectedly:
+`https://<pages-domain>/<project>/<environment>/<branch-slug>/job_NNN/`
 
-```yaml
-include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@<pinned-version-tag>
-    inputs:
-      allure-history-image-tag: <pinned-version-tag>
-      environment: dev
-      pages-branch: gl-pages
-      reports-to-keep: "30"
+when you need an exact report snapshot for a specific pipeline run.
 
-stages:
-  - test
-  - report
+- `latest/` is a static redirect, not a copy or symlink.
+- `job_NNN/` folders are immutable report snapshots.
+- `history/` is preserved for Allure trends and is not user-facing.
 
-test:
-  stage: test
-  image: python:3.14.5-alpine
-  script:
-    - pip install -r requirements.txt
-    - pytest --alluredir=allure-results
-  artifacts:
-    when: always
-    paths:
-      - allure-results
-```
+---
 
-For another project, make sure previous-stage test jobs upload `allure-results/` as artifacts. A test job may also upload a `jobid` file containing the test job ID; when it is absent, the report job uses its own `CI_JOB_ID` for the immutable `job_<id>` snapshot folder.
+## Detailed Setup
 
-The default runtime image contains the report helper scripts, Java, Git, Python, and Allure commandline. Set `allure-history-image-tag` to the same value as the pinned component tag, so `@<pinned-version-tag>` uses `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:<pinned-version-tag>`. If you use a project-owned image repository, publish images with the same tags as the component versions, include `generate_index.py` and `prune_reports.py` in the image at `allure-history-tools-dir`, and provide `git`, `python3`, and the `allure` command.
-
-The component includes an opt-in `build_python` job for this repository's release pipeline. With `build-runtime-image: "true"`, it runs only in tag pipelines and builds `$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG`. This repository passes `$CI_COMMIT_TAG` to `allure-history-image-tag` in tag pipelines so the component version and the image tag are the same release value.
-
-## Required GitLab Setup
-
-### `gl-pages` Storage Branch
-
-Create the storage branch before running the report job:
+### 1. Create the `gl-pages` Storage Branch
 
 ```bash
 git checkout --orphan gl-pages
@@ -171,122 +153,173 @@ git commit -m "Initialize report storage branch"
 git push origin gl-pages
 ```
 
-The `gl-pages` branch stores previous reports and Allure `history/` data. GitLab Pages itself is deployed by the CI report job with `pages: true` and a `public/` artifact.
+The `gl-pages` branch stores previous reports and Allure `history/` data.
 
-### Push Token
+### 2. Create a Push Token
 
-Create a project, group, or personal access token with `write_repository` permission and save it as:
-
-```text
-GIT_PUSH_TOKEN
-```
+Create a project, group, or personal access token with `write_repository` permission and save it as a CI variable named `GIT_PUSH_TOKEN`.
 
 Recommended settings:
+- Masked
+- Protected, if you publish only from protected branches
+- Unprotected, if you intentionally publish reports from feature branches
 
-- Masked.
-- Protected, if you publish only from protected branches.
-- Unprotected, if you intentionally publish reports from feature branches.
+### 3. Add a Test Job
 
-The token is used only by the `allure` job to push generated static content back to the `gl-pages` branch.
+Your test stage must:
+- Run `pytest --alluredir=allure-results`.
+- Save `allure-results/` as a CI artifact (use `when: always` so artifacts are saved even on failure).
 
-## Component Inputs And Permissions
+A test job may also upload a `jobid` file containing the test job ID. When absent, the report job uses its own `CI_JOB_ID` for the `job_NNN` snapshot folder.
 
-Required:
+### 4. Include the Component
 
-- `GIT_PUSH_TOKEN`: token with permission to push to the repository.
+Pin a release tag. The runtime image tag resolves from the component version automatically:
 
-Component inputs:
+```yaml
+include:
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.7
+    inputs:
+      environment: dev
+```
 
-- `environment`: report environment folder. Defaults to `dev`.
-- `allure-history-image`: runtime image repository. Defaults to `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history`.
-- `allure-history-image-tag`: runtime image tag. Set this to the same pinned tag used in `include:component`.
-- `allure-history-tools-dir`: directory inside the CI image containing `generate_index.py` and `prune_reports.py`. Defaults to `/opt/gitlab-allure-history`.
-- `pages-branch`: branch used to store generated Pages content and Allure history. Defaults to `gl-pages`.
-- `reports-to-keep`: number of report snapshots kept per environment and branch. Defaults to `30`.
-- `build-runtime-image`: build and push the runtime image in tag pipelines. Defaults to `"false"` and is intended for this repository's own release pipeline.
-- `comment-mr`: post or update a merge request comment with the latest report URL. Defaults to `"false"`. Requires `CI_MERGE_REQUEST_IID` context.
+Set `allure-history-image-tag` explicitly when using a SHA or branch reference, or to override the image tag:
 
-Optional CI variables:
+```yaml
+include:
+  - component: gitlab.com/.../gitlab-allure-history@$CI_COMMIT_SHA
+    inputs:
+      allure-history-image-tag: "2026.2.7"
+```
 
-- `ALLURE_HISTORY_INDEX_DESKTOP_BATCH_SIZE`: number of index rows shown before `Show more...` on desktop. Defaults to `25`.
-- `ALLURE_HISTORY_INDEX_MOBILE_BATCH_SIZE`: number of index rows shown before `Show more...` on mobile. Defaults to `12`.
-- `ALLURE_HISTORY_TOKEN`: token with `api` scope for posting MR comments. Falls back to `CI_JOB_TOKEN` when unset.
+The component adds an `allure` job that handles report generation, indexing, and publishing.
 
-Set either index batch size to `0` to show all rows for that viewport without progressive reveal controls.
+---
 
-Provided by GitLab CI:
+## Versioning And Release Policy
 
-- `ENV`: used as the report environment folder. Defaults to `dev` in the open demo pipeline.
-- `CI_COMMIT_REF_SLUG`: used as the branch report folder.
-- `CI_JOB_ID`: used for the report snapshot folder when a previous test job does not provide a `jobid` artifact.
-- `CI_PAGES_URL`: used in Allure executor metadata.
-- `CI_PIPELINE_URL`: linked from the Allure report metadata.
+Component version and runtime image tag are released together as a matched pair. When you pin a component release tag (e.g. `@2026.2.7`), the runtime image tag resolves automatically from the component version.
 
-The GitLab runner also needs network access to:
+```
+Component:  gitlab-allure-history@2026.2.7
+Image tag:  allure-history-image-tag: 2026.2.7 (auto-resolved)
+```
 
-- pull the CI image;
-- clone the `gl-pages` branch;
-- push updated Pages content;
-- upload the `public/` artifact for GitLab Pages.
+**Pin the component to a release tag.** The image tag follows automatically.
+
+The version scheme is `YYYY.MINOR.PATCH` (year-based versioning scheme). The full release history is in [CHANGELOG.md](CHANGELOG.md).
+
+### Why Pin?
+
+Never use moving references (branches, `~latest`) for production pipelines. A moving reference can change CI behavior without a merge request in the consuming project, creating silent failures or unexpected behavior.
+
+Prefer a release tag for normal use. Use a full commit SHA when you need maximum immutability (the component resolves `@<sha>` to that commit and the tag pipeline is not required).
+
+### Matching Versions
+
+When you include:
+
+```yaml
+  - component: .../gitlab-allure-history@2026.2.7
+```
+
+use:
+
+```yaml
+    allure-history-image-tag: 2026.2.7
+```
+
+The default runtime image is `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:<tag>`. If you use a project-owned image repository, publish images with the same tags as the component versions, and ensure the image contains `generate_index.py`, `prune_reports.py`, `git`, `python3`, and the `allure` commandline.
+
+---
+
+## Component Inputs
+
+| Input | Default | Description |
+|-------|---------|-------------|
+| `environment` | `dev` | Report environment folder under `public/`. |
+| `allure-history-image` | `registry.gitlab.com/...` | Runtime image repository. |
+| `allure-history-image-tag` | `$[[ component.version ]]` | Runtime image tag. Auto-resolved when using a tagged component reference. |
+| `allure-history-tools-dir` | `/opt/gitlab-allure-history` | Directory with `generate_index.py` and `prune_reports.py`. |
+| `pages-branch` | `gl-pages` | Branch that stores Pages content and Allure history. |
+| `reports-to-keep` | `30` | Number of report snapshots kept per environment and branch. |
+| `build-runtime-image` | `false` | Build and push the runtime image in tag pipelines (for this repo's release pipeline). |
+| `comment-mr` | `false` | Post or update a merge request comment with the latest report URL. |
+
+### Optional CI Variables
+
+- `ALLURE_HISTORY_INDEX_DESKTOP_BATCH_SIZE`: index rows before `Show more...` on desktop. Default `25`. Set to `0` for no limit.
+- `ALLURE_HISTORY_INDEX_MOBILE_BATCH_SIZE`: index rows before `Show more...` on mobile. Default `12`. Set to `0` for no limit.
+- `ALLURE_HISTORY_TOKEN`: token with `api` scope for MR comments. Falls back to `CI_JOB_TOKEN`.
+
+### Provided by GitLab CI
+
+- `ENV`: report environment folder (defaults to `dev`).
+- `CI_COMMIT_REF_SLUG`: branch report folder.
+- `CI_JOB_ID`: report snapshot folder (when no `jobid` artifact is provided).
+- `CI_PAGES_URL`: Allure executor metadata.
+- `CI_PIPELINE_URL`: Allure report link.
+
+The runner needs network access to pull the CI image, clone and push the `gl-pages` branch, and upload the `public/` artifact.
+
+---
+
+## How This Repository Uses Itself
+
+This project dogfoods its own component. Tag pipelines use `@$CI_COMMIT_TAG` with the matching image tag. Non-tag pipelines use `@$CI_COMMIT_SHA` with a pinned fallback image tag:
+
+```yaml
+include:
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
+    inputs:
+      allure-history-image-tag: $CI_COMMIT_TAG
+      build-runtime-image: "true"
+    rules:
+      - if: $CI_COMMIT_TAG
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
+    inputs:
+      allure-history-image-tag: "2026.2.8"
+    rules:
+      - if: $CI_COMMIT_TAG == null
+```
+
+The `build_python` job builds and pushes `$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG` during tag pipelines, so the component version and the runtime image tag are always the same release value.
+
+---
 
 ## Local Run
-
-Install dependencies:
 
 ```bash
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
+
+./.venv/bin/pytest -m "not demo"   # blocking gate tests
+./.venv/bin/pytest -m "demo"       # non-blocking demo tests
+python3 generate_index.py public   # test index generation
 ```
 
-Run blocking gate tests:
+The demo suite intentionally contains failed, broken, skipped, and passed examples. It is useful for demonstrating Allure output but is not a blocking quality gate.
 
-```bash
-./.venv/bin/pytest -m "not demo"
-```
-
-Run demo tests:
-
-```bash
-./.venv/bin/pytest -m "demo"
-```
-
-The demo suite intentionally contains failed, broken, skipped, and passed examples. It is useful for demonstrating Allure output, but it is not meant to be a blocking quality gate.
-
-Generate an index locally:
-
-```bash
-python3 generate_index.py public
-```
+---
 
 ## Key Files
 
-- `.gitlab-ci.yml`: dogfooding GitLab pipeline with this repository's sample tests.
-- `templates/gitlab-allure-history.yml`: reusable GitLab CI template for image build, Allure report generation, history reuse, and Pages publishing.
-- `Dockerfile`: example runtime image with Python, Java, Git, Allure commandline, and report helper scripts.
-- `generate_index.py`: small static HTML index generator for the `public/` report tree.
-- `pytest.ini`: pytest markers and Allure result configuration.
-- `conftest.py`: minimal pytest fixture example.
-- `tests/`: sample gate and demo tests.
+| File | Purpose |
+|------|---------|
+| `.gitlab-ci.yml` | Dogfooding pipeline |
+| `templates/gitlab-allure-history.yml` | Reusable CI component |
+| `Dockerfile` | Runtime image with Python, Java, Git, Allure CLI |
+| `generate_index.py` | Static HTML index generator |
+| `prune_reports.py` | Removes old report snapshots |
+| `pytest.ini` | Pytest markers and Allure config |
+| `conftest.py` | Pytest fixtures |
+| `tests/` | Gate and demo tests |
+| `CHANGELOG.md` | Release history and policy |
 
 ## Demo Links
 
 - GitLab mirror: [gitlab.com/aleksandr-kotlyar/gitlab-allure-history](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history)
 - Pages report: [aleksandr-kotlyar.gitlab.io/gitlab-allure-history](https://aleksandr-kotlyar.gitlab.io/gitlab-allure-history/)
-
-## Pinned Version Usage
-
-Use an immutable component version in application projects:
-
-```yaml
-include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@<pinned-version-tag>
-    inputs:
-      allure-history-image-tag: <pinned-version-tag>
-```
-
-Prefer a release tag for normal use, or a full commit SHA when you need maximum immutability. Avoid moving references such as branches or `~latest` for production pipelines because they can change CI behavior without a merge request in the consuming project.
-
-Component release tags also version the default runtime image. When a tag pipeline runs in this repository, it builds and pushes the same tag to the container registry and creates a GitLab release for the component.
 
 ## Limitations And Trade-Offs
 
@@ -300,13 +333,11 @@ Component release tags also version the default runtime image. When a tag pipeli
 
 ### `gl-pages` Branch Not Found
 
-Create the `gl-pages` branch. It is used as persistent report storage and is cloned by the report job.
+Create the `gl-pages` branch before running the report job.
 
 ### Report Job Cannot Push
 
-Check that `GIT_PUSH_TOKEN` exists, is available to the branch running the pipeline, and has `write_repository` permission.
-
-If the variable is protected, pipelines on unprotected branches cannot use it.
+Check that `GIT_PUSH_TOKEN` exists, is available to the branch running the pipeline, and has `write_repository` permission. If the variable is protected, pipelines on unprotected branches cannot use it.
 
 ### No Previous History
 
@@ -321,8 +352,6 @@ This is expected. The template stores reports by `CI_COMMIT_REF_SLUG` to keep st
 This is expected. `test_demo` is marked `allow_failure: true` in GitLab CI and exists to show how failed and broken tests appear in Allure.
 
 ## Roadmap
-
-Useful extensions for real projects:
 
 - tune how many report snapshots are kept per branch;
 - ~~add links from merge requests to the latest report;~~ (implemented via `comment-mr` input)

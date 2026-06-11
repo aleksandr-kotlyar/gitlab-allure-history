@@ -15,7 +15,8 @@ JOB_PREFIX = "job_"
 MODIFIED_AT_FILENAME = ".modified_at"
 SUMMARY_FILENAME = "widgets/summary.json"
 HISTORY_DIRNAME = "history"
-HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME}
+LATEST_DIRNAME = "latest"
+HIDDEN_INDEX_ENTRIES = {INDEX_FILENAME, MODIFIED_AT_FILENAME, HISTORY_DIRNAME, LATEST_DIRNAME}
 
 ROOT_INDEX_DIR = "public"
 PUBLIC_TITLE = "gitlab-allure-history"
@@ -24,6 +25,10 @@ DESKTOP_LIST_BATCH_SIZE_ENV = "ALLURE_HISTORY_INDEX_DESKTOP_BATCH_SIZE"
 MOBILE_LIST_BATCH_SIZE_ENV = "ALLURE_HISTORY_INDEX_MOBILE_BATCH_SIZE"
 DESKTOP_LIST_BATCH_SIZE = 25
 MOBILE_LIST_BATCH_SIZE = 12
+SHOW_FOOTER_ENV = "ALLURE_HISTORY_SHOW_FOOTER"
+VERSION_ENV = "GITLAB_ALLURE_HISTORY_VERSION"
+GENERATOR_URL = "https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history"
+MOVING_REF_VERSIONS = {"latest", "master", "main"}
 
 STYLE = """
         :root {
@@ -65,6 +70,10 @@ STYLE = """
 
         :root[data-theme="dark"] .summary-compact.passed {
             color: #3fb950;
+        }
+
+        :root[data-theme="dark"] .summary-compact.skipped {
+            color: #aaaaaa;
         }
 
         :root[data-theme="light"] {
@@ -183,7 +192,17 @@ STYLE = """
         }
 
         .name-cell {
-            width: 70%;
+            width: auto;
+        }
+
+        .result-cell {
+            width: 220px;
+            white-space: nowrap;
+        }
+
+        .duration-cell {
+            width: 110px;
+            white-space: nowrap;
         }
 
         .entry-title {
@@ -243,13 +262,19 @@ STYLE = """
         }
 
         .modified-cell {
+            width: 190px;
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             text-align: right;
             white-space: nowrap;
         }
 
-        .summary-cell {
+        .directory-index .modified-cell {
+            width: 220px;
+        }
+
+        .result-cell,
+        .duration-cell {
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
@@ -263,7 +288,8 @@ STYLE = """
             white-space: nowrap;
         }
 
-        .summary-cell a {
+        .result-cell a,
+        .duration-cell a {
             color: inherit;
             text-decoration: none;
         }
@@ -278,6 +304,11 @@ STYLE = """
 
         .summary-compact.passed {
             color: #2f9e44;
+            font-weight: 500;
+        }
+
+        .summary-compact.skipped {
+            color: #aaaaaa;
             font-weight: 500;
         }
 
@@ -393,6 +424,23 @@ STYLE = """
             .show-more {
                 width: 100%;
             }
+        }
+
+        .generator-footer {
+            margin-top: 24px;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .generator-footer a {
+            color: var(--muted);
+        }
+
+        .generator-footer a:hover {
+            color: var(--link);
+            text-decoration: underline;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -756,6 +804,41 @@ def is_report_folder(folder: Path) -> bool:
     return folder.is_dir() and job_id(folder) is not None
 
 
+
+
+
+REDIRECT_HTML_TEMPLATE = """<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="0; url={href}">
+    <title>Redirecting to latest report...</title>
+    <link rel="canonical" href="{href}">
+</head>
+<body>
+    <p>Redirecting to <a href="{href}">latest report</a>...</p>
+</body>
+</html>
+"""
+
+
+def generate_latest_alias(folder: Path) -> Path | None:
+    latest_report = latest_report_for(folder)
+    if latest_report is None or latest_report.parent != folder:
+        return None
+
+    latest_dir = folder / LATEST_DIRNAME
+    latest_dir.mkdir(exist_ok=True)
+    relative_path = "../" + quote(latest_report.name, safe="") + "/"
+
+    index_path = latest_dir / INDEX_FILENAME
+    index_path.write_text(
+        REDIRECT_HTML_TEMPLATE.format(href=relative_path),
+        encoding="utf-8",
+    )
+    return index_path
+
+
 def iter_report_folders(folder: Path) -> list[Path]:
     reports: list[Path] = []
 
@@ -918,15 +1001,21 @@ def latest_report_meta_html(folder: Path, entry: Path) -> str:
     if latest_report is None:
         return ""
 
+    branch_parent = latest_report.parent
+    alias_path = branch_parent / LATEST_DIRNAME
+    href = link_for_path(alias_path.relative_to(folder))
+    title = "/".join([*alias_path.relative_to(folder).parts, ""])
+    label = "/".join([*alias_path.relative_to(entry).parts, ""])
+
     return (
         '<div class="entry-meta">'
         '<span class="entry-meta-label">latest:</span>'
         '<a class="entry-meta-link" href="{href}" title="{title}">{label}</a>'
         "</div>"
     ).format(
-        href=escape(latest_report_link(folder, latest_report), quote=True),
-        title=escape(latest_report_label(latest_report), quote=True),
-        label=escape(latest_report_context_label(entry, latest_report)),
+        href=escape(href, quote=True),
+        title=escape(title, quote=True),
+        label=escape(label),
     )
 
 
@@ -960,9 +1049,12 @@ def summary_compact_html(summary: ReportSummary) -> str:
             label += "s"
         label += f" \u00b7 {summary.total} total"
         css_class = "issue"
-    else:
+    elif passed > 0:
         label = f"{passed} passed"
         css_class = "passed"
+    else:
+        label = f"{skipped} skipped"
+        css_class = "skipped"
 
     return (
         '<span class="summary-compact {css_class}" '
@@ -982,22 +1074,24 @@ def report_summary_cells(entry: Path) -> list[str]:
         duration = "n/a"
     else:
         issues = summary.status in ("failed", "broken", "unknown")
-        suffix = "#categories" if issues else ""
-        counts = (
-            '<a href="{href}">{inner}</a>'.format(
+        inner = summary_compact_html(summary)
+        if issues:
+            suffix = "#categories"
+            counts = '<a href="{href}">{inner}</a>'.format(
                 href=escape(link_for(entry) + suffix, quote=True),
-                inner=summary_compact_html(summary),
+                inner=inner,
             )
-        )
+        else:
+            counts = inner
         duration = summary.duration
 
     return [
         (
-            '                <td class="summary-cell" '
+            '                <td class="result-cell" '
             'data-label="Result">{counts}</td>'
         ).format(counts=counts if summary is not None else escape(counts)),
         (
-            '                <td class="summary-cell" data-label="Duration">'
+            '                <td class="duration-cell" data-label="Duration">'
             "{duration}</td>"
         ).format(duration=escape(duration)),
     ]
@@ -1048,16 +1142,37 @@ def list_controls_html(
         </div>""".rstrip()
 
 
+def generator_footer_html() -> str:
+    show_footer = os.environ.get(SHOW_FOOTER_ENV, "true").strip().lower()
+    if show_footer not in ("true", "1", "yes"):
+        return ""
+
+    version = os.environ.get(VERSION_ENV, "").strip()
+    if version in MOVING_REF_VERSIONS:
+        version = ""
+
+    parts = ['Generated by <a href="{url}">gitlab-allure-history</a>'.format(
+        url=escape(GENERATOR_URL, quote=True),
+    )]
+    if version:
+        parts.append("v{version}".format(version=escape(version)))
+
+    return (
+        '<footer class="generator-footer">{text}</footer>'
+    ).format(text=" ".join(parts))
+
+
 def build_index_html(folder: Path, entries: list[Path]) -> str:
     title = display_path(folder)
     desktop_batch_size, mobile_batch_size = configured_list_batch_sizes()
     latest_report = latest_report_for(folder)
     show_report_summary = include_report_summary(entries)
     column_count = 4 if show_report_summary else 2
+    table_mode_class = "has-summary" if show_report_summary else "directory-index"
     summary_headers = (
         """
-                    <th>Result</th>
-                    <th>Duration</th>""".rstrip()
+                    <th class="result-cell">Result</th>
+                    <th class="duration-cell">Duration</th>""".rstrip()
         if show_report_summary
         else ""
     )
@@ -1090,12 +1205,12 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
             {breadcrumb_html(folder)}
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
-        <table data-progressive-list>
+        <table class="index-table {table_mode_class}" data-progressive-list>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th class="name-cell">Name</th>
 {summary_headers}
-                    <th>Modified</th>
+                    <th class="modified-cell">Modified</th>
                 </tr>
             </thead>
             <tbody>
@@ -1104,6 +1219,7 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
         </table>
 {list_controls_html(entries, desktop_batch_size, mobile_batch_size)}
     </main>
+    {generator_footer_html()}
     <script>
 {THEME_TOGGLE_SCRIPT.rstrip()}
     </script>
@@ -1123,6 +1239,8 @@ def index_folder(folder: str | Path) -> Path:
 
     index_path = path / INDEX_FILENAME
     index_path.write_text(build_index_html(path, iter_entries(path)), encoding="utf-8")
+
+    generate_latest_alias(path)
 
     return index_path
 

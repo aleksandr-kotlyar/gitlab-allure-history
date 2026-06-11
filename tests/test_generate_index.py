@@ -3,8 +3,12 @@ import json
 from generate_index import (
     DESKTOP_LIST_BATCH_SIZE,
     DESKTOP_LIST_BATCH_SIZE_ENV,
+    LATEST_DIRNAME,
     MOBILE_LIST_BATCH_SIZE,
     MOBILE_LIST_BATCH_SIZE_ENV,
+    SHOW_FOOTER_ENV,
+    VERSION_ENV,
+    generator_footer_html,
     index_folder,
     index_tree,
 )
@@ -194,8 +198,8 @@ def test_report_index_shows_allure_summary_columns(tmp_path):
     index_path = index_folder(branch_dir)
 
     html = index_path.read_text(encoding="utf-8")
-    assert "<th>Result</th>" in html
-    assert "<th>Duration</th>" in html
+    assert '<th class="result-cell">Result</th>' in html
+    assert '<th class="duration-cell">Duration</th>' in html
     assert "--allure-passed: #97cc64;" in html
     assert "--allure-failed: #fd5a3e;" in html
     assert "--allure-broken: #ffd050;" in html
@@ -272,10 +276,10 @@ def test_navigation_indexes_exclude_report_summary_columns(tmp_path):
 
     root_html = root_index_path.read_text(encoding="utf-8")
     env_html = env_index_path.read_text(encoding="utf-8")
-    assert "<th>Result</th>" not in root_html
-    assert "<th>Duration</th>" not in root_html
-    assert "<th>Result</th>" not in env_html
-    assert "<th>Duration</th>" not in env_html
+    assert '<th class="result-cell">Result</th>' not in root_html
+    assert '<th class="duration-cell">Duration</th>' not in root_html
+    assert '<th class="result-cell">Result</th>' not in env_html
+    assert '<th class="duration-cell">Duration</th>' not in env_html
 
 
 def test_env_index_links_each_branch_to_latest_report(tmp_path):
@@ -284,13 +288,14 @@ def test_env_index_links_each_branch_to_latest_report(tmp_path):
     report_dir = branch_dir / "job_101"
     report_dir.mkdir(parents=True)
 
+    index_folder(branch_dir)
     index_path = index_folder(env_dir)
 
     html = index_path.read_text(encoding="utf-8")
     assert (
         '<span class="entry-meta-label">latest:</span>'
-        '<a class="entry-meta-link" href="feature-login/job_101/" '
-        'title="dev/feature-login/job_101/">job_101/</a>'
+        '<a class="entry-meta-link" href="feature-login/latest/" '
+        'title="feature-login/latest/">latest/</a>'
     ) in html
 
 
@@ -305,13 +310,15 @@ def test_root_index_links_each_env_to_latest_report_inside_env(tmp_path):
         "2026-06-06T08:00:00Z\n", encoding="utf-8"
     )
 
-    index_path = index_folder(public_dir)
+    index_tree(public_dir)
+
+    index_path = public_dir / "index.html"
 
     html = index_path.read_text(encoding="utf-8")
     assert (
         '<span class="entry-meta-label">latest:</span>'
-        '<a class="entry-meta-link" href="dev/feature-login/job_102/" '
-        'title="dev/feature-login/job_102/">feature-login/job_102/</a>'
+        '<a class="entry-meta-link" href="dev/feature-login/latest/" '
+        'title="dev/feature-login/latest/">feature-login/latest/</a>'
     ) in html
 
 
@@ -327,7 +334,7 @@ def test_index_adds_show_more_controls_for_populated_lists(tmp_path):
 
     html = index_path.read_text(encoding="utf-8")
     assert html.count("<tr data-list-row>") == total_entries
-    assert '<table data-progressive-list>' in html
+    assert 'data-progressive-list' in html
     assert '<div class="list-controls" hidden>' in html
     assert '<span class="list-count" aria-live="polite"></span>' in html
     assert '<button class="show-more" type="button">Show more...</button>' in html
@@ -365,3 +372,149 @@ def test_index_disables_show_more_with_zero_batch_sizes(tmp_path, monkeypatch):
     assert "Show more..." not in html
     assert '<div class="list-controls" hidden>' not in html
     assert html.count("<tr data-list-row>") == DESKTOP_LIST_BATCH_SIZE + 1
+
+
+def test_latest_alias_generated_for_branch_folder(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    (branch_dir / "job_101").mkdir(parents=True)
+    (branch_dir / "job_102").mkdir()
+    (branch_dir / "job_101" / ".modified_at").write_text(
+        "2026-06-05T22:15:00Z\n", encoding="utf-8"
+    )
+    (branch_dir / "job_102" / ".modified_at").write_text(
+        "2026-06-06T08:00:00Z\n", encoding="utf-8"
+    )
+
+    index_folder(branch_dir)
+
+    latest_index = branch_dir / LATEST_DIRNAME / "index.html"
+    assert latest_index.is_file()
+
+
+def test_latest_alias_redirect_target(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    (branch_dir / "job_101").mkdir(parents=True)
+    (branch_dir / "job_101" / ".modified_at").write_text(
+        "2026-06-05T22:15:00Z\n", encoding="utf-8"
+    )
+
+    index_folder(branch_dir)
+
+    html = (branch_dir / LATEST_DIRNAME / "index.html").read_text(encoding="utf-8")
+    assert 'url=../job_101/' in html
+    assert '<a href="../job_101/">' in html
+
+
+def test_latest_alias_moves_after_newer_report(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    (branch_dir / "job_101").mkdir(parents=True)
+    (branch_dir / "job_101" / ".modified_at").write_text(
+        "2026-06-05T22:15:00Z\n", encoding="utf-8"
+    )
+    (branch_dir / "job_102").mkdir()
+    (branch_dir / "job_102" / ".modified_at").write_text(
+        "2026-06-06T08:00:00Z\n", encoding="utf-8"
+    )
+
+    index_folder(branch_dir)
+
+    html = (branch_dir / LATEST_DIRNAME / "index.html").read_text(encoding="utf-8")
+    assert 'url=../job_102/' in html
+
+    (branch_dir / "job_103").mkdir()
+    (branch_dir / "job_103" / ".modified_at").write_text(
+        "2026-06-07T09:30:00Z\n", encoding="utf-8"
+    )
+    index_folder(branch_dir)
+
+    html = (branch_dir / LATEST_DIRNAME / "index.html").read_text(encoding="utf-8")
+    assert 'url=../job_103/' in html
+    assert 'url=../job_102/' not in html
+
+
+def test_latest_alias_excluded_from_index_listings(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    (branch_dir / "job_101").mkdir(parents=True)
+    (branch_dir / "job_101" / ".modified_at").write_text(
+        "2026-06-05T22:15:00Z\n", encoding="utf-8"
+    )
+
+    index_path = index_folder(branch_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert 'href="latest/"' not in html
+    assert 'href="job_101/"' in html
+
+
+def test_latest_alias_not_generated_for_env_folder(tmp_path):
+    env_dir = tmp_path / "public" / "dev"
+    branch_dir = env_dir / "feature-login"
+    (branch_dir / "job_101").mkdir(parents=True)
+
+    index_folder(env_dir)
+
+    assert not (env_dir / LATEST_DIRNAME).exists()
+
+
+def test_latest_alias_not_generated_for_empty_branch(tmp_path):
+    branch_dir = tmp_path / "public" / "dev" / "feature-login"
+    branch_dir.mkdir(parents=True)
+
+    index_folder(branch_dir)
+
+    assert not (branch_dir / LATEST_DIRNAME).exists()
+
+
+def test_latest_alias_not_generated_for_report_folder(tmp_path):
+    report_dir = tmp_path / "public" / "dev" / "feature-login" / "job_101"
+    report_dir.mkdir(parents=True)
+
+    index_folder(report_dir)
+
+    assert not (report_dir / LATEST_DIRNAME).exists()
+
+
+def test_generator_footer_renders_without_version(monkeypatch):
+    monkeypatch.delenv(VERSION_ENV, raising=False)
+    monkeypatch.setenv(SHOW_FOOTER_ENV, "true")
+
+    html = generator_footer_html()
+
+    assert 'Generated by <a href="https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history">gitlab-allure-history</a>' in html
+    assert "v" not in html
+
+
+def test_generator_footer_renders_with_version(monkeypatch):
+    monkeypatch.setenv(VERSION_ENV, "2026.2.8")
+    monkeypatch.setenv(SHOW_FOOTER_ENV, "true")
+
+    html = generator_footer_html()
+
+    assert "gitlab-allure-history" in html
+    assert "v2026.2.8" in html
+
+
+def test_generator_footer_skips_moving_refs(monkeypatch):
+    for ref in ("latest", "master", "main"):
+        monkeypatch.setenv(VERSION_ENV, ref)
+        monkeypatch.setenv(SHOW_FOOTER_ENV, "true")
+        html = generator_footer_html()
+        assert "gitlab-allure-history" in html
+        assert "v" + ref not in html
+
+
+def test_generator_footer_escapes_version(monkeypatch):
+    monkeypatch.setenv(VERSION_ENV, '<script>alert(1)</script>')
+    monkeypatch.setenv(SHOW_FOOTER_ENV, "true")
+
+    html = generator_footer_html()
+
+    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html
+    assert "<script>" not in html
+
+
+def test_generator_footer_can_be_disabled(monkeypatch):
+    monkeypatch.setenv(VERSION_ENV, "2026.2.8")
+    monkeypatch.setenv(SHOW_FOOTER_ENV, "false")
+
+    assert generator_footer_html() == ""

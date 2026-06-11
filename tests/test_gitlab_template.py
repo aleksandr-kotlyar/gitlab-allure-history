@@ -1,4 +1,5 @@
 import json
+import subprocess
 import textwrap
 from pathlib import Path
 
@@ -9,6 +10,46 @@ def extract_python_heredoc(template: str, marker: str) -> str:
     end = lines.index("      PY", start)
 
     return textwrap.dedent("\n".join(lines[start:end]))
+
+
+def extract_mr_note_lookup_python(template: str) -> str:
+    start_marker = "      MATCH_INFO=$(printf '%s' \"${NOTES_JSON}\" | python3 -c '"
+    start = template.index(start_marker) + len(start_marker)
+    end = template.index("      ' \"${CURRENT_USER_ID}\"", start)
+
+    return textwrap.dedent(template[start:end])
+
+
+def extract_mr_comment_python(template: str) -> str:
+    start_marker = "      COMMENT_BODY=$(python3 <<'PY'"
+    lines = template.splitlines()
+    start = lines.index(start_marker) + 1
+    end = lines.index("      PY", start)
+
+    return textwrap.dedent("\n".join(lines[start:end]))
+
+
+def render_mr_comment(tmp_path, monkeypatch, statistic):
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    script = extract_mr_comment_python(template)
+    report_dir = tmp_path / "job_123"
+    widgets_dir = report_dir / "widgets"
+    widgets_dir.mkdir(parents=True)
+    (widgets_dir / "summary.json").write_text(
+        json.dumps({"statistic": statistic}),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("REPORT_DIR", str(report_dir))
+    monkeypatch.setenv("REPORT_URL", "https://example.gitlab.io/project/dev/branch/job_123/")
+
+    result = subprocess.run(
+        ["python3", "-c", script],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    return result.stdout.rstrip("\n")
 
 
 def test_executor_report_url_points_to_report_snapshot(tmp_path, monkeypatch):
@@ -72,7 +113,7 @@ def test_template_defines_component_inputs():
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
 
     assert template.startswith("spec:\n")
-    assert "  component: [version]\n" not in template
+    assert "  component: [version, reference]\n" in template
     assert "  inputs:\n" in template
     assert "    environment:\n" in template
     assert "    allure-history-image:\n" in template
@@ -83,13 +124,81 @@ def test_template_defines_component_inputs():
     assert "---\n\nvariables:" in template
 
 
+def run_mr_note_lookup(body):
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    script = extract_mr_note_lookup_python(template)
+    notes = [
+        {
+            "id": 123,
+            "body": body,
+            "system": False,
+            "author": {"id": 42},
+        }
+    ]
+
+    result = subprocess.run(
+        ["python3", "-c", script, "42"],
+        input=json.dumps(notes),
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    return result.stdout.strip()
+
+
+def test_mr_note_lookup_finds_allure_report_link():
+    assert run_mr_note_lookup(
+        "> [!tip]\n"
+        "> \U0001f7e2 **PASSED** \u00b7 [Allure report](https://example.test/#categories)"
+    ) == "OWN:123"
+
+
+def test_mr_note_lookup_keeps_legacy_marker_compatibility():
+    assert run_mr_note_lookup(
+        "Allure report\n\n<!-- allure-history-report -->"
+    ) == "OWN:123"
+
+
+def test_failed_mr_comment_uses_caution_alert(tmp_path, monkeypatch):
+    comment = render_mr_comment(
+        tmp_path,
+        monkeypatch,
+        {"passed": 42, "failed": 1, "broken": 1, "skipped": 0, "unknown": 0, "total": 44},
+    )
+
+    assert comment == (
+        "> [!caution]\n"
+        "> \U0001f534 **FAILED** \u00b7 "
+        "[Allure report 2 issues]"
+        "(https://example.gitlab.io/project/dev/branch/job_123/#categories) "
+        "(failed 1, broken 1) \u00b7 44 total"
+    )
+
+
+def test_passed_mr_comment_uses_tip_alert(tmp_path, monkeypatch):
+    comment = render_mr_comment(
+        tmp_path,
+        monkeypatch,
+        {"passed": 44, "failed": 0, "broken": 0, "skipped": 0, "unknown": 0, "total": 44},
+    )
+
+    assert comment == (
+        "> [!tip]\n"
+        "> \U0001f7e2 **PASSED** \u00b7 "
+        "[Allure report]"
+        "(https://example.gitlab.io/project/dev/branch/job_123/#categories) "
+        "\u00b7 44 total"
+    )
+
+
 def test_readme_external_include_uses_pinned_component_version():
     readme = Path("README.md").read_text(encoding="utf-8")
 
     assert (
         "component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/"
-        "gitlab-allure-history@<pinned-version-tag>"
+        "gitlab-allure-history@2026.2.7"
         in readme
     )
-    assert "allure-history-image-tag: <pinned-version-tag>" in readme
-    assert "Avoid moving references such as branches or `~latest`" in readme
+    assert "allure-history-image-tag: 2026.2.7" in readme
+    assert "Never use moving references (branches, `~latest`)" in readme

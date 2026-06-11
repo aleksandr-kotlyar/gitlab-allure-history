@@ -29,3 +29,19 @@ def test_prune_reports_ignores_missing_path(tmp_path):
     removed = prune_reports(tmp_path / "missing")
 
     assert removed == 0
+
+
+def test_prune_reports_keeps_latest_alias(tmp_path):
+    for job_id in [10, 15, 20, 25]:
+        (tmp_path / f"job_{job_id}").mkdir()
+    (tmp_path / "latest").mkdir()
+    (tmp_path / "history").mkdir()
+
+    removed = prune_reports(tmp_path, keep=2)
+
+    assert removed == 2
+    remaining = {path.name for path in tmp_path.iterdir()}
+    assert "latest" in remaining
+    assert "history" in remaining
+    assert "job_25" in remaining
+    assert "job_20" in remaining

@@ -33,6 +33,8 @@ test_gate:
       - allure-results
       - jobid
       - report-gate.xml
+  tags:
+    - macos-local
 
 test_demo:
   stage: test
@@ -51,6 +53,21 @@ test_demo:
     paths:
       - allure-results
       - report-demo.xml
+  tags:
+    - macos-local
+
+allure:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: always
+    - if: $CI_COMMIT_TAG == null
+      variables:
+        GITLAB_ALLURE_HISTORY_VERSION: latest-report-alias@$CI_COMMIT_SHORT_SHA
+      when: always
+  tags:
+    - macos-local
 
 create_release:
   stage: release
@@ -64,3 +81,5 @@ create_release:
   release:
     tag_name: $CI_COMMIT_TAG
     description: "Release $CI_COMMIT_TAG of the gitlab-allure-history component."
+  tags:
+    - macos-local
