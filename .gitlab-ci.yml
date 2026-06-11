@@ -56,6 +56,46 @@ test_demo:
   tags:
     - macos-local
 
+consumer_contract:minimal:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-minimal/.gitlab-ci.yml
+    strategy: mirror
+
+consumer_contract:custom-env:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-custom-env/.gitlab-ci.yml
+    strategy: mirror
+
+consumer_contract:without-jobid:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-without-jobid/.gitlab-ci.yml
+    strategy: mirror
+
+consumer_contract:custom-pages-branch:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-custom-pages-branch/.gitlab-ci.yml
+    strategy: mirror
+
 allure:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"

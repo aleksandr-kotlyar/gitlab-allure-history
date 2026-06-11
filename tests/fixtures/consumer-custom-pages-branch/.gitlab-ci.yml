@@ -1,0 +1,33 @@
+include:
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
+    inputs:
+      allure-history-image-tag: "2026.2.8"
+      pages-branch: allure-pages
+
+consumer_contract:
+  image: alpine:3.22
+  stage: test
+  script:
+    - mkdir -p allure-results
+    - |
+      printf '%s\n' \
+        '{"uuid":"consumer-custom-pages-branch","name":"consumer custom pages branch","status":"passed","stage":"finished"}' \
+        > allure-results/result.json
+    - printf '%s\n' "$CI_JOB_ID" > jobid
+  artifacts:
+    paths:
+      - allure-results
+      - jobid
+
+allure:
+  rules:
+    - when: never
+
+verify_consumer_contract:
+  image: alpine:3.22
+  stage: report
+  script:
+    - test "$ENV" = "dev"
+    - test "$PAGES_BRANCH" = "allure-pages"
+    - test -d allure-results
+    - test -s jobid
