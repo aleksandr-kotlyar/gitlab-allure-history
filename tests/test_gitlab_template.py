@@ -91,6 +91,18 @@ def test_project_pipeline_dogfoods_reusable_template():
     assert "tag_name: $CI_COMMIT_TAG" in pipeline
 
 
+def test_project_pipeline_smokes_published_pages_after_allure():
+    pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
+
+    assert "pages_smoke:\n  stage: release\n" in pipeline
+    assert "    - job: test_gate\n      artifacts: true" in pipeline
+    assert "    - job: allure\n      artifacts: false" in pipeline
+    assert '        --base-url "$CI_PAGES_URL"' in pipeline
+    assert '        --environment "$ENV"' in pipeline
+    assert '        --branch "$CI_COMMIT_REF_SLUG"' in pipeline
+    assert '        --report "job_$(cat jobid)"' in pipeline
+
+
 def test_template_uses_url_safe_branch_slug_and_component_versioned_image_tag():
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
 
