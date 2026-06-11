@@ -180,7 +180,17 @@
         }
 
         .name-cell {
-            width: 70%;
+            width: auto;
+        }
+
+        .result-cell {
+            width: 220px;
+            white-space: nowrap;
+        }
+
+        .duration-cell {
+            width: 110px;
+            white-space: nowrap;
         }
 
         .entry-title {
@@ -240,13 +250,19 @@
         }
 
         .modified-cell {
+            width: 190px;
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             text-align: right;
             white-space: nowrap;
         }
 
-        .summary-cell {
+        .directory-index .modified-cell {
+            width: 220px;
+        }
+
+        .result-cell,
+        .duration-cell {
             color: var(--muted);
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
@@ -260,7 +276,8 @@
             white-space: nowrap;
         }
 
-        .summary-cell a {
+        .result-cell a,
+        .duration-cell a {
             color: inherit;
             text-decoration: none;
         }
@@ -392,6 +409,23 @@
             }
         }
 
+        .generator-footer {
+            margin-top: 24px;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .generator-footer a {
+            color: var(--muted);
+        }
+
+        .generator-footer a:hover {
+            color: var(--link);
+            text-decoration: underline;
+        }
+
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
                 --bg: #0d1117;
@@ -419,148 +453,142 @@
             <h1 class="breadcrumbs" aria-label="Current location"><a href="../../">gitlab-allure-history</a><span class="breadcrumb-separator">/</span><a href="../">beta</a><span class="breadcrumb-separator">/</span><span aria-current="page">open-demo</span></h1>
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
-        <table data-progressive-list>
+        <table class="index-table has-summary" data-progressive-list>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th class="name-cell">Name</th>
 
-                    <th>Result</th>
-                    <th>Duration</th>
-                    <th>Modified</th>
+                    <th class="result-cell">Result</th>
+                    <th class="duration-cell">Duration</th>
+                    <th class="modified-cell">Modified</th>
                 </tr>
             </thead>
             <tbody>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14729086765/">job_14729086765/</a> <span class="latest-badge">latest</span></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_14729086765/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 16">2 issues · 19 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">406 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_14729086765/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 16">2 issues · 19 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">406 ms</td>
                 <td class="modified-cell" data-label="Modified">06-Jun-2026 21:04</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10469455834/">job_10469455834/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10469455834/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10469455834/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">25-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10454758966/">job_10454758966/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10454758966/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10454758966/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">24-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10441400383/">job_10441400383/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10441400383/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10441400383/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">23-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10428411256/">job_10428411256/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10428411256/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">19 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10428411256/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">19 ms</td>
                 <td class="modified-cell" data-label="Modified">22-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10424695203/">job_10424695203/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10424695203/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">17 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10424695203/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">17 ms</td>
                 <td class="modified-cell" data-label="Modified">21-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10418989294/">job_10418989294/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10418989294/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">17 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10418989294/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">17 ms</td>
                 <td class="modified-cell" data-label="Modified">20-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10407940294/">job_10407940294/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10407940294/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10407940294/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">19-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10395985984/">job_10395985984/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10395985984/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10395985984/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">18-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10382179346/">job_10382179346/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10382179346/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">20 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10382179346/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">20 ms</td>
                 <td class="modified-cell" data-label="Modified">17-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10367734921/">job_10367734921/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10367734921/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10367734921/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">16-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10355457108/">job_10355457108/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10355457108/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">19 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10355457108/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">19 ms</td>
                 <td class="modified-cell" data-label="Modified">15-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10352499719/">job_10352499719/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10352499719/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10352499719/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">14-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10348980995/">job_10348980995/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10348980995/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">19 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10348980995/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">19 ms</td>
                 <td class="modified-cell" data-label="Modified">13-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10337387766/">job_10337387766/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10337387766/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10337387766/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10324266324/">job_10324266324/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10324266324/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10324266324/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10310721315/">job_10310721315/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10310721315/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10310721315/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">10-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10297623028/">job_10297623028/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10297623028/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">19 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10297623028/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">19 ms</td>
                 <td class="modified-cell" data-label="Modified">09-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10288358505/">job_10288358505/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10288358505/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">17 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10288358505/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">17 ms</td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10285407081/">job_10285407081/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10285407081/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">18 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10285407081/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">18 ms</td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2025 21:03</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_10281875628/">job_10281875628/</a></div></td>
-                <td class="summary-cell" data-label="Result"><a href="job_10281875628/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
-                <td class="summary-cell" data-label="Duration">17 ms</td>
+                <td class="result-cell" data-label="Result"><a href="job_10281875628/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 1">2 issues · 4 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">17 ms</td>
                 <td class="modified-cell" data-label="Modified">06-Jun-2025 21:03</td>
-            </tr>
-            <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest/">latest/</a></div></td>
-                <td class="summary-cell" data-label="Result">n/a</td>
-                <td class="summary-cell" data-label="Duration">n/a</td>
-                <td class="modified-cell" data-label="Modified">11-Jun-2026 13:18</td>
             </tr>
             </tbody>
         </table>
@@ -570,6 +598,7 @@
             <button class="show-more" type="button">Show more...</button>
         </div>
     </main>
+    <footer class="generator-footer">Generated by <a href="https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history">gitlab-allure-history</a> v2026.2.8</footer>
     <script>
 
         (function () {
