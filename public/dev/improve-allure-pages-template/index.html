@@ -58,7 +58,6 @@
 
         :root[data-theme="dark"] .summary-compact.issue {
             color: #e5534b;
-            border-color: #e5534b;
         }
 
         :root[data-theme="dark"] .summary-compact.passed {
@@ -77,7 +76,7 @@
             margin: 0;
             background: var(--bg);
             color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             line-height: 1.5;
         }
 
@@ -257,7 +256,6 @@
             display: inline-block;
             padding: 1px 8px;
             font-size: 12px;
-            font-weight: 600;
             line-height: 1.5;
             white-space: nowrap;
         }
@@ -268,14 +266,16 @@
         }
 
         .summary-compact.issue {
-            color: var(--allure-failed);
-            border: 1px solid var(--allure-failed);
-            background: transparent;
-            border-radius: 4px;
+            color: #d93025;
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
         }
 
         .summary-compact.passed {
-            color: #1a7f37;
+            color: #2f9e44;
+            font-weight: 500;
         }
 
         a {
@@ -378,7 +378,7 @@
                 flex: 0 0 auto;
                 color: var(--muted);
                 font-size: 12px;
-                font-weight: 600;
+            font-weight: 500;
                 text-transform: uppercase;
             }
 
@@ -405,7 +405,6 @@
 
             :root:not([data-theme]) .summary-compact.issue {
                 color: #e5534b;
-                border-color: #e5534b;
             }
 
             :root:not([data-theme]) .summary-compact.passed {
