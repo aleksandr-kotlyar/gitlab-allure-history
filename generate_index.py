@@ -117,6 +117,27 @@ STYLE = """
             overflow-wrap: anywhere;
         }
 
+        .hero {
+            margin: 0 0 24px;
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--panel);
+        }
+
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: 1.35rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            max-width: 760px;
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
         .breadcrumbs {
             display: flex;
             flex-wrap: wrap;
@@ -977,6 +998,20 @@ def breadcrumb_html(folder: Path) -> str:
     return "".join(html_parts)
 
 
+def root_intro_html(folder: Path) -> str:
+    if public_suffix_parts(folder) != []:
+        return ""
+
+    return """
+        <section class="hero" aria-label="Project summary">
+            <h1>GitLab Allure History Publisher</h1>
+            <p>
+                Branch-based Allure report history on GitLab Pages.
+                No server. No database. No external storage.
+            </p>
+        </section>""".rstrip()
+
+
 def entry_title_html(entry: Path, is_latest: bool) -> str:
     badge = ' <span class="latest-badge">latest</span>' if is_latest else ""
 
@@ -1205,6 +1240,7 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
             {breadcrumb_html(folder)}
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
+{root_intro_html(folder)}
         <table class="index-table {table_mode_class}" data-progressive-list>
             <thead>
                 <tr>
