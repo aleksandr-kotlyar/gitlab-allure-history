@@ -335,7 +335,7 @@ changing Pages content.
 ## Limitations And Trade-Offs
 
 - Report history depends on a writable `gl-pages` storage branch.
-- The CI serializes the Pages publishing job with `resource_group`, but manual pushes to `gl-pages` can still race with CI.
+- The CI serializes the Pages publishing job with `resource_group` and retries a raced `gl-pages` push up to three times; sustained conflicts still fail the job.
 - `CI_COMMIT_REF_SLUG` keeps report paths URL-safe, but different branch names can theoretically normalize to the same slug.
 - The CI keeps the latest 30 report snapshots per branch by default.
 - This project is a GitLab CI/CD component, not a report portal or framework.

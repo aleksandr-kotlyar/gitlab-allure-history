@@ -254,8 +254,26 @@ allure:
         echo "No Pages changes to publish."
       else
         git -C pages-worktree commit -m "Publish Allure report for pipeline ${CI_PIPELINE_ID}"
-        git -C pages-worktree pull --rebase origin "$PAGES_BRANCH"
-        git -C pages-worktree push origin "HEAD:$PAGES_BRANCH"
+
+        PAGES_PUSH_ATTEMPT=1
+        PAGES_PUSH_MAX_ATTEMPTS=3
+
+        while [ "$PAGES_PUSH_ATTEMPT" -le "$PAGES_PUSH_MAX_ATTEMPTS" ]; do
+          git -C pages-worktree pull --rebase origin "$PAGES_BRANCH"
+
+          if git -C pages-worktree push origin "HEAD:$PAGES_BRANCH"; then
+            break
+          fi
+
+          if [ "$PAGES_PUSH_ATTEMPT" -eq "$PAGES_PUSH_MAX_ATTEMPTS" ]; then
+            echo "Failed to push Pages content after ${PAGES_PUSH_MAX_ATTEMPTS} attempts."
+            exit 1
+          fi
+
+          echo "Pages push attempt ${PAGES_PUSH_ATTEMPT}/${PAGES_PUSH_MAX_ATTEMPTS} failed; retrying after rebase."
+          PAGES_PUSH_ATTEMPT=$((PAGES_PUSH_ATTEMPT + 1))
+          sleep 2
+        done
       fi
 
       rm -rf public
