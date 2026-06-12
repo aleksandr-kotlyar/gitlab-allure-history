@@ -1,0 +1,1 @@
+GitLab CI configuration is valid: 1 include(s), 2 job(s)
