@@ -1,0 +1,121 @@
+name: Bug report
+description: Report a reproducible defect in the component.
+title: "[Bug] "
+body:
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      options:
+        - Component include
+        - Report publishing
+        - GitLab Pages
+        - latest/ alias
+        - Index generation
+        - MR comment
+        - Pruning/history
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: component-ref
+    attributes:
+      label: Component version or ref
+      description: Tag, branch, commit SHA, or overridden image tag.
+      placeholder: "2026.2.7"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gitlab-environment
+    attributes:
+      label: GitLab environment
+      options:
+        - GitLab.com
+        - Self-managed
+    validations:
+      required: true
+
+  - type: input
+    id: self-managed-version
+    attributes:
+      label: Self-managed GitLab version
+      description: Leave blank for GitLab.com.
+      placeholder: "18.1.0"
+
+  - type: input
+    id: runner
+    attributes:
+      label: Runner executor and image
+      description: Include runner version when relevant.
+      placeholder: "GitLab Runner 18.1, Docker executor, python:3.13"
+
+  - type: textarea
+    id: include-snippet
+    attributes:
+      label: Sanitized component include
+      description: Paste the minimal relevant part of `.gitlab-ci.yml`. Do not paste secrets.
+      render: yaml
+    validations:
+      required: true
+
+  - type: textarea
+    id: ci-variables
+    attributes:
+      label: Relevant CI variables
+      description: List variable names, relevant settings, and non-secret values only. Do not paste token values.
+      placeholder: |
+        GIT_PUSH_TOKEN: configured, masked, protected
+        ENV: dev
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest reliable sequence that reproduces the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: job-log
+    attributes:
+      label: Pipeline/job link or sanitized log excerpt
+      description: Include the failing job name. Remove tokens, credentials, and private URLs.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: report-url
+    attributes:
+      label: Pages or report URL
+      description: Provide it when relevant; sanitize private hostnames if needed.
+
+  - type: dropdown
+    id: latest-release
+    attributes:
+      label: Does this reproduce on the latest release?
+      options:
+        - "Yes"
+        - "No"
+        - Not tested
+    validations:
+      required: true
