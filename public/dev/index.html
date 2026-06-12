@@ -155,21 +155,15 @@
             font: inherit;
             font-size: 13px;
             font-weight: 600;
-            transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-        }
-
-        .theme-toggle:hover,
-        .theme-toggle:focus-visible {
-            border-color: var(--link);
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 22%, transparent);
         }
 
         .theme-toggle:hover {
-            background: color-mix(in srgb, var(--link) 10%, var(--panel));
+            background: var(--row);
         }
 
         .theme-toggle:focus-visible {
-            outline: none;
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
         }
 
         table {
@@ -252,32 +246,22 @@
             text-transform: lowercase;
         }
 
-        .entry-meta {
-            display: flex;
-            min-width: 0;
-            align-items: baseline;
-            gap: 5px;
-            margin-top: 1px;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.25;
-            overflow-wrap: anywhere;
-        }
-
-        .entry-meta-label {
+        .entry-separator {
             flex: 0 0 auto;
             color: var(--muted);
-            font-weight: 500;
+            opacity: 0.5;
+            font-weight: 400;
+            user-select: none;
         }
 
-        .entry-meta-link {
-            min-width: 0;
-            color: var(--muted);
-            overflow-wrap: anywhere;
-        }
-
-        .entry-meta-link:hover {
+        .entry-latest-link {
+            flex: 0 0 auto;
             color: var(--link);
+            text-decoration: none;
+        }
+
+        .entry-latest-link:hover {
+            text-decoration: underline;
         }
 
         .modified-cell {
@@ -415,39 +399,24 @@
                 padding-bottom: 2px;
             }
 
-            .entry-meta,
-            .entry-meta-label,
-            .entry-meta-link {
-                color: var(--muted);
-                font-size: 0.82rem;
-                font-weight: 500;
-                line-height: 1.35;
-            }
-
             .modified-cell {
                 padding-top: 0;
-                font-variant-numeric: tabular-nums;
                 text-align: left;
             }
 
             td[data-label] {
                 display: flex;
-                align-items: baseline;
                 justify-content: space-between;
-                column-gap: 8px;
-                color: var(--muted);
-                font-size: 0.82rem;
-                font-weight: 500;
-                line-height: 1.35;
+                gap: 12px;
             }
 
             td[data-label]::before {
                 content: attr(data-label);
                 flex: 0 0 auto;
-                color: inherit;
-                font: inherit;
-                letter-spacing: 0;
-                text-transform: none;
+                color: var(--muted);
+                font-size: 12px;
+            font-weight: 500;
+                text-transform: uppercase;
             }
 
             .list-controls {
@@ -515,179 +484,179 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master/">master/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="master/latest/" title="master/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master/">master/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="master/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 21:04</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="demo-playwright-recordings/">demo-playwright-recordings/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="demo-playwright-recordings/latest/" title="demo-playwright-recordings/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="compact-branch-listing/">compact-branch-listing/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="compact-branch-listing/latest/">latest</a></div></td>
+                <td class="modified-cell" data-label="Modified">12-Jun-2026 21:32</td>
+            </tr>
+            <tr data-list-row>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="demo-playwright-recordings/">demo-playwright-recordings/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="demo-playwright-recordings/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 21:27</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="compact-branch-listing/">compact-branch-listing/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="compact-branch-listing/latest/" title="compact-branch-listing/latest/">latest/</a></div></td>
-                <td class="modified-cell" data-label="Modified">12-Jun-2026 21:19</td>
-            </tr>
-            <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="generated-index-ui-polish/">generated-index-ui-polish/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="generated-index-ui-polish/latest/" title="generated-index-ui-polish/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="generated-index-ui-polish/">generated-index-ui-polish/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="generated-index-ui-polish/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 19:04</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master-pipeline-pages-deploy/">master-pipeline-pages-deploy/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="master-pipeline-pages-deploy/latest/" title="master-pipeline-pages-deploy/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master-pipeline-pages-deploy/">master-pipeline-pages-deploy/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="master-pipeline-pages-deploy/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 06:32</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="root-index-intro-card/">root-index-intro-card/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="root-index-intro-card/latest/" title="root-index-intro-card/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="root-index-intro-card/">root-index-intro-card/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="root-index-intro-card/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 05:59</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="issue-templates/">issue-templates/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="issue-templates/latest/" title="issue-templates/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="issue-templates/">issue-templates/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="issue-templates/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 04:33</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="retry-pages-push/">retry-pages-push/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="retry-pages-push/latest/" title="retry-pages-push/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="retry-pages-push/">retry-pages-push/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="retry-pages-push/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 04:05</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="smoke-links-test/">smoke-links-test/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="smoke-links-test/latest/" title="smoke-links-test/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="smoke-links-test/">smoke-links-test/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="smoke-links-test/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 03:49</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="regression-tests/">regression-tests/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="regression-tests/latest/" title="regression-tests/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="regression-tests/">regression-tests/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="regression-tests/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 22:09</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="consumer-contract-fixtures/">consumer-contract-fixtures/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="consumer-contract-fixtures/latest/" title="consumer-contract-fixtures/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="consumer-contract-fixtures/">consumer-contract-fixtures/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="consumer-contract-fixtures/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 21:59</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="footer-fix/">footer-fix/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="footer-fix/latest/" title="footer-fix/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="footer-fix/">footer-fix/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="footer-fix/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 21:30</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-alias/">latest-report-alias/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="latest-report-alias/latest/" title="latest-report-alias/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-alias/">latest-report-alias/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="latest-report-alias/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 20:35</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="refine-fonts/">refine-fonts/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="refine-fonts/latest/" title="refine-fonts/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="refine-fonts/">refine-fonts/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="refine-fonts/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 03:31</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="refine-report-summary/">refine-report-summary/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="refine-report-summary/latest/" title="refine-report-summary/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="refine-report-summary/">refine-report-summary/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="refine-report-summary/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 20:30</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="mr-report-comment/">mr-report-comment/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="mr-report-comment/latest/" title="mr-report-comment/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="mr-report-comment/">mr-report-comment/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="mr-report-comment/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 20:15</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-8/">2026-2-8/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-8/latest/" title="2026-2-8/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-8/">2026-2-8/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-8/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 19:55</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="flaky-demo-tests/">flaky-demo-tests/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="flaky-demo-tests/latest/" title="flaky-demo-tests/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="flaky-demo-tests/">flaky-demo-tests/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="flaky-demo-tests/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 17:53</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-7/">2026-2-7/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-7/latest/" title="2026-2-7/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-7/">2026-2-7/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-7/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 11:30</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="fix-component-image-tag/">fix-component-image-tag/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="fix-component-image-tag/latest/" title="fix-component-image-tag/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="fix-component-image-tag/">fix-component-image-tag/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="fix-component-image-tag/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 10:58</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="stabilize-reusable-ci-template/">stabilize-reusable-ci-template/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="stabilize-reusable-ci-template/latest/" title="stabilize-reusable-ci-template/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="stabilize-reusable-ci-template/">stabilize-reusable-ci-template/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="stabilize-reusable-ci-template/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 10:32</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-5/">2026-2-5/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-5/latest/" title="2026-2-5/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-5/">2026-2-5/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-5/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:53</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-6/">2026-2-6/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-6/latest/" title="2026-2-6/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-6/">2026-2-6/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-6/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:52</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-4/">2026-2-4/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-4/latest/" title="2026-2-4/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-4/">2026-2-4/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-4/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:49</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-3/">2026-2-3/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-3/latest/" title="2026-2-3/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-3/">2026-2-3/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-3/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:49</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-1/">2026-2-1/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="2026-2-1/latest/" title="2026-2-1/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-1/">2026-2-1/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-1/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:47</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="fix-allure-trend-report-links/">fix-allure-trend-report-links/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="fix-allure-trend-report-links/latest/" title="fix-allure-trend-report-links/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="fix-allure-trend-report-links/">fix-allure-trend-report-links/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="fix-allure-trend-report-links/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:29</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="report-summary-index/">report-summary-index/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="report-summary-index/latest/" title="report-summary-index/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="report-summary-index/">report-summary-index/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="report-summary-index/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:07</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-links/">latest-report-links/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="latest-report-links/latest/" title="latest-report-links/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-links/">latest-report-links/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="latest-report-links/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 08:29</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="open-demo/">open-demo/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="open-demo/latest/" title="open-demo/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="open-demo/">open-demo/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="open-demo/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 05:36</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-last-thirty/">keep-last-thirty/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="keep-last-thirty/latest/" title="keep-last-thirty/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-last-thirty/">keep-last-thirty/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="keep-last-thirty/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 03:55</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="column-modified-time/">column-modified-time/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="column-modified-time/latest/" title="column-modified-time/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="column-modified-time/">column-modified-time/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="column-modified-time/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">05-Jun-2026 04:38</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="improve-allure-pages-template/">improve-allure-pages-template/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="improve-allure-pages-template/latest/" title="improve-allure-pages-template/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="improve-allure-pages-template/">improve-allure-pages-template/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="improve-allure-pages-template/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">04-Jun-2026 22:25</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru-env/">qaguru-env/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="qaguru-env/latest/" title="qaguru-env/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru-env/">qaguru-env/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="qaguru-env/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">26-Jul-2024 19:01</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru/">qaguru/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="qaguru/latest/" title="qaguru/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru/">qaguru/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="qaguru/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">26-Jul-2024 17:43</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="v6/">v6/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="v6/latest/" title="v6/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="v6/">v6/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="v6/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:46</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="update-python-2024-06-27/">update-python-2024-06-27/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="update-python-2024-06-27/latest/" title="update-python-2024-06-27/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="update-python-2024-06-27/">update-python-2024-06-27/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="update-python-2024-06-27/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:41</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="test-job/">test-job/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="test-job/latest/" title="test-job/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="test-job/">test-job/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="test-job/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:20</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="build-job/">build-job/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="build-job/latest/" title="build-job/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="build-job/">build-job/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="build-job/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:18</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="revert-15-keep-history-in-branch/">revert-15-keep-history-in-branch/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="revert-15-keep-history-in-branch/latest/" title="revert-15-keep-history-in-branch/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="revert-15-keep-history-in-branch/">revert-15-keep-history-in-branch/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="revert-15-keep-history-in-branch/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 16:05</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-history-in-branch/">keep-history-in-branch/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="keep-history-in-branch/latest/" title="keep-history-in-branch/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-history-in-branch/">keep-history-in-branch/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="keep-history-in-branch/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 15:56</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="publish-gl-pages-only/">publish-gl-pages-only/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="publish-gl-pages-only/latest/" title="publish-gl-pages-only/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="publish-gl-pages-only/">publish-gl-pages-only/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="publish-gl-pages-only/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 15:02</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="readme/">readme/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="readme/latest/" title="readme/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="readme/">readme/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="readme/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 14:33</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="deploy-gitlab-pages/">deploy-gitlab-pages/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="deploy-gitlab-pages/latest/" title="deploy-gitlab-pages/latest/">latest/</a></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="deploy-gitlab-pages/">deploy-gitlab-pages/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="deploy-gitlab-pages/latest/">latest</a></div></td>
                 <td class="modified-cell" data-label="Modified">05-Mar-2021 05:51</td>
             </tr>
             </tbody>
