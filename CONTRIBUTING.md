@@ -33,6 +33,15 @@ Out of scope:
 
 This project should remain a static report publisher, not a mini ReportPortal.
 
+## Development Requirements
+
+* Python and `pip`;
+* dependencies from `requirements.txt`;
+* GitLab CI/CD for full pipeline validation;
+* GitLab Pages and a writable Pages branch for publishing checks;
+* `GIT_PUSH_TOKEN` with `write_repository` permission for Pages publishing;
+* `ALLURE_HISTORY_TOKEN` with `api` scope for CI lint and MR comment checks.
+
 ## Development Setup
 
 Create a virtual environment:
@@ -43,25 +52,27 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run tests:
-
-```bash
-pytest
-```
-
-Run only non-demo tests:
+Run the blocking local gate:
 
 ```bash
 pytest -m "not demo"
 ```
 
-Run demo tests:
+Optionally run demo tests:
 
 ```bash
 pytest -m "demo"
 ```
 
-Demo tests may intentionally produce non-green Allure states. They exist to generate meaningful example reports.
+Demo tests may intentionally produce failed, broken, or skipped Allure states. They generate meaningful non-green example reports and are not a blocking gate.
+
+## CI-only Validation
+
+These checks require GitLab CI context and variables; they are not normal local-only checks:
+
+* `ci_lint` validates GitLab CI and component configuration;
+* `consumer_contract:*` validates external consumer fixtures;
+* `pages_smoke` validates published GitLab Pages URLs.
 
 ## Testing Generated Indexes
 
@@ -152,8 +163,9 @@ When changing MR comment logic, verify:
 * API failures are logged clearly;
 * existing comments are updated in place when possible;
 * comments created by another token/user are not force-updated;
-* `latest/` links are not shown by default in MR comments;
 * the report link points to the immutable current `job_NNN/` snapshot.
+
+MR comments must use the immutable current `job_NNN/` snapshot as evidence. The stable `latest/` alias belongs on index and navigation pages, not in MR comments.
 
 Preferred MR comment format:
 
@@ -254,38 +266,34 @@ Component tags and runtime image tags are released together and should use the s
 
 Before opening or merging a pull request, check:
 
-```text
-[ ] Tests pass.
-[ ] Generated index behavior is covered when changed.
-[ ] latest/ behavior is covered when changed.
-[ ] pruning behavior is covered when changed.
-[ ] MR comment behavior is covered when changed.
-[ ] README is updated for user-facing changes.
-[ ] CHANGELOG is updated for release-visible changes.
-[ ] No unrelated refactoring is included.
-[ ] No generated report artifacts are committed accidentally.
-```
+- [ ] Tests pass.
+- [ ] Generated index behavior is covered when changed.
+- [ ] `latest/` behavior is covered when changed.
+- [ ] Pruning behavior is covered when changed.
+- [ ] MR comment behavior is covered when changed.
+- [ ] README is updated for user-facing changes.
+- [ ] CHANGELOG is updated for release-visible changes.
+- [ ] No unrelated refactoring is included.
+- [ ] No generated report artifacts are committed accidentally.
 
 ## Release Checklist
 
 Before tagging a release:
 
-```text
-[ ] Merge request is reviewed and merged to master.
-[ ] Master pipeline is green.
-[ ] GitLab Pages root index opens.
-[ ] Environment index opens.
-[ ] Branch report index opens.
-[ ] latest/ opens and points to the newest job_NNN/ report.
-[ ] Old job_NNN/ report links still work.
-[ ] Issue result links still work if affected.
-[ ] MR comment behavior is checked if affected.
-[ ] README matches current behavior.
-[ ] CHANGELOG contains the release entry.
-[ ] Component version and runtime image tag match.
-[ ] Release tag is created.
-[ ] GitLab release notes are published.
-```
+- [ ] Merge request is reviewed and merged to master.
+- [ ] Master pipeline is green.
+- [ ] GitLab Pages root index opens.
+- [ ] Environment index opens.
+- [ ] Branch report index opens.
+- [ ] `latest/` opens and points to the newest `job_NNN/` report.
+- [ ] Old `job_NNN/` report links still work.
+- [ ] Issue result links still work if affected.
+- [ ] MR comment behavior is checked if affected.
+- [ ] README matches current behavior.
+- [ ] CHANGELOG contains the release entry.
+- [ ] Component version and runtime image tag match.
+- [ ] Release tag is created.
+- [ ] GitLab release notes are published.
 
 ## Design Principles
 
