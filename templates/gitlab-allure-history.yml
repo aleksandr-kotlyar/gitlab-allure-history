@@ -70,7 +70,7 @@ build_python:
     - docker build -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
     - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
 
-allure:
+publish-allure-history:
   image: $ALLURE_HISTORY_IMAGE
   stage: report
   resource_group: pages-publish

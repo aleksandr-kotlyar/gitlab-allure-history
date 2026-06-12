@@ -37,7 +37,7 @@ test:
       - allure-results
 ```
 
-The component adds an `allure` job that generates the HTML report, preserves history across runs, pushes the generated content to the storage branch, and publishes GitLab Pages from the main/component pipeline.
+The component adds a `publish-allure-history` job that generates the HTML report, preserves history across runs, pushes the generated content to the storage branch, and publishes GitLab Pages from the main/component pipeline.
 
 > [!WARNING]
 > This component publishes the project's GitLab Pages site from `public/`. If the project already uses GitLab Pages for another site, use a dedicated project for Allure history or avoid conflicting Pages deployments.
@@ -75,7 +75,7 @@ Test jobs must save `allure-results/` with `artifacts.when: always`. They may al
 3. Allure generates a new immutable report snapshot.
 4. Static indexes and the stable `latest/` alias are updated.
 5. The `public/` tree is committed to `gl-pages` with CI skipped for persistent storage.
-6. The same `public/` tree is uploaded by the `allure` job and published by GitLab Pages from the main/component pipeline.
+6. The same `public/` tree is uploaded by the `publish-allure-history` job and published by GitLab Pages from the main/component pipeline.
 
 ## Report Storage Layout
 

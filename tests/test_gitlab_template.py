@@ -114,12 +114,15 @@ def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
     assert "requires `ALLURE_HISTORY_TOKEN` with `api` scope" in contributing
 
 
-def test_project_pipeline_smokes_published_pages_after_allure():
+def test_project_pipeline_smokes_published_pages_after_publish_job():
     pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
 
     assert "pages_smoke:\n  stage: release\n" in pipeline
     assert "    - job: test_gate\n      artifacts: true" in pipeline
-    assert "    - job: allure\n      artifacts: false" in pipeline
+    assert (
+        "    - job: publish-allure-history\n"
+        "      artifacts: false"
+    ) in pipeline
     assert '        --base-url "$CI_PAGES_URL"' in pipeline
     assert '        --environment "$ENV"' in pipeline
     assert '        --branch "$CI_COMMIT_REF_SLUG"' in pipeline
@@ -160,19 +163,19 @@ def test_template_defines_component_inputs():
     assert "---\n\nvariables:" in template
 
 
-def test_allure_job_publishes_public_as_gitlab_pages_artifact():
+def test_publish_job_publishes_public_as_gitlab_pages_artifact():
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
-    allure_job = template.split("\nallure:\n", 1)[1]
+    publish_job = template.split("\npublish-allure-history:\n", 1)[1]
 
-    assert "\n  pages: true\n" in allure_job
+    assert "\n  pages: true\n" in publish_job
     assert (
         "  artifacts:\n"
         "    when: always\n"
         "    expire_in: 1 week\n"
         "    paths:\n"
         "      - public\n"
-    ) in allure_job
-    assert "\npublish-allure-history:" not in template
+    ) in publish_job
+    assert "\nallure:" not in template
     assert "\n  tags:" not in template
 
 
