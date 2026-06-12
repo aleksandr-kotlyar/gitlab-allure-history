@@ -33,6 +33,13 @@ Out of scope:
 
 This project should remain a static report publisher, not a mini ReportPortal.
 
+Operational constraints:
+
+* report history requires a writable Pages storage branch;
+* publishing is serialized with a `resource_group` and retries raced pushes up to three times;
+* different branch names can theoretically normalize to the same `CI_COMMIT_REF_SLUG`;
+* report retention defaults to 30 snapshots per environment and branch.
+
 ## Development Requirements
 
 * Python and `pip`;
@@ -66,13 +73,56 @@ pytest -m "demo"
 
 Demo tests may intentionally produce failed, broken, or skipped Allure states. They generate meaningful non-green example reports and are not a blocking gate.
 
+To test index generation directly:
+
+```bash
+python3 generate_index.py public
+```
+
+## How This Repository Uses Itself
+
+The project includes its own component from `.gitlab-ci.yml`. Tag pipelines build and use the matching release image. Non-tag pipelines include the component at the current commit SHA and use the latest published fallback image:
+
+```yaml
+include:
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
+    inputs:
+      allure-history-image-tag: $CI_COMMIT_TAG
+      build-runtime-image: "true"
+    rules:
+      - if: $CI_COMMIT_TAG
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
+    inputs:
+      allure-history-image-tag: "2026.2.8"
+    rules:
+      - if: $CI_COMMIT_TAG == null
+```
+
+After each release, update the fallback image tag in `.gitlab-ci.yml`.
+
 ## CI-only Validation
 
 These checks require GitLab CI context and variables; they are not normal local-only checks:
 
-* `ci_lint` validates GitLab CI and component configuration;
-* `consumer_contract:*` validates external consumer fixtures;
-* `pages_smoke` validates published GitLab Pages URLs.
+* `ci_lint` calls `validate_gitlab_ci.py` with the GitLab CI Lint API. It validates the current commit and checks that the component include expands to the expected `allure` job. It requires `ALLURE_HISTORY_TOKEN` with `api` scope.
+* `consumer_contract:*` executes each `tests/fixtures/consumer-*` configuration as a child pipeline against the component at the current commit SHA. Fixtures disable publishing and verify expanded inputs and upstream artifacts without modifying Pages content.
+* `pages_smoke` validates the published root, branch index, `latest/` alias, and immutable report URL.
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `.gitlab-ci.yml` | Dogfooding, CI lint, consumer contracts, Pages smoke checks, and release jobs. |
+| `templates/gitlab-allure-history.yml` | Reusable GitLab CI component. |
+| `tests/fixtures/consumer-*` | External consumer configurations executed as child pipelines. |
+| `validate_gitlab_ci.py` | GitLab CI Lint API validation. |
+| `Dockerfile` | Runtime image with Python, Java, Git, and Allure CLI. |
+| `generate_index.py` | Static HTML index generator. |
+| `prune_reports.py` | Report snapshot retention. |
+| `smoke_public_pages.py` | Published Pages smoke checks. |
+| `pytest.ini` | Pytest markers and Allure configuration. |
+| `tests/` | Gate, component, and demo tests. |
+| `CHANGELOG.md` | Release history and policy. |
 
 ## Testing Generated Indexes
 
@@ -227,7 +277,8 @@ README should stay user-facing:
 * how to use it;
 * required variables;
 * storage layout;
-* limitations.
+* component inputs;
+* concise troubleshooting.
 
 CONTRIBUTING should stay maintainer/contributor-facing:
 
@@ -262,6 +313,13 @@ YYYY.MINOR.PATCH
 
 Component tags and runtime image tags are released together and should use the same version.
 
+## Release Workflow
+
+1. Merge the release changes to `master` with an updated changelog.
+2. Create a `YYYY.MINOR.PATCH` tag from the validated `master` commit.
+3. The tag pipeline includes the component at that tag, builds and pushes the matching runtime image through `build_python`, runs validation and publishing jobs, and creates the GitLab release through `create_release`.
+4. After the release succeeds, update the fallback runtime image tag in `.gitlab-ci.yml` for non-tag pipelines.
+
 ## Pull Request Checklist
 
 Before opening or merging a pull request, check:
@@ -278,7 +336,7 @@ Before opening or merging a pull request, check:
 
 ## Release Checklist
 
-Before tagging a release:
+Before tagging:
 
 - [ ] Merge request is reviewed and merged to master.
 - [ ] Master pipeline is green.
@@ -292,8 +350,14 @@ Before tagging a release:
 - [ ] README matches current behavior.
 - [ ] CHANGELOG contains the release entry.
 - [ ] Component version and runtime image tag match.
+
+After tagging:
+
 - [ ] Release tag is created.
+- [ ] Tag pipeline is green.
+- [ ] Matching runtime image is published.
 - [ ] GitLab release notes are published.
+- [ ] Non-tag fallback image in `.gitlab-ci.yml` is updated.
 
 ## Design Principles
 

@@ -101,7 +101,7 @@ def test_project_pipeline_dogfoods_reusable_template():
 
 def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
     pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
-    readme = Path("README.md").read_text(encoding="utf-8")
+    contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
 
     assert "ci_lint:\n  stage: test\n" in pipeline
     assert '    - test -n "${ALLURE_HISTORY_TOKEN:-}"' in pipeline
@@ -110,7 +110,8 @@ def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
     assert '        --project-id "$CI_PROJECT_ID"' in pipeline
     assert '        --ref "$CI_COMMIT_SHA"' in pipeline
     assert '        --private-token "$ALLURE_HISTORY_TOKEN"' in pipeline
-    assert "reuses the masked `ALLURE_HISTORY_TOKEN` with `api`" in readme
+    assert "`ci_lint` calls `validate_gitlab_ci.py` with the GitLab CI Lint API" in contributing
+    assert "requires `ALLURE_HISTORY_TOKEN` with `api` scope" in contributing
 
 
 def test_project_pipeline_smokes_published_pages_after_allure():
@@ -320,5 +321,5 @@ def test_readme_external_include_uses_pinned_component_version():
         "gitlab-allure-history@2026.2.9"
         in readme
     )
-    assert "allure-history-image-tag: 2026.2.9" in readme
-    assert "Never use moving references (branches, `~latest`)" in readme
+    assert 'allure-history-image-tag: "2026.2.9"' in readme
+    assert "pin a published release tag" in readme
