@@ -6,32 +6,28 @@ This project is a lightweight GitLab CI component for publishing branch-based Al
 
 The main goal is to stay small, static, and GitLab-native.
 
-## Scope
+## Scope and non-goals
 
-Good contributions:
+In scope:
 
-* improve GitLab CI component usability;
-* improve generated static index pages;
-* improve Allure report history preservation;
-* improve `latest/` report aliases;
-* improve merge request report comments;
-* improve documentation and examples;
-* improve tests for generated HTML, pruning, and component behavior;
-* fix bugs in report publishing, history reuse, or index generation.
+* GitLab CI/CD component usability;
+* static GitLab Pages report publishing;
+* immutable report snapshots;
+* stable branch-level `latest/` aliases;
+* safe pruning;
+* generated index navigation;
+* merge request report links;
+* clear diagnostics for common GitLab CI integration issues.
 
-Out of scope:
+Non-goals:
 
-* backend services;
-* databases;
-* custom report portal features;
-* replacing Allure UI;
-* test management functionality;
-* analytics dashboards;
-* frontend frameworks;
-* authentication/authorization layers;
-* long-running infrastructure outside GitLab CI and GitLab Pages.
-
-This project should remain a static report publisher, not a mini ReportPortal.
+* a ReportPortal replacement;
+* a test management system;
+* a backend dashboard;
+* database-backed analytics;
+* generic multi-CI publishing;
+* object storage archival;
+* a custom Allure renderer.
 
 Operational constraints:
 
@@ -49,7 +45,7 @@ Operational constraints:
 * `GIT_PUSH_TOKEN` with `write_repository` permission for Pages publishing;
 * `ALLURE_HISTORY_TOKEN` with `api` scope for CI lint and MR comment checks.
 
-## Development Setup
+## Running tests
 
 Create a virtual environment:
 
@@ -57,6 +53,12 @@ Create a virtual environment:
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+Run the full suite:
+
+```bash
+pytest
 ```
 
 Run the blocking local gate:
@@ -72,6 +74,14 @@ pytest -m "demo"
 ```
 
 Demo tests may intentionally produce failed, broken, or skipped Allure states. They generate meaningful non-green example reports and are not a blocking gate.
+
+Focused examples:
+
+```bash
+pytest tests/test_generate_index.py
+pytest tests/test_prune_reports.py
+pytest tests/test_gitlab_template.py
+```
 
 To test index generation directly:
 
@@ -124,20 +134,21 @@ These checks require GitLab CI context and variables; they are not normal local-
 | `tests/` | Gate, component, and demo tests. |
 | `CHANGELOG.md` | Release history and policy. |
 
-## Testing Generated Indexes
+## Testing generated indexes
 
 The generated index pages are part of the product.
 
-When changing `generate_index.py`, check that generated indexes still work for:
+When changing `generate_index.py`, check that:
 
-* root index;
-* environment index;
-* branch/report index;
-* report rows with passed results;
-* report rows with issues;
-* `latest/` aliases;
-* hidden/internal folders;
-* light and dark themes if affected.
+* the root index opens;
+* the environment index opens;
+* the branch index opens;
+* immutable `job_NNN/` report links still work;
+* `latest/` redirects to the newest immutable report;
+* issue summary links point to Allure categories;
+* `latest/` is not listed as a regular report snapshot;
+* hidden and internal folders remain excluded;
+* light and dark themes still work if affected.
 
 Important internal entries must not appear as normal rows:
 
@@ -231,11 +242,16 @@ Allure: [report](REPORT_URL) · **2 issues** · failed 1 · broken 1 · 44 total
 
 Keep MR comments compact. Avoid headings, emoji, tables, and duplicate links.
 
-## Testing GitLab Component Changes
+## Testing component changes
 
 When changing `templates/gitlab-allure-history.yml`, check:
 
-* component inputs still work;
+* a minimal include still works;
+* a custom `environment` still works;
+* a custom `pages-branch` still works;
+* MR comments still work when enabled;
+* MR comments are skipped when disabled;
+* missing Allure results fail with a clear diagnostic;
 * default values are safe;
 * existing documented usage remains valid;
 * `allure-history-image-tag` is still handled correctly;
@@ -334,21 +350,22 @@ Before opening or merging a pull request, check:
 - [ ] No unrelated refactoring is included.
 - [ ] No generated report artifacts are committed accidentally.
 
-## Release Checklist
+## Release checklist
 
 Before tagging:
 
 - [ ] Merge request is reviewed and merged to master.
 - [ ] Master pipeline is green.
-- [ ] GitLab Pages root index opens.
-- [ ] Environment index opens.
-- [ ] Branch report index opens.
-- [ ] `latest/` opens and points to the newest `job_NNN/` report.
+- [ ] GitLab Pages opens.
+- [ ] `/dev/` opens.
+- [ ] `/dev/master/` opens.
+- [ ] `/dev/master/latest/` opens.
+- [ ] `latest/` points to the newest immutable `job_NNN/` report.
 - [ ] Old `job_NNN/` report links still work.
 - [ ] Issue result links still work if affected.
 - [ ] MR comment behavior is checked if affected.
-- [ ] README matches current behavior.
-- [ ] CHANGELOG contains the release entry.
+- [ ] README version references are updated.
+- [ ] The CHANGELOG entry is moved from `unreleased` to released.
 - [ ] Component version and runtime image tag match.
 
 After tagging:
@@ -385,3 +402,9 @@ The project should solve one problem well:
 ```text
 Publish branch-based Allure report history to GitLab Pages with stable links and no extra infrastructure.
 ```
+
+## Sponsored and custom work
+
+Out-of-scope requests are not part of the unpaid upstream roadmap. Depending on complexity and fit, they may be considered as sponsored development, private or custom integration work, separately maintained extensions, or downstream forks.
+
+Open an issue before investing significant time in a large out-of-scope change.
