@@ -415,6 +415,15 @@
                 padding-bottom: 2px;
             }
 
+            .entry-meta,
+            .entry-meta-label,
+            .entry-meta-link {
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
+            }
+
             .modified-cell {
                 padding-top: 0;
                 font-variant-numeric: tabular-nums;
@@ -426,7 +435,8 @@
                 align-items: baseline;
                 justify-content: space-between;
                 column-gap: 8px;
-                font-size: 0.92rem;
+                color: var(--muted);
+                font-size: 0.82rem;
                 font-weight: 500;
                 line-height: 1.35;
             }
@@ -434,12 +444,10 @@
             td[data-label]::before {
                 content: attr(data-label);
                 flex: 0 0 auto;
-                color: var(--muted);
-                font-size: 0.72rem;
-                font-weight: 500;
-                letter-spacing: 0.04em;
-                line-height: 1.3;
-                text-transform: uppercase;
+                color: inherit;
+                font: inherit;
+                letter-spacing: 0;
+                text-transform: none;
             }
 
             .list-controls {
