@@ -96,13 +96,13 @@ def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
     readme = Path("README.md").read_text(encoding="utf-8")
 
     assert "ci_lint:\n  stage: test\n" in pipeline
-    assert '    - test -n "${CI_LINT_TOKEN:-}"' in pipeline
+    assert '    - test -n "${ALLURE_HISTORY_TOKEN:-}"' in pipeline
     assert "    - python3 validate_gitlab_ci.py" in pipeline
     assert '        --api-url "$CI_API_V4_URL"' in pipeline
     assert '        --project-id "$CI_PROJECT_ID"' in pipeline
     assert '        --commit-sha "$CI_COMMIT_SHA"' in pipeline
-    assert '        --private-token "$CI_LINT_TOKEN"' in pipeline
-    assert "requires a masked `CI_LINT_TOKEN` with `api` scope" in readme
+    assert '        --private-token "$ALLURE_HISTORY_TOKEN"' in pipeline
+    assert "reuses the masked `ALLURE_HISTORY_TOKEN` with `api`" in readme
 
 
 def test_project_pipeline_smokes_published_pages_after_allure():

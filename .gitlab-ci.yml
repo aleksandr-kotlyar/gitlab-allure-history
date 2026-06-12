@@ -20,12 +20,12 @@ ci_lint:
   stage: test
   script:
     - set -euo pipefail
-    - test -n "${CI_LINT_TOKEN:-}"
+    - test -n "${ALLURE_HISTORY_TOKEN:-}"
     - python3 validate_gitlab_ci.py
         --api-url "$CI_API_V4_URL"
         --project-id "$CI_PROJECT_ID"
         --commit-sha "$CI_COMMIT_SHA"
-        --private-token "$CI_LINT_TOKEN"
+        --private-token "$ALLURE_HISTORY_TOKEN"
   tags:
     - macos-local
 
