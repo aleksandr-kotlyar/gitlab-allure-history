@@ -317,8 +317,8 @@ def test_readme_external_include_uses_pinned_component_version():
 
     assert (
         "component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/"
-        "gitlab-allure-history@2026.2.7"
+        "gitlab-allure-history@2026.2.9"
         in readme
     )
-    assert "allure-history-image-tag: 2026.2.7" in readme
+    assert "allure-history-image-tag: 2026.2.9" in readme
     assert "Never use moving references (branches, `~latest`)" in readme

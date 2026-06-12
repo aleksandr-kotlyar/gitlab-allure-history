@@ -10,7 +10,7 @@ Include the component in your `.gitlab-ci.yml` and pin a release tag. The runtim
 
 ```yaml
 include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.7
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.9
     inputs:
       environment: dev
       pages-branch: gl-pages
@@ -178,7 +178,7 @@ Pin a release tag. The runtime image tag resolves from the component version aut
 
 ```yaml
 include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.7
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.9
     inputs:
       environment: dev
 ```
@@ -189,7 +189,7 @@ Set `allure-history-image-tag` explicitly when using a SHA or branch reference, 
 include:
   - component: gitlab.com/.../gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.7"
+      allure-history-image-tag: "2026.2.9"
 ```
 
 The component adds an `allure` job that handles report generation, indexing, and publishing.
@@ -198,11 +198,11 @@ The component adds an `allure` job that handles report generation, indexing, and
 
 ## Versioning And Release Policy
 
-Component version and runtime image tag are released together as a matched pair. When you pin a component release tag (e.g. `@2026.2.7`), the runtime image tag resolves automatically from the component version.
+Component version and runtime image tag are released together as a matched pair. When you pin a component release tag (e.g. `@2026.2.9`), the runtime image tag resolves automatically from the component version.
 
 ```
-Component:  gitlab-allure-history@2026.2.7
-Image tag:  allure-history-image-tag: 2026.2.7 (auto-resolved)
+Component:  gitlab-allure-history@2026.2.9
+Image tag:  allure-history-image-tag: 2026.2.9 (auto-resolved)
 ```
 
 **Pin the component to a release tag.** The image tag follows automatically.
@@ -220,13 +220,13 @@ Prefer a release tag for normal use. Use a full commit SHA when you need maximum
 When you include:
 
 ```yaml
-  - component: .../gitlab-allure-history@2026.2.7
+  - component: .../gitlab-allure-history@2026.2.9
 ```
 
 use:
 
 ```yaml
-    allure-history-image-tag: 2026.2.7
+    allure-history-image-tag: 2026.2.9
 ```
 
 The default runtime image is `registry.gitlab.com/aleksandr-kotlyar/gitlab-allure-history:<tag>`. If you use a project-owned image repository, publish images with the same tags as the component versions, and ensure the image contains `generate_index.py`, `prune_reports.py`, `git`, `python3`, and the `allure` commandline.
@@ -278,7 +278,7 @@ include:
       - if: $CI_COMMIT_TAG
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.8"
+      allure-history-image-tag: "2026.2.9"
     rules:
       - if: $CI_COMMIT_TAG == null
 ```

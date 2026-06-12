@@ -24,7 +24,7 @@ body:
     attributes:
       label: Component version or ref
       description: Tag, branch, commit SHA, or overridden image tag.
-      placeholder: "2026.2.7"
+      placeholder: "2026.2.9"
     validations:
       required: true
 
