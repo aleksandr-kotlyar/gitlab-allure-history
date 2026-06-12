@@ -27,7 +27,7 @@ runtime image.
 
 ---
 
-## 2026.2.9 (unreleased)
+## 2026.2.9 (2026-06-12)
 
 ### Added
 

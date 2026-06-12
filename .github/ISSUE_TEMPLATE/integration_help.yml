@@ -1,0 +1,125 @@
+name: Integration help
+description: Diagnose component setup, CI, token, artifact, or Pages problems.
+title: "[Integration] "
+body:
+  - type: textarea
+    id: integration-goal
+    attributes:
+      label: Integration goal
+      description: What are you trying to publish, and from which jobs or pipelines?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gitlab-environment
+    attributes:
+      label: GitLab environment
+      options:
+        - GitLab.com
+        - Self-managed
+    validations:
+      required: true
+
+  - type: input
+    id: self-managed-version
+    attributes:
+      label: Self-managed GitLab version
+      description: Leave blank for GitLab.com.
+
+  - type: dropdown
+    id: project-visibility
+    attributes:
+      label: Project visibility
+      options:
+        - Public
+        - Internal
+        - Private
+    validations:
+      required: true
+
+  - type: dropdown
+    id: pipeline-source
+    attributes:
+      label: Pipeline source
+      options:
+        - push
+        - merge_request_event
+        - schedule
+        - tag
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: include-snippet
+    attributes:
+      label: Sanitized component include
+      description: Paste the relevant `.gitlab-ci.yml` include. Do not paste secrets.
+      render: yaml
+    validations:
+      required: true
+
+  - type: textarea
+    id: configured-inputs
+    attributes:
+      label: Configured inputs
+      description: Include environment, pages-branch, reports-to-keep, comment-mr, and image/image-tag overrides.
+      render: yaml
+    validations:
+      required: true
+
+  - type: textarea
+    id: allure-results
+    attributes:
+      label: allure-results and artifacts
+      description: State where `allure-results` is produced and whether its artifact exists before the publish job starts.
+    validations:
+      required: true
+
+  - type: textarea
+    id: token
+    attributes:
+      label: Token type and scopes
+      description: Include the token type and scopes only. Do not paste the token value.
+      placeholder: "Project access token with write_repository"
+    validations:
+      required: true
+
+  - type: textarea
+    id: variable-availability
+    attributes:
+      label: CI variable availability
+      description: State whether relevant variables are protected/masked and available to this pipeline source.
+    validations:
+      required: true
+
+  - type: textarea
+    id: pages-settings
+    attributes:
+      label: Pages branch and settings
+      description: Include branch protection and Pages settings if known. Write "Unknown" if unavailable.
+    validations:
+      required: true
+
+  - type: textarea
+    id: failing-job
+    attributes:
+      label: Failing job and sanitized log excerpt
+      description: Name the exact job and remove tokens, credentials, and private URLs.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: expected-url
+    attributes:
+      label: Expected Pages or report URL
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-result
+    attributes:
+      label: Actual URL or error
+    validations:
+      required: true
