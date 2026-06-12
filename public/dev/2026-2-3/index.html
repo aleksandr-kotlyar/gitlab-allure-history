@@ -155,15 +155,21 @@
             font: inherit;
             font-size: 13px;
             font-weight: 600;
+            transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            border-color: var(--link);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 22%, transparent);
         }
 
         .theme-toggle:hover {
-            background: var(--row);
+            background: color-mix(in srgb, var(--link) 10%, var(--panel));
         }
 
         .theme-toggle:focus-visible {
-            outline: 2px solid var(--link);
-            outline-offset: 2px;
+            outline: none;
         }
 
         table {
@@ -246,22 +252,32 @@
             text-transform: lowercase;
         }
 
-        .entry-separator {
+        .entry-meta {
+            display: flex;
+            min-width: 0;
+            align-items: baseline;
+            gap: 5px;
+            margin-top: 1px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-label {
             flex: 0 0 auto;
             color: var(--muted);
-            opacity: 0.5;
-            font-weight: 400;
-            user-select: none;
+            font-weight: 500;
         }
 
-        .entry-latest-link {
-            flex: 0 0 auto;
+        .entry-meta-link {
+            min-width: 0;
+            color: var(--muted);
+            overflow-wrap: anywhere;
+        }
+
+        .entry-meta-link:hover {
             color: var(--link);
-            text-decoration: none;
-        }
-
-        .entry-latest-link:hover {
-            text-decoration: underline;
         }
 
         .modified-cell {
@@ -399,24 +415,39 @@
                 padding-bottom: 2px;
             }
 
+            .entry-meta,
+            .entry-meta-label,
+            .entry-meta-link {
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
+            }
+
             .modified-cell {
                 padding-top: 0;
+                font-variant-numeric: tabular-nums;
                 text-align: left;
             }
 
             td[data-label] {
                 display: flex;
+                align-items: baseline;
                 justify-content: space-between;
-                gap: 12px;
+                column-gap: 8px;
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
             }
 
             td[data-label]::before {
                 content: attr(data-label);
                 flex: 0 0 auto;
-                color: var(--muted);
-                font-size: 12px;
-            font-weight: 500;
-                text-transform: uppercase;
+                color: inherit;
+                font: inherit;
+                letter-spacing: 0;
+                text-transform: none;
             }
 
             .list-controls {
