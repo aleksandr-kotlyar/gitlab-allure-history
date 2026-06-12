@@ -160,6 +160,22 @@ def test_template_defines_component_inputs():
     assert "---\n\nvariables:" in template
 
 
+def test_allure_job_publishes_public_as_gitlab_pages_artifact():
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    allure_job = template.split("\nallure:\n", 1)[1]
+
+    assert "\n  pages: true\n" in allure_job
+    assert (
+        "  artifacts:\n"
+        "    when: always\n"
+        "    expire_in: 1 week\n"
+        "    paths:\n"
+        "      - public\n"
+    ) in allure_job
+    assert "\npublish-allure-history:" not in template
+    assert "\n  tags:" not in template
+
+
 def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
     script = extract_script_block(
@@ -173,6 +189,7 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
         textwrap.dedent(
             """\
             #!/bin/sh
+            printf '%s\n' "$*" >> "$GIT_COMMANDS"
             command="$3"
 
             case "$command" in
@@ -200,11 +217,17 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
     pages_public = tmp_path / "pages-worktree" / "public"
     pages_public.mkdir(parents=True)
     (pages_public / "index.html").write_text("report", encoding="utf-8")
+    (tmp_path / "pages-worktree" / ".gitlab-ci.yml").write_text(
+        "pages:\n  script: echo legacy\n",
+        encoding="utf-8",
+    )
     calls_file = tmp_path / "git-calls"
+    commands_file = tmp_path / "git-commands"
 
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
     monkeypatch.setenv("GIT_CALLS", str(calls_file))
+    monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
     monkeypatch.setenv("SUCCESSFUL_PUSH", str(successful_push))
     monkeypatch.setenv("GIT_PUSH_TOKEN", "secret")
     monkeypatch.setenv("CI_SERVER_HOST", "gitlab.example")
@@ -212,15 +235,21 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
     monkeypatch.setenv("CI_PIPELINE_ID", "123")
     monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
 
-    return subprocess.run(
+    result = subprocess.run(
         ["sh", "-eu", "-c", script],
         text=True,
         capture_output=True,
-    ), calls_file
+    )
+
+    return result, calls_file, commands_file
 
 
 def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
-    result, calls_file = run_pages_publish_script(tmp_path, monkeypatch, successful_push=3)
+    result, calls_file, commands_file = run_pages_publish_script(
+        tmp_path,
+        monkeypatch,
+        successful_push=3,
+    )
 
     assert result.returncode == 0
     assert calls_file.read_text(encoding="utf-8").splitlines() == [
@@ -234,10 +263,27 @@ def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
     assert "Pages push attempt 1/3 failed" in result.stdout
     assert "Pages push attempt 2/3 failed" in result.stdout
     assert (tmp_path / "public" / "index.html").read_text(encoding="utf-8") == "report"
+    assert not (tmp_path / "pages-worktree" / ".gitlab-ci.yml").exists()
+
+    commands = commands_file.read_text(encoding="utf-8").splitlines()
+    assert any(
+        command.endswith(
+            "commit -m Publish Allure report for pipeline 123 [skip ci]"
+        )
+        for command in commands
+    )
+    assert sum(
+        command.endswith("push -o ci.skip origin HEAD:gl-pages")
+        for command in commands
+    ) == 3
 
 
 def test_pages_push_fails_after_three_attempts(tmp_path, monkeypatch):
-    result, calls_file = run_pages_publish_script(tmp_path, monkeypatch, successful_push=0)
+    result, calls_file, _ = run_pages_publish_script(
+        tmp_path,
+        monkeypatch,
+        successful_push=0,
+    )
 
     assert result.returncode == 1
     assert calls_file.read_text(encoding="utf-8").splitlines().count("push") == 3

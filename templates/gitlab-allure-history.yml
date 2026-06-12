@@ -248,12 +248,14 @@ allure:
       git -C pages-worktree config user.email "${GITLAB_USER_EMAIL:-gitlab-ci@example.invalid}"
       git -C pages-worktree remote set-url origin "https://oauth2:${GIT_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
 
+      rm -f pages-worktree/.gitlab-ci.yml
       git -C pages-worktree add public
+      git -C pages-worktree rm -f --ignore-unmatch .gitlab-ci.yml
 
       if git -C pages-worktree diff --cached --quiet; then
         echo "No Pages changes to publish."
       else
-        git -C pages-worktree commit -m "Publish Allure report for pipeline ${CI_PIPELINE_ID}"
+        git -C pages-worktree commit -m "Publish Allure report for pipeline ${CI_PIPELINE_ID} [skip ci]"
 
         PAGES_PUSH_ATTEMPT=1
         PAGES_PUSH_MAX_ATTEMPTS=3
@@ -261,7 +263,7 @@ allure:
         while [ "$PAGES_PUSH_ATTEMPT" -le "$PAGES_PUSH_MAX_ATTEMPTS" ]; do
           git -C pages-worktree pull --rebase origin "$PAGES_BRANCH"
 
-          if git -C pages-worktree push origin "HEAD:$PAGES_BRANCH"; then
+          if git -C pages-worktree push -o ci.skip origin "HEAD:$PAGES_BRANCH"; then
             break
           fi
 
