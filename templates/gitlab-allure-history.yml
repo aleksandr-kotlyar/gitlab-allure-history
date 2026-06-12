@@ -117,8 +117,18 @@ allure:
       fi
 
     - |
-      if ! git clone --single-branch --branch "$PAGES_BRANCH" "$CI_REPOSITORY_URL" pages-worktree; then
-        echo "Failed to clone '${PAGES_BRANCH}' from this project. Create the '${PAGES_BRANCH}' branch before publishing reports."
+      PAGES_BRANCH_STATUS=0
+      git ls-remote --exit-code --heads "$CI_REPOSITORY_URL" "refs/heads/$PAGES_BRANCH" >/dev/null 2>&1 || PAGES_BRANCH_STATUS=$?
+
+      if [ "$PAGES_BRANCH_STATUS" -eq 0 ]; then
+        git clone --single-branch --branch "$PAGES_BRANCH" "$CI_REPOSITORY_URL" pages-worktree
+      elif [ "$PAGES_BRANCH_STATUS" -eq 2 ]; then
+        echo "Storage branch '${PAGES_BRANCH}' does not exist; creating it."
+        git init pages-worktree
+        git -C pages-worktree remote add origin "$CI_REPOSITORY_URL"
+        git -C pages-worktree checkout --orphan "$PAGES_BRANCH"
+      else
+        echo "Failed to check storage branch '${PAGES_BRANCH}'. Verify repository access and CI network settings."
         exit 1
       fi
 
@@ -261,7 +271,15 @@ allure:
         PAGES_PUSH_MAX_ATTEMPTS=3
 
         while [ "$PAGES_PUSH_ATTEMPT" -le "$PAGES_PUSH_MAX_ATTEMPTS" ]; do
-          git -C pages-worktree pull --rebase origin "$PAGES_BRANCH"
+          REMOTE_BRANCH_STATUS=0
+          git -C pages-worktree ls-remote --exit-code --heads origin "refs/heads/$PAGES_BRANCH" >/dev/null 2>&1 || REMOTE_BRANCH_STATUS=$?
+
+          if [ "$REMOTE_BRANCH_STATUS" -eq 0 ]; then
+            git -C pages-worktree pull --rebase origin "$PAGES_BRANCH"
+          elif [ "$REMOTE_BRANCH_STATUS" -ne 2 ]; then
+            echo "Failed to check remote storage branch '${PAGES_BRANCH}'."
+            exit 1
+          fi
 
           if git -C pages-worktree push -o ci.skip origin "HEAD:$PAGES_BRANCH"; then
             break

@@ -45,25 +45,12 @@ The component adds an `allure` job that generates the HTML report, preserves his
 ## Prerequisites
 
 - GitLab Pages enabled for the project.
-- A `gl-pages` persistent storage branch that exists before the first component run.
 - A `GIT_PUSH_TOKEN` CI variable with `write_repository` permission.
 - Test jobs that publish an `allure-results/` artifact.
 
-Create the storage branch once before the first run:
+The component creates the `gl-pages` persistent storage branch automatically on the first run if it does not exist. The branch stores generated `public/` content and history; it is not a deployment pipeline branch and does not need its own `.gitlab-ci.yml`.
 
-```bash
-git checkout --orphan gl-pages
-git rm -rf .
-mkdir public
-touch public/.gitkeep
-git add public/.gitkeep
-git commit -m "Initialize report storage branch"
-git push origin gl-pages
-```
-
-`gl-pages` stores generated `public/` content and history; it is not a deployment pipeline branch and does not need its own `.gitlab-ci.yml`.
-
-Create a project, group, or personal access token with `write_repository` permission and store it as `GIT_PUSH_TOKEN`. The token must be allowed to push to `gl-pages`, including when branch protection is enabled. Mark it protected only if reports are published exclusively from protected branches.
+Create a project, group, or personal access token with `write_repository` permission and store it as `GIT_PUSH_TOKEN`. The token must be allowed to create and push to `gl-pages`, including when branch protection is enabled. Mark it protected only if reports are published exclusively from protected branches.
 
 Test jobs must save `allure-results/` with `artifacts.when: always`. They may also publish a `jobid` file containing the test job ID; otherwise, the report job uses its own `CI_JOB_ID` for the snapshot folder.
 
@@ -186,9 +173,9 @@ The runner needs network access to pull the runtime image, clone and push the Pa
 
 ## Troubleshooting
 
-### `gl-pages` Branch Not Found
+### Storage Branch Cannot Be Created
 
-Create the storage branch before running the report job.
+Check that `GIT_PUSH_TOKEN` is allowed to create and push the configured storage branch. If branch protection requires pre-creation by a maintainer, create the branch once and rerun the pipeline.
 
 ### Report Job Cannot Push
 

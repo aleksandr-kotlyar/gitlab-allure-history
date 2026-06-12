@@ -176,7 +176,94 @@ def test_allure_job_publishes_public_as_gitlab_pages_artifact():
     assert "\n  tags:" not in template
 
 
-def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
+def run_storage_checkout_script(tmp_path, monkeypatch, branch_status):
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    script = extract_script_block(
+        template,
+        "      PAGES_BRANCH_STATUS=0",
+    )
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    fake_git = bin_dir / "git"
+    fake_git.write_text(
+        textwrap.dedent(
+            """\
+            #!/bin/sh
+            printf '%s\n' "$*" >> "$GIT_COMMANDS"
+
+            if [ "$1" = "ls-remote" ]; then
+              exit "$BRANCH_STATUS"
+            fi
+
+            if [ "$1" = "init" ]; then
+              mkdir -p "$2"
+            fi
+            """
+        ),
+        encoding="utf-8",
+    )
+    fake_git.chmod(0o755)
+    commands_file = tmp_path / "git-commands"
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
+    monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
+    monkeypatch.setenv("BRANCH_STATUS", str(branch_status))
+    monkeypatch.setenv("CI_REPOSITORY_URL", "https://gitlab.example/group/project.git")
+    monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
+
+    result = subprocess.run(
+        ["sh", "-eu", "-c", script],
+        text=True,
+        capture_output=True,
+    )
+
+    return result, commands_file.read_text(encoding="utf-8").splitlines()
+
+
+def test_existing_storage_branch_is_cloned(tmp_path, monkeypatch):
+    result, commands = run_storage_checkout_script(tmp_path, monkeypatch, branch_status=0)
+
+    assert result.returncode == 0
+    assert (
+        "clone --single-branch --branch gl-pages "
+        "https://gitlab.example/group/project.git pages-worktree"
+    ) in commands
+    assert not any(command.startswith("init ") for command in commands)
+
+
+def test_missing_storage_branch_is_created_as_orphan(tmp_path, monkeypatch):
+    result, commands = run_storage_checkout_script(tmp_path, monkeypatch, branch_status=2)
+
+    assert result.returncode == 0
+    assert "Storage branch 'gl-pages' does not exist; creating it." in result.stdout
+    assert "init pages-worktree" in commands
+    assert (
+        "-C pages-worktree remote add origin "
+        "https://gitlab.example/group/project.git"
+    ) in commands
+    assert "-C pages-worktree checkout --orphan gl-pages" in commands
+    assert not any(command.startswith("clone ") for command in commands)
+
+
+def test_storage_branch_check_failure_is_not_treated_as_missing(tmp_path, monkeypatch):
+    result, commands = run_storage_checkout_script(
+        tmp_path,
+        monkeypatch,
+        branch_status=128,
+    )
+
+    assert result.returncode == 1
+    assert "Failed to check storage branch 'gl-pages'." in result.stdout
+    assert not any(command.startswith(("clone ", "init ")) for command in commands)
+
+
+def run_pages_publish_script(
+    tmp_path,
+    monkeypatch,
+    successful_push,
+    remote_branch_exists=True,
+):
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
     script = extract_script_block(
         template,
@@ -195,6 +282,9 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
             case "$command" in
               diff)
                 exit 1
+                ;;
+              ls-remote)
+                [ "$REMOTE_BRANCH_EXISTS" = "true" ] || exit 2
                 ;;
               pull)
                 printf 'pull\n' >> "$GIT_CALLS"
@@ -229,6 +319,10 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
     monkeypatch.setenv("GIT_CALLS", str(calls_file))
     monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
     monkeypatch.setenv("SUCCESSFUL_PUSH", str(successful_push))
+    monkeypatch.setenv(
+        "REMOTE_BRANCH_EXISTS",
+        "true" if remote_branch_exists else "false",
+    )
     monkeypatch.setenv("GIT_PUSH_TOKEN", "secret")
     monkeypatch.setenv("CI_SERVER_HOST", "gitlab.example")
     monkeypatch.setenv("CI_PROJECT_PATH", "group/project")
@@ -276,6 +370,19 @@ def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
         command.endswith("push -o ci.skip origin HEAD:gl-pages")
         for command in commands
     ) == 3
+
+
+def test_first_storage_push_does_not_pull_missing_branch(tmp_path, monkeypatch):
+    result, calls_file, _ = run_pages_publish_script(
+        tmp_path,
+        monkeypatch,
+        successful_push=1,
+        remote_branch_exists=False,
+    )
+
+    assert result.returncode == 0
+    assert calls_file.read_text(encoding="utf-8").splitlines() == ["push"]
+    assert (tmp_path / "public" / "index.html").is_file()
 
 
 def test_pages_push_fails_after_three_attempts(tmp_path, monkeypatch):
