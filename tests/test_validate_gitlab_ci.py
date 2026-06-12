@@ -17,19 +17,19 @@ def valid_lint_result():
     }
 
 
-def test_lint_url_requests_pipeline_simulation_for_current_commit():
+def test_lint_url_requests_pipeline_simulation_for_current_ref():
     url = lint_url(
         "https://gitlab.example/api/v4/",
         "group/project",
-        "abc123",
+        "feature/ci-lint",
     )
 
     assert url.startswith(
         "https://gitlab.example/api/v4/projects/group%2Fproject/ci/lint?"
     )
-    assert "content_ref=abc123" in url
+    assert "content_ref=feature%2Fci-lint" in url
     assert "dry_run=true" in url
-    assert "dry_run_ref=abc123" in url
+    assert "dry_run_ref=feature%2Fci-lint" in url
     assert "include_jobs=true" in url
 
 

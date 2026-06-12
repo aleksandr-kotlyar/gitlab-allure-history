@@ -7,12 +7,12 @@ from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 
-def lint_url(api_url: str, project_id: str, commit_sha: str) -> str:
+def lint_url(api_url: str, project_id: str, ref: str) -> str:
     query = urlencode(
         {
-            "content_ref": commit_sha,
+            "content_ref": ref,
             "dry_run": "true",
-            "dry_run_ref": commit_sha,
+            "dry_run_ref": ref,
             "include_jobs": "true",
         }
     )
@@ -24,7 +24,7 @@ def lint_url(api_url: str, project_id: str, commit_sha: str) -> str:
 def fetch_lint_result(
     api_url: str,
     project_id: str,
-    commit_sha: str,
+    ref: str,
     private_token: str,
 ) -> dict[str, object]:
     headers = {
@@ -34,7 +34,7 @@ def fetch_lint_result(
     headers["PRIVATE-TOKEN"] = private_token
 
     request = Request(
-        lint_url(api_url, project_id, commit_sha),
+        lint_url(api_url, project_id, ref),
         headers=headers,
     )
 
@@ -79,7 +79,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     )
     parser.add_argument("--api-url", required=True)
     parser.add_argument("--project-id", required=True)
-    parser.add_argument("--commit-sha", required=True)
+    parser.add_argument("--ref", required=True)
     parser.add_argument("--private-token", required=True)
     return parser.parse_args(argv)
 
@@ -89,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
     result = fetch_lint_result(
         args.api_url,
         args.project_id,
-        args.commit_sha,
+        args.ref,
         args.private_token,
     )
     validate_lint_result(result)
