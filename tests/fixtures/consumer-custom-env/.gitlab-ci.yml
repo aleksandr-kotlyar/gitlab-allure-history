@@ -21,7 +21,7 @@ consumer_contract:
   tags:
     - macos-local
 
-allure:
+publish-allure-history:
   rules:
     - when: never
 

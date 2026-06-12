@@ -11,9 +11,9 @@ def valid_lint_result():
         "valid": True,
         "errors": [],
         "warnings": [],
-        "merged_yaml": "allure:\n  script:\n    - echo report\n",
+        "merged_yaml": "publish-allure-history:\n  script:\n    - echo report\n",
         "includes": [{"type": "component", "location": "component.yml"}],
-        "jobs": [{"name": "test_gate"}, {"name": "allure"}],
+        "jobs": [{"name": "test_gate"}, {"name": "publish-allure-history"}],
     }
 
 
@@ -74,7 +74,7 @@ def test_fetch_lint_result_uses_optional_private_token(monkeypatch):
         ("valid", False, "configuration is invalid"),
         ("includes", [], "did not expand any includes"),
         ("merged_yaml", "", "did not return merged YAML"),
-        ("jobs", [], "missing the allure job"),
+        ("jobs", [], "missing the publish-allure-history job"),
     ],
 )
 def test_validate_lint_result_rejects_incomplete_validation(field, value, message):

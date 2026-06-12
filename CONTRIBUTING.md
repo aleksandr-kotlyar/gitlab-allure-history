@@ -114,7 +114,7 @@ After each release, update the fallback image tag in `.gitlab-ci.yml`.
 
 These checks require GitLab CI context and variables; they are not normal local-only checks:
 
-* `ci_lint` calls `validate_gitlab_ci.py` with the GitLab CI Lint API. It validates the current commit and checks that the component include expands to the expected `allure` job. It requires `ALLURE_HISTORY_TOKEN` with `api` scope.
+* `ci_lint` calls `validate_gitlab_ci.py` with the GitLab CI Lint API. It validates the current commit and checks that the component include expands to the expected `publish-allure-history` job. It requires `ALLURE_HISTORY_TOKEN` with `api` scope.
 * `consumer_contract:*` executes each `tests/fixtures/consumer-*` configuration as a child pipeline against the component at the current commit SHA. Fixtures disable publishing and verify expanded inputs and upstream artifacts without modifying Pages content.
 * `pages_smoke` validates the published root, branch index, `latest/` alias, and immutable report URL.
 

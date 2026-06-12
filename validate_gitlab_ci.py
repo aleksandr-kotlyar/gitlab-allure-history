@@ -62,8 +62,11 @@ def validate_lint_result(result: dict[str, object]) -> None:
         for job in jobs
         if isinstance(job, dict) and isinstance(job.get("name"), str)
     }
-    if "allure" not in job_names:
-        raise RuntimeError("Expanded component configuration is missing the allure job")
+    if "publish-allure-history" not in job_names:
+        raise RuntimeError(
+            "Expanded component configuration is missing the "
+            "publish-allure-history job"
+        )
 
     print(
         "GitLab CI configuration is valid: "

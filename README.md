@@ -37,28 +37,20 @@ test:
       - allure-results
 ```
 
-The component adds an `allure` job that generates the HTML report, preserves history across runs, and publishes the result to GitLab Pages.
+The component adds a `publish-allure-history` job that generates the HTML report, preserves history across runs, pushes the generated content to the storage branch, and publishes GitLab Pages from the main/component pipeline.
+
+> [!WARNING]
+> This component publishes the project's GitLab Pages site from `public/`. If the project already uses GitLab Pages for another site, use a dedicated project for Allure history or avoid conflicting Pages deployments.
 
 ## Prerequisites
 
 - GitLab Pages enabled for the project.
-- A `gl-pages` storage branch.
 - A `GIT_PUSH_TOKEN` CI variable with `write_repository` permission.
 - Test jobs that publish an `allure-results/` artifact.
 
-Create the storage branch once:
+The component creates the `gl-pages` persistent storage branch automatically on the first run if it does not exist. The branch stores generated `public/` content and history; it is not a deployment pipeline branch and does not need its own `.gitlab-ci.yml`.
 
-```bash
-git checkout --orphan gl-pages
-git rm -rf .
-mkdir public
-touch public/.gitkeep
-git add public/.gitkeep
-git commit -m "Initialize report storage branch"
-git push origin gl-pages
-```
-
-Create a project, group, or personal access token with `write_repository` permission and store it as `GIT_PUSH_TOKEN`. Mark it protected only if reports are published exclusively from protected branches.
+Create a project, group, or personal access token with `write_repository` permission and store it as `GIT_PUSH_TOKEN`. The token must be allowed to create and push to `gl-pages`, including when branch protection is enabled. Mark it protected only if reports are published exclusively from protected branches.
 
 Test jobs must save `allure-results/` with `artifacts.when: always`. They may also publish a `jobid` file containing the test job ID; otherwise, the report job uses its own `CI_JOB_ID` for the snapshot folder.
 
@@ -82,11 +74,12 @@ Test jobs must save `allure-results/` with `artifacts.when: always`. They may al
 2. The component restores the previous branch history from `gl-pages`.
 3. Allure generates a new immutable report snapshot.
 4. Static indexes and the stable `latest/` alias are updated.
-5. The `public/` tree is pushed to `gl-pages` and published by GitLab Pages.
+5. The `public/` tree is committed to `gl-pages` with CI skipped for persistent storage.
+6. The same `public/` tree is uploaded by the `publish-allure-history` job and published by GitLab Pages from the main/component pipeline.
 
 ## Report Storage Layout
 
-Reports are persisted in the `gl-pages` branch:
+Reports are persisted in the `gl-pages` storage branch. The branch contains generated content, not a separate Pages deployment pipeline:
 
 ```text
 public/
@@ -152,7 +145,7 @@ The version scheme is `YYYY.MINOR.PATCH`. See [CHANGELOG.md](CHANGELOG.md) for r
 | `allure-history-image` | `registry.gitlab.com/...` | Runtime image repository. |
 | `allure-history-image-tag` | `$[[ component.version ]]` | Runtime image tag. Set explicitly for SHA or branch component references. |
 | `allure-history-tools-dir` | `/opt/gitlab-allure-history` | **Advanced custom image override.** Directory containing `generate_index.py` and `prune_reports.py`. |
-| `pages-branch` | `gl-pages` | Branch that stores Pages content and Allure history. |
+| `pages-branch` | `gl-pages` | Persistent storage branch for generated Pages content and Allure history. |
 | `reports-to-keep` | `30` | Report snapshots retained per environment and branch. |
 | `build-runtime-image` | `false` | **Maintainer/release input.** Build and push this project's runtime image in tag pipelines. |
 | `comment-mr` | `false` | Post or update a merge request comment with the current immutable report URL. |
@@ -180,13 +173,13 @@ The runner needs network access to pull the runtime image, clone and push the Pa
 
 ## Troubleshooting
 
-### `gl-pages` Branch Not Found
+### Storage Branch Cannot Be Created
 
-Create the storage branch before running the report job.
+Check that `GIT_PUSH_TOKEN` is allowed to create and push the configured storage branch. If branch protection requires pre-creation by a maintainer, create the branch once and rerun the pipeline.
 
 ### Report Job Cannot Push
 
-Check that `GIT_PUSH_TOKEN` is available to the pipeline and has `write_repository` permission. Protected variables are unavailable on unprotected branches.
+Check that `GIT_PUSH_TOKEN` is available to the pipeline, has `write_repository` permission, and is allowed to push to `gl-pages`. Protected variables are unavailable on unprotected branches.
 
 ### No Previous History
 

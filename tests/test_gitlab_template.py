@@ -114,12 +114,15 @@ def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
     assert "requires `ALLURE_HISTORY_TOKEN` with `api` scope" in contributing
 
 
-def test_project_pipeline_smokes_published_pages_after_allure():
+def test_project_pipeline_smokes_published_pages_after_publish_job():
     pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
 
     assert "pages_smoke:\n  stage: release\n" in pipeline
     assert "    - job: test_gate\n      artifacts: true" in pipeline
-    assert "    - job: allure\n      artifacts: false" in pipeline
+    assert (
+        "    - job: publish-allure-history\n"
+        "      artifacts: false"
+    ) in pipeline
     assert '        --base-url "$CI_PAGES_URL"' in pipeline
     assert '        --environment "$ENV"' in pipeline
     assert '        --branch "$CI_COMMIT_REF_SLUG"' in pipeline
@@ -160,7 +163,110 @@ def test_template_defines_component_inputs():
     assert "---\n\nvariables:" in template
 
 
-def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
+def test_publish_job_publishes_public_as_gitlab_pages_artifact():
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    publish_job = template.split("\npublish-allure-history:\n", 1)[1]
+
+    assert "\n  pages: true\n" in publish_job
+    assert (
+        "  artifacts:\n"
+        "    when: always\n"
+        "    expire_in: 1 week\n"
+        "    paths:\n"
+        "      - public\n"
+    ) in publish_job
+    assert "\nallure:" not in template
+    assert "\n  tags:" not in template
+
+
+def run_storage_checkout_script(tmp_path, monkeypatch, branch_status):
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    script = extract_script_block(
+        template,
+        "      PAGES_BRANCH_STATUS=0",
+    )
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    fake_git = bin_dir / "git"
+    fake_git.write_text(
+        textwrap.dedent(
+            """\
+            #!/bin/sh
+            printf '%s\n' "$*" >> "$GIT_COMMANDS"
+
+            if [ "$1" = "ls-remote" ]; then
+              exit "$BRANCH_STATUS"
+            fi
+
+            if [ "$1" = "init" ]; then
+              mkdir -p "$2"
+            fi
+            """
+        ),
+        encoding="utf-8",
+    )
+    fake_git.chmod(0o755)
+    commands_file = tmp_path / "git-commands"
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
+    monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
+    monkeypatch.setenv("BRANCH_STATUS", str(branch_status))
+    monkeypatch.setenv("CI_REPOSITORY_URL", "https://gitlab.example/group/project.git")
+    monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
+
+    result = subprocess.run(
+        ["sh", "-eu", "-c", script],
+        text=True,
+        capture_output=True,
+    )
+
+    return result, commands_file.read_text(encoding="utf-8").splitlines()
+
+
+def test_existing_storage_branch_is_cloned(tmp_path, monkeypatch):
+    result, commands = run_storage_checkout_script(tmp_path, monkeypatch, branch_status=0)
+
+    assert result.returncode == 0
+    assert (
+        "clone --single-branch --branch gl-pages "
+        "https://gitlab.example/group/project.git pages-worktree"
+    ) in commands
+    assert not any(command.startswith("init ") for command in commands)
+
+
+def test_missing_storage_branch_is_created_as_orphan(tmp_path, monkeypatch):
+    result, commands = run_storage_checkout_script(tmp_path, monkeypatch, branch_status=2)
+
+    assert result.returncode == 0
+    assert "Storage branch 'gl-pages' does not exist; creating it." in result.stdout
+    assert "init pages-worktree" in commands
+    assert (
+        "-C pages-worktree remote add origin "
+        "https://gitlab.example/group/project.git"
+    ) in commands
+    assert "-C pages-worktree checkout --orphan gl-pages" in commands
+    assert not any(command.startswith("clone ") for command in commands)
+
+
+def test_storage_branch_check_failure_is_not_treated_as_missing(tmp_path, monkeypatch):
+    result, commands = run_storage_checkout_script(
+        tmp_path,
+        monkeypatch,
+        branch_status=128,
+    )
+
+    assert result.returncode == 1
+    assert "Failed to check storage branch 'gl-pages'." in result.stdout
+    assert not any(command.startswith(("clone ", "init ")) for command in commands)
+
+
+def run_pages_publish_script(
+    tmp_path,
+    monkeypatch,
+    successful_push,
+    remote_branch_exists=True,
+):
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
     script = extract_script_block(
         template,
@@ -173,11 +279,15 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
         textwrap.dedent(
             """\
             #!/bin/sh
+            printf '%s\n' "$*" >> "$GIT_COMMANDS"
             command="$3"
 
             case "$command" in
               diff)
                 exit 1
+                ;;
+              ls-remote)
+                [ "$REMOTE_BRANCH_EXISTS" = "true" ] || exit 2
                 ;;
               pull)
                 printf 'pull\n' >> "$GIT_CALLS"
@@ -200,27 +310,43 @@ def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
     pages_public = tmp_path / "pages-worktree" / "public"
     pages_public.mkdir(parents=True)
     (pages_public / "index.html").write_text("report", encoding="utf-8")
+    (tmp_path / "pages-worktree" / ".gitlab-ci.yml").write_text(
+        "pages:\n  script: echo legacy\n",
+        encoding="utf-8",
+    )
     calls_file = tmp_path / "git-calls"
+    commands_file = tmp_path / "git-commands"
 
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
     monkeypatch.setenv("GIT_CALLS", str(calls_file))
+    monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
     monkeypatch.setenv("SUCCESSFUL_PUSH", str(successful_push))
+    monkeypatch.setenv(
+        "REMOTE_BRANCH_EXISTS",
+        "true" if remote_branch_exists else "false",
+    )
     monkeypatch.setenv("GIT_PUSH_TOKEN", "secret")
     monkeypatch.setenv("CI_SERVER_HOST", "gitlab.example")
     monkeypatch.setenv("CI_PROJECT_PATH", "group/project")
     monkeypatch.setenv("CI_PIPELINE_ID", "123")
     monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
 
-    return subprocess.run(
+    result = subprocess.run(
         ["sh", "-eu", "-c", script],
         text=True,
         capture_output=True,
-    ), calls_file
+    )
+
+    return result, calls_file, commands_file
 
 
 def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
-    result, calls_file = run_pages_publish_script(tmp_path, monkeypatch, successful_push=3)
+    result, calls_file, commands_file = run_pages_publish_script(
+        tmp_path,
+        monkeypatch,
+        successful_push=3,
+    )
 
     assert result.returncode == 0
     assert calls_file.read_text(encoding="utf-8").splitlines() == [
@@ -234,10 +360,40 @@ def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
     assert "Pages push attempt 1/3 failed" in result.stdout
     assert "Pages push attempt 2/3 failed" in result.stdout
     assert (tmp_path / "public" / "index.html").read_text(encoding="utf-8") == "report"
+    assert not (tmp_path / "pages-worktree" / ".gitlab-ci.yml").exists()
+
+    commands = commands_file.read_text(encoding="utf-8").splitlines()
+    assert any(
+        command.endswith(
+            "commit -m Publish Allure report for pipeline 123 [skip ci]"
+        )
+        for command in commands
+    )
+    assert sum(
+        command.endswith("push -o ci.skip origin HEAD:gl-pages")
+        for command in commands
+    ) == 3
+
+
+def test_first_storage_push_does_not_pull_missing_branch(tmp_path, monkeypatch):
+    result, calls_file, _ = run_pages_publish_script(
+        tmp_path,
+        monkeypatch,
+        successful_push=1,
+        remote_branch_exists=False,
+    )
+
+    assert result.returncode == 0
+    assert calls_file.read_text(encoding="utf-8").splitlines() == ["push"]
+    assert (tmp_path / "public" / "index.html").is_file()
 
 
 def test_pages_push_fails_after_three_attempts(tmp_path, monkeypatch):
-    result, calls_file = run_pages_publish_script(tmp_path, monkeypatch, successful_push=0)
+    result, calls_file, _ = run_pages_publish_script(
+        tmp_path,
+        monkeypatch,
+        successful_push=0,
+    )
 
     assert result.returncode == 1
     assert calls_file.read_text(encoding="utf-8").splitlines().count("push") == 3
