@@ -1,0 +1,6 @@
+Indexing: /tmp/pytest-of-root/pytest-0/test_every_local_href_resolves0/public/
+Indexing: /tmp/pytest-of-root/pytest-0/test_every_local_href_resolves0/public/dev/
+Indexing: /tmp/pytest-of-root/pytest-0/test_every_local_href_resolves0/public/dev/feature login/
+Indexing: /tmp/pytest-of-root/pytest-0/test_every_local_href_resolves0/public/dev/master/
+Indexing: /tmp/pytest-of-root/pytest-0/test_every_local_href_resolves0/public/staging/
+Indexing: /tmp/pytest-of-root/pytest-0/test_every_local_href_resolves0/public/staging/release/

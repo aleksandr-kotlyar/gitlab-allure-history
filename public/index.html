@@ -117,7 +117,7 @@
             background: var(--panel);
         }
 
-        .hero h2 {
+        .hero h1 {
             margin: 0 0 6px;
             font-size: 1.35rem;
             line-height: 1.2;
@@ -155,21 +155,15 @@
             font: inherit;
             font-size: 13px;
             font-weight: 600;
-            transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-        }
-
-        .theme-toggle:hover,
-        .theme-toggle:focus-visible {
-            border-color: var(--link);
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 22%, transparent);
         }
 
         .theme-toggle:hover {
-            background: color-mix(in srgb, var(--link) 10%, var(--panel));
+            background: var(--row);
         }
 
         .theme-toggle:focus-visible {
-            outline: none;
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
         }
 
         table {
@@ -392,23 +386,6 @@
                 min-width: 68px;
             }
 
-            .hero {
-                padding: 14px 16px;
-            }
-
-            .hero h2 {
-                margin-bottom: 6px;
-                font-size: 1.12rem;
-                font-weight: 650;
-                line-height: 1.25;
-            }
-
-            .hero p {
-                font-size: 0.88rem;
-                font-weight: 400;
-                line-height: 1.45;
-            }
-
             th {
                 display: none;
             }
@@ -432,39 +409,24 @@
                 padding-bottom: 2px;
             }
 
-            .entry-meta,
-            .entry-meta-label,
-            .entry-meta-link {
-                color: var(--muted);
-                font-size: 0.82rem;
-                font-weight: 500;
-                line-height: 1.35;
-            }
-
             .modified-cell {
                 padding-top: 0;
-                font-variant-numeric: tabular-nums;
                 text-align: left;
             }
 
             td[data-label] {
                 display: flex;
-                align-items: baseline;
                 justify-content: space-between;
-                column-gap: 8px;
-                color: var(--muted);
-                font-size: 0.82rem;
-                font-weight: 500;
-                line-height: 1.35;
+                gap: 12px;
             }
 
             td[data-label]::before {
                 content: attr(data-label);
                 flex: 0 0 auto;
-                color: inherit;
-                font: inherit;
-                letter-spacing: 0;
-                text-transform: none;
+                color: var(--muted);
+                font-size: 12px;
+            font-weight: 500;
+                text-transform: uppercase;
             }
 
             .list-controls {
@@ -523,7 +485,7 @@
         </div>
 
         <section class="hero" aria-label="Project summary">
-            <h2>GitLab Allure History Publisher</h2>
+            <h1>GitLab Allure History Publisher</h1>
             <p>
                 Branch-based Allure report history on GitLab Pages.
                 No server. No database. No external storage.
@@ -539,8 +501,8 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="dev/">dev/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="dev/generated-index-ui-polish/latest/" title="dev/generated-index-ui-polish/latest/">generated-index-ui-polish/latest/</a></div></td>
-                <td class="modified-cell" data-label="Modified">12-Jun-2026 19:04</td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="dev/">dev/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="dev/master/latest/" title="dev/master/latest/">master/latest/</a></div></td>
+                <td class="modified-cell" data-label="Modified">12-Jun-2026 19:31</td>
             </tr>
             <tr data-list-row>
                 <td class="name-cell"><div class="entry-title"><a class="entry-link" href="beta/">beta/</a></div><div class="entry-meta"><span class="entry-meta-label">latest:</span><a class="entry-meta-link" href="beta/master/latest/" title="beta/master/latest/">master/latest/</a></div></td>
