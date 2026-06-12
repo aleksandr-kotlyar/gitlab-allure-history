@@ -1,9 +1,10 @@
-# Choose an issue template
+# Select an issue template
 
-Select the template that matches your request:
+Before writing the issue, open the **Description template** dropdown currently
+showing **Default**, then select:
 
-- [Bug report](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/issues/new?description_template=Bug%20report) for a reproducible defect in the component.
-- [Feature request](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/issues/new?description_template=Feature%20request) for a focused improvement to the static publisher.
-- [Integration help](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/issues/new?description_template=Integration%20help) for CI, token, artifact, or GitLab Pages setup problems.
+- **Bug report** for a reproducible defect in the component.
+- **Feature request** for a focused improvement to the static publisher.
+- **Integration help** for CI, token, artifact, or GitLab Pages setup problems.
 
-<!-- Apply one of the templates above before creating the issue. -->
+<!-- Replace Default with one of the templates above before creating the issue. -->
