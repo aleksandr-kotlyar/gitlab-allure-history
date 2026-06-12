@@ -29,6 +29,14 @@ def extract_mr_comment_python(template: str) -> str:
     return textwrap.dedent("\n".join(lines[start:end]))
 
 
+def extract_script_block(template: str, first_line: str) -> str:
+    lines = template.splitlines()
+    start = lines.index(first_line)
+    end = lines.index("    - |", start)
+
+    return textwrap.dedent("\n".join(lines[start:end]))
+
+
 def render_mr_comment(tmp_path, monkeypatch, statistic):
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
     script = extract_mr_comment_python(template)
@@ -86,8 +94,35 @@ def test_project_pipeline_dogfoods_reusable_template():
     assert "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA" in pipeline
     assert 'allure-history-image-tag: "2026.2.8"' in pipeline
     assert "if: $CI_COMMIT_TAG == null" in pipeline
+    assert "GITLAB_ALLURE_HISTORY_VERSION:" not in pipeline
     assert "create_release:" in pipeline
     assert "tag_name: $CI_COMMIT_TAG" in pipeline
+
+
+def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
+    pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "ci_lint:\n  stage: test\n" in pipeline
+    assert '    - test -n "${ALLURE_HISTORY_TOKEN:-}"' in pipeline
+    assert "    - python3 validate_gitlab_ci.py" in pipeline
+    assert '        --api-url "$CI_API_V4_URL"' in pipeline
+    assert '        --project-id "$CI_PROJECT_ID"' in pipeline
+    assert '        --ref "$CI_COMMIT_REF_NAME"' in pipeline
+    assert '        --private-token "$ALLURE_HISTORY_TOKEN"' in pipeline
+    assert "reuses the masked `ALLURE_HISTORY_TOKEN` with `api`" in readme
+
+
+def test_project_pipeline_smokes_published_pages_after_allure():
+    pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
+
+    assert "pages_smoke:\n  stage: release\n" in pipeline
+    assert "    - job: test_gate\n      artifacts: true" in pipeline
+    assert "    - job: allure\n      artifacts: false" in pipeline
+    assert '        --base-url "$CI_PAGES_URL"' in pipeline
+    assert '        --environment "$ENV"' in pipeline
+    assert '        --branch "$CI_COMMIT_REF_SLUG"' in pipeline
+    assert '        --report "job_$(cat jobid)"' in pipeline
 
 
 def test_template_uses_url_safe_branch_slug_and_component_versioned_image_tag():
@@ -122,6 +157,91 @@ def test_template_defines_component_inputs():
     assert "    reports-to-keep:\n" in template
     assert "    build-runtime-image:\n" in template
     assert "---\n\nvariables:" in template
+
+
+def run_pages_publish_script(tmp_path, monkeypatch, successful_push):
+    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+    script = extract_script_block(
+        template,
+        '      git -C pages-worktree config user.name "GitLab Runner"',
+    )
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    fake_git = bin_dir / "git"
+    fake_git.write_text(
+        textwrap.dedent(
+            """\
+            #!/bin/sh
+            command="$3"
+
+            case "$command" in
+              diff)
+                exit 1
+                ;;
+              pull)
+                printf 'pull\n' >> "$GIT_CALLS"
+                ;;
+              push)
+                printf 'push\n' >> "$GIT_CALLS"
+                push_count=$(grep -c '^push$' "$GIT_CALLS")
+                [ "$SUCCESSFUL_PUSH" -gt 0 ] && [ "$push_count" -ge "$SUCCESSFUL_PUSH" ]
+                ;;
+            esac
+            """
+        ),
+        encoding="utf-8",
+    )
+    fake_git.chmod(0o755)
+    fake_sleep = bin_dir / "sleep"
+    fake_sleep.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+    fake_sleep.chmod(0o755)
+
+    pages_public = tmp_path / "pages-worktree" / "public"
+    pages_public.mkdir(parents=True)
+    (pages_public / "index.html").write_text("report", encoding="utf-8")
+    calls_file = tmp_path / "git-calls"
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
+    monkeypatch.setenv("GIT_CALLS", str(calls_file))
+    monkeypatch.setenv("SUCCESSFUL_PUSH", str(successful_push))
+    monkeypatch.setenv("GIT_PUSH_TOKEN", "secret")
+    monkeypatch.setenv("CI_SERVER_HOST", "gitlab.example")
+    monkeypatch.setenv("CI_PROJECT_PATH", "group/project")
+    monkeypatch.setenv("CI_PIPELINE_ID", "123")
+    monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
+
+    return subprocess.run(
+        ["sh", "-eu", "-c", script],
+        text=True,
+        capture_output=True,
+    ), calls_file
+
+
+def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
+    result, calls_file = run_pages_publish_script(tmp_path, monkeypatch, successful_push=3)
+
+    assert result.returncode == 0
+    assert calls_file.read_text(encoding="utf-8").splitlines() == [
+        "pull",
+        "push",
+        "pull",
+        "push",
+        "pull",
+        "push",
+    ]
+    assert "Pages push attempt 1/3 failed" in result.stdout
+    assert "Pages push attempt 2/3 failed" in result.stdout
+    assert (tmp_path / "public" / "index.html").read_text(encoding="utf-8") == "report"
+
+
+def test_pages_push_fails_after_three_attempts(tmp_path, monkeypatch):
+    result, calls_file = run_pages_publish_script(tmp_path, monkeypatch, successful_push=0)
+
+    assert result.returncode == 1
+    assert calls_file.read_text(encoding="utf-8").splitlines().count("push") == 3
+    assert "Failed to push Pages content after 3 attempts." in result.stdout
+    assert not (tmp_path / "public").exists()
 
 
 def run_mr_note_lookup(body):

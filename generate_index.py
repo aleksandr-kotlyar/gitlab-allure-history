@@ -1155,7 +1155,7 @@ def generator_footer_html() -> str:
         url=escape(GENERATOR_URL, quote=True),
     )]
     if version:
-        parts.append("v{version}".format(version=escape(version)))
+        parts.append(escape(version))
 
     return (
         '<footer class="generator-footer">{text}</footer>'

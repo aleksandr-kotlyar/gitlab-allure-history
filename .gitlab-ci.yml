@@ -16,6 +16,19 @@ include:
 default:
   image: $ALLURE_HISTORY_IMAGE
 
+ci_lint:
+  stage: test
+  script:
+    - set -euo pipefail
+    - test -n "${ALLURE_HISTORY_TOKEN:-}"
+    - python3 validate_gitlab_ci.py
+        --api-url "$CI_API_V4_URL"
+        --project-id "$CI_PROJECT_ID"
+        --ref "$CI_COMMIT_REF_NAME"
+        --private-token "$ALLURE_HISTORY_TOKEN"
+  tags:
+    - macos-local
+
 test_gate:
   stage: test
   rules:
@@ -56,6 +69,54 @@ test_demo:
   tags:
     - macos-local
 
+consumer_contract:minimal:
+  stage: test
+  inherit:
+    variables: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-minimal/.gitlab-ci.yml
+    strategy: mirror
+
+consumer_contract:custom-env:
+  stage: test
+  inherit:
+    variables: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-custom-env/.gitlab-ci.yml
+    strategy: mirror
+
+consumer_contract:without-jobid:
+  stage: test
+  inherit:
+    variables: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-without-jobid/.gitlab-ci.yml
+    strategy: mirror
+
+consumer_contract:custom-pages-branch:
+  stage: test
+  inherit:
+    variables: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "web"
+      when: always
+  trigger:
+    include:
+      - local: tests/fixtures/consumer-custom-pages-branch/.gitlab-ci.yml
+    strategy: mirror
+
 allure:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
@@ -63,9 +124,29 @@ allure:
     - if: $CI_COMMIT_TAG
       when: always
     - if: $CI_COMMIT_TAG == null
-      variables:
-        GITLAB_ALLURE_HISTORY_VERSION: latest-report-alias@$CI_COMMIT_SHORT_SHA
       when: always
+  tags:
+    - macos-local
+
+pages_smoke:
+  stage: release
+  needs:
+    - job: test_gate
+      artifacts: true
+    - job: allure
+      artifacts: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+      when: never
+    - when: always
+  script:
+    - set -euo pipefail
+    - test -s jobid
+    - python3 smoke_public_pages.py
+        --base-url "$CI_PAGES_URL"
+        --environment "$ENV"
+        --branch "$CI_COMMIT_REF_SLUG"
+        --report "job_$(cat jobid)"
   tags:
     - macos-local
 

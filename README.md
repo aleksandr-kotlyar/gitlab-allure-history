@@ -285,6 +285,11 @@ include:
 
 The `build_python` job builds and pushes `$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG` during tag pipelines, so the component version and the runtime image tag are always the same release value.
 
+The repository pipeline reuses the masked `ALLURE_HISTORY_TOKEN` with `api`
+scope. The `ci_lint` job uses it to simulate the current pipeline through the
+GitLab CI Lint API and verify that the component include expands to the
+`allure` job.
+
 ---
 
 ## Local Run
@@ -308,6 +313,7 @@ The demo suite intentionally contains failed, broken, skipped, and passed exampl
 |------|---------|
 | `.gitlab-ci.yml` | Dogfooding pipeline |
 | `templates/gitlab-allure-history.yml` | Reusable CI component |
+| `tests/fixtures/consumer-*` | External consumer contracts executed as child pipelines |
 | `Dockerfile` | Runtime image with Python, Java, Git, Allure CLI |
 | `generate_index.py` | Static HTML index generator |
 | `prune_reports.py` | Removes old report snapshots |
@@ -315,6 +321,11 @@ The demo suite intentionally contains failed, broken, skipped, and passed exampl
 | `conftest.py` | Pytest fixtures |
 | `tests/` | Gate and demo tests |
 | `CHANGELOG.md` | Release history and policy |
+
+The `consumer_contract:*` CI jobs execute every consumer fixture as a child
+pipeline against the component at the current commit SHA. Fixtures disable the
+publishing job and verify the expanded inputs and upstream artifacts without
+changing Pages content.
 
 ## Demo Links
 
@@ -324,7 +335,7 @@ The demo suite intentionally contains failed, broken, skipped, and passed exampl
 ## Limitations And Trade-Offs
 
 - Report history depends on a writable `gl-pages` storage branch.
-- The CI serializes the Pages publishing job with `resource_group`, but manual pushes to `gl-pages` can still race with CI.
+- The CI serializes the Pages publishing job with `resource_group` and retries a raced `gl-pages` push up to three times; sustained conflicts still fail the job.
 - `CI_COMMIT_REF_SLUG` keeps report paths URL-safe, but different branch names can theoretically normalize to the same slug.
 - The CI keeps the latest 30 report snapshots per branch by default.
 - This project is a GitLab CI/CD component, not a report portal or framework.
