@@ -4,6 +4,12 @@
 
 Publish Allure reports with preserved history to GitLab Pages using GitLab CI and static files. No report server, database, web framework, or external storage service is required.
 
+## Scope
+
+This project publishes Allure report history to GitLab Pages using static files only. It is designed for GitLab CI/CD projects, GitLab Pages hosting, immutable per-pipeline report snapshots, stable branch-level `latest/` aliases, and lightweight merge request report links.
+
+It is not a test management system, ReportPortal replacement, backend service, database-backed analytics platform, generic multi-CI report publisher, or object-storage report warehouse.
+
 ## Quick Start
 
 Include the component in `.gitlab-ci.yml` and pin a published release tag:
@@ -55,6 +61,20 @@ git push origin gl-pages
 Create a project, group, or personal access token with `write_repository` permission and store it as `GIT_PUSH_TOKEN`. Mark it protected only if reports are published exclusively from protected branches.
 
 Test jobs must save `allure-results/` with `artifacts.when: always`. They may also publish a `jobid` file containing the test job ID; otherwise, the report job uses its own `CI_JOB_ID` for the snapshot folder.
+
+## Compatibility
+
+| Area | Status | Notes |
+| --- | ---: | --- |
+| GitLab CI/CD | Supported | Primary target. |
+| GitLab CI/CD components | Supported | Recommended integration model. |
+| GitLab Pages | Supported | Reports are published as static Pages content. |
+| Allure Report 2 | Supported | Current target format. |
+| Allure Report 3 | Not verified | Planned research item. |
+| pytest | Tested by demo | Used as the reference example. |
+| Other Allure-compatible frameworks | Expected | Should work if they produce standard `allure-results`. |
+| Self-managed GitLab | Expected | Not fully covered by consumer contract fixtures yet. |
+| GitHub Actions | Out of scope | This project is GitLab-native. |
 
 ## How It Works
 
@@ -178,10 +198,14 @@ This is expected. Report paths use `CI_COMMIT_REF_SLUG`.
 
 ## Roadmap
 
-- Add an `allure-results-dir` input.
-- Add a `publish-branch-regex` input.
 - Document compatibility with non-pytest Allure producers.
 - Investigate Allure Report 3 compatibility.
+
+## Sponsored work
+
+Some requests may be useful for specific teams while remaining outside the core open-source roadmap. Examples include backend services, database-backed analytics, custom dashboards, object storage integrations, non-GitLab CI/CD integrations, custom enterprise workflows, and advanced flaky-test analytics.
+
+These are not planned for the core open-source roadmap, but may be considered as sponsored development, custom integrations, or separately maintained extensions.
 
 ## Contributing
 
