@@ -45,11 +45,62 @@ def test_root_index_shows_project_intro_and_keeps_listing_links(tmp_path):
 
     html = index_path.read_text(encoding="utf-8")
     assert '<section class="hero" aria-label="Project summary">' in html
-    assert "GitLab Allure History Publisher" in html
+    assert "<h2>GitLab Allure History Publisher</h2>" in html
+    assert "<h1>GitLab Allure History Publisher</h1>" not in html
     assert "Branch-based Allure report history on GitLab Pages." in html
     assert "No server. No database. No external storage." in html
     assert 'href="dev/">dev/</a>' in html
     assert html.index('class="hero"') < html.index('class="index-table')
+
+
+def test_mobile_hero_typography_keeps_listing_primary(tmp_path):
+    public_dir = tmp_path / "public"
+
+    html = index_folder(public_dir).read_text(encoding="utf-8")
+
+    assert "@media (max-width: 640px)" in html
+    assert ".hero h2 {" in html
+    assert "padding: 14px 16px;" in html
+    assert "font-size: 1.12rem;" in html
+    assert "font-size: 0.88rem;" in html
+    assert "line-height: 1.45;" in html
+
+
+def test_theme_toggle_has_hover_and_keyboard_focus_affordance(tmp_path):
+    public_dir = tmp_path / "public"
+
+    html = index_folder(public_dir).read_text(encoding="utf-8")
+
+    assert ".theme-toggle:hover,\n        .theme-toggle:focus-visible {" in html
+    assert "border-color: var(--link);" in html
+    assert (
+        "box-shadow: 0 0 0 3px "
+        "color-mix(in srgb, var(--link) 22%, transparent);"
+        in html
+    )
+    assert (
+        "background: color-mix(in srgb, var(--link) 10%, var(--panel));"
+        in html
+    )
+
+
+def test_mobile_metadata_typography_keeps_values_secondary(tmp_path):
+    public_dir = tmp_path / "public"
+
+    html = index_folder(public_dir).read_text(encoding="utf-8")
+
+    assert "@media (max-width: 640px)" in html
+    assert ".entry-meta,\n            .entry-meta-label,\n            .entry-meta-link {" in html
+    assert "td[data-label] {" in html
+    assert "column-gap: 8px;" in html
+    assert "font-size: 0.82rem;" in html
+    assert "color: var(--muted);" in html
+    assert "font-weight: 500;" in html
+    assert "line-height: 1.35;" in html
+    assert "font: inherit;" in html
+    assert "letter-spacing: 0;" in html
+    assert "text-transform: none;" in html
+    assert "font-variant-numeric: tabular-nums;" in html
 
 
 def test_non_root_indexes_do_not_show_project_intro(tmp_path):

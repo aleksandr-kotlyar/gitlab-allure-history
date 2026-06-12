@@ -125,7 +125,7 @@ STYLE = """
             background: var(--panel);
         }
 
-        .hero h1 {
+        .hero h2 {
             margin: 0 0 6px;
             font-size: 1.35rem;
             line-height: 1.2;
@@ -163,15 +163,21 @@ STYLE = """
             font: inherit;
             font-size: 13px;
             font-weight: 600;
+            transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            border-color: var(--link);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 22%, transparent);
         }
 
         .theme-toggle:hover {
-            background: var(--row);
+            background: color-mix(in srgb, var(--link) 10%, var(--panel));
         }
 
         .theme-toggle:focus-visible {
-            outline: 2px solid var(--link);
-            outline-offset: 2px;
+            outline: none;
         }
 
         table {
@@ -394,6 +400,23 @@ STYLE = """
                 min-width: 68px;
             }
 
+            .hero {
+                padding: 14px 16px;
+            }
+
+            .hero h2 {
+                margin-bottom: 6px;
+                font-size: 1.12rem;
+                font-weight: 650;
+                line-height: 1.25;
+            }
+
+            .hero p {
+                font-size: 0.88rem;
+                font-weight: 400;
+                line-height: 1.45;
+            }
+
             th {
                 display: none;
             }
@@ -417,24 +440,39 @@ STYLE = """
                 padding-bottom: 2px;
             }
 
+            .entry-meta,
+            .entry-meta-label,
+            .entry-meta-link {
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
+            }
+
             .modified-cell {
                 padding-top: 0;
+                font-variant-numeric: tabular-nums;
                 text-align: left;
             }
 
             td[data-label] {
                 display: flex;
+                align-items: baseline;
                 justify-content: space-between;
-                gap: 12px;
+                column-gap: 8px;
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
             }
 
             td[data-label]::before {
                 content: attr(data-label);
                 flex: 0 0 auto;
-                color: var(--muted);
-                font-size: 12px;
-            font-weight: 500;
-                text-transform: uppercase;
+                color: inherit;
+                font: inherit;
+                letter-spacing: 0;
+                text-transform: none;
             }
 
             .list-controls {
@@ -1004,7 +1042,7 @@ def root_intro_html(folder: Path) -> str:
 
     return """
         <section class="hero" aria-label="Project summary">
-            <h1>GitLab Allure History Publisher</h1>
+            <h2>GitLab Allure History Publisher</h2>
             <p>
                 Branch-based Allure report history on GitLab Pages.
                 No server. No database. No external storage.
