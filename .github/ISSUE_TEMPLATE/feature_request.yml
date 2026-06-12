@@ -1,0 +1,84 @@
+name: Feature request
+description: Propose a focused improvement to the static report publisher.
+title: "[Feature] "
+body:
+  - type: markdown
+    attributes:
+      value: >
+        This project should remain a static GitLab Pages publisher. Requests
+        for a backend, database, dashboard platform, analytics service, or test
+        management system are out of scope unless clearly justified as
+        static-output features.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: Describe the limitation and who encounters it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-behavior
+    attributes:
+      label: Proposed behavior
+      description: Describe the observable result, not only an implementation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround
+      description: Write "None" if no practical workaround exists.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-workflow
+    attributes:
+      label: Affected workflow
+      options:
+        - Report publishing
+        - latest/ links
+        - Storage layout
+        - MR comments
+        - Component inputs
+        - Docs/troubleshooting
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: storage-layout-impact
+    attributes:
+      label: Storage or layout impact
+      description: Explain changes to static files, URLs, history, or retention. Write "None" if unaffected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility concerns
+      description: Note effects on existing inputs, URLs, stored reports, or pipelines.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: static-pages-fit
+    attributes:
+      label: Does this fit the static GitLab Pages model?
+      options:
+        - "Yes"
+        - Unsure
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Desired configuration or output
+      description: Add a concise example when it clarifies the request.
+      render: yaml
