@@ -37,6 +37,46 @@ def test_index_folder_creates_empty_index(tmp_path):
     assert "Show more..." not in html
 
 
+def test_root_index_shows_project_intro_and_keeps_listing_links(tmp_path):
+    public_dir = tmp_path / "public"
+    (public_dir / "dev").mkdir(parents=True)
+
+    index_path = index_folder(public_dir)
+
+    html = index_path.read_text(encoding="utf-8")
+    assert '<section class="hero" aria-label="Project summary">' in html
+    assert "GitLab Allure History Publisher" in html
+    assert "Branch-based Allure report history on GitLab Pages." in html
+    assert "No server. No database. No external storage." in html
+    assert 'href="dev/">dev/</a>' in html
+    assert html.index('class="hero"') < html.index('class="index-table')
+
+
+def test_non_root_indexes_do_not_show_project_intro(tmp_path):
+    public_dir = tmp_path / "public"
+    env_dir = public_dir / "dev"
+    branch_dir = env_dir / "feature-login"
+    report_dir = branch_dir / "job_101"
+    history_dir = branch_dir / "history"
+    report_dir.mkdir(parents=True)
+    history_dir.mkdir()
+
+    env_html = index_folder(env_dir).read_text(encoding="utf-8")
+    branch_html = index_folder(branch_dir).read_text(encoding="utf-8")
+    report_html = index_folder(report_dir).read_text(encoding="utf-8")
+    history_html = index_folder(history_dir).read_text(encoding="utf-8")
+    latest_html = (branch_dir / LATEST_DIRNAME / "index.html").read_text(
+        encoding="utf-8"
+    )
+
+    for html in (env_html, branch_html, report_html, history_html, latest_html):
+        assert 'class="hero"' not in html
+        assert "GitLab Allure History Publisher" not in html
+
+    assert 'href="feature-login/">feature-login/</a>' in env_html
+    assert 'href="job_101/">job_101/</a>' in branch_html
+
+
 def test_index_escapes_labels_and_encodes_links(tmp_path):
     public_dir = tmp_path / "public"
     public_dir.mkdir()
