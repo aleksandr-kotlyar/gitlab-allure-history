@@ -117,6 +117,10 @@ consumer_contract:custom-pages-branch:
       - local: tests/fixtures/consumer-custom-pages-branch/.gitlab-ci.yml
     strategy: mirror
 
+build_python:
+  tags:
+    - macos-local
+
 allure:
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
