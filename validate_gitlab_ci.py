@@ -11,8 +11,6 @@ def lint_url(api_url: str, project_id: str, ref: str) -> str:
     query = urlencode(
         {
             "content_ref": ref,
-            "dry_run": "true",
-            "dry_run_ref": ref,
             "include_jobs": "true",
         }
     )

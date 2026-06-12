@@ -17,7 +17,7 @@ def valid_lint_result():
     }
 
 
-def test_lint_url_requests_pipeline_simulation_for_current_ref():
+def test_lint_url_requests_static_validation_for_current_ref():
     url = lint_url(
         "https://gitlab.example/api/v4/",
         "group/project",
@@ -28,9 +28,8 @@ def test_lint_url_requests_pipeline_simulation_for_current_ref():
         "https://gitlab.example/api/v4/projects/group%2Fproject/ci/lint?"
     )
     assert "content_ref=feature%2Fci-lint" in url
-    assert "dry_run=true" in url
-    assert "dry_run_ref=feature%2Fci-lint" in url
     assert "include_jobs=true" in url
+    assert "dry_run" not in url
 
 
 def test_validate_lint_result_accepts_expanded_component_pipeline():

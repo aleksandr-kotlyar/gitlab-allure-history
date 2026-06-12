@@ -108,7 +108,7 @@ def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
     assert "    - python3 validate_gitlab_ci.py" in pipeline
     assert '        --api-url "$CI_API_V4_URL"' in pipeline
     assert '        --project-id "$CI_PROJECT_ID"' in pipeline
-    assert '        --ref "$CI_COMMIT_REF_NAME"' in pipeline
+    assert '        --ref "$CI_COMMIT_SHA"' in pipeline
     assert '        --private-token "$ALLURE_HISTORY_TOKEN"' in pipeline
     assert "reuses the masked `ALLURE_HISTORY_TOKEN` with `api`" in readme
 

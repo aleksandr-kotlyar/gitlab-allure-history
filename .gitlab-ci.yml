@@ -24,7 +24,7 @@ ci_lint:
     - python3 validate_gitlab_ci.py
         --api-url "$CI_API_V4_URL"
         --project-id "$CI_PROJECT_ID"
-        --ref "$CI_COMMIT_REF_NAME"
+        --ref "$CI_COMMIT_SHA"
         --private-token "$ALLURE_HISTORY_TOKEN"
   tags:
     - macos-local

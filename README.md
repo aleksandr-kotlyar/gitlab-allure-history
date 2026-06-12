@@ -286,9 +286,9 @@ include:
 The `build_python` job builds and pushes `$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG` during tag pipelines, so the component version and the runtime image tag are always the same release value.
 
 The repository pipeline reuses the masked `ALLURE_HISTORY_TOKEN` with `api`
-scope. The `ci_lint` job uses it to simulate the current pipeline through the
-GitLab CI Lint API and verify that the component include expands to the
-`allure` job.
+scope. The `ci_lint` job uses it to statically validate the current commit
+through the GitLab CI Lint API and verify that the component include expands
+to the `allure` job.
 
 ---
 
