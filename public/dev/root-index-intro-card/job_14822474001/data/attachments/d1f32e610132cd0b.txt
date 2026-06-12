@@ -1,0 +1,4 @@
+Indexing: /tmp/pytest-of-root/pytest-0/test_non_root_indexes_do_not_s0/public/dev/
+Indexing: /tmp/pytest-of-root/pytest-0/test_non_root_indexes_do_not_s0/public/dev/feature-login/
+Indexing: /tmp/pytest-of-root/pytest-0/test_non_root_indexes_do_not_s0/public/dev/feature-login/job_101/
+Indexing: /tmp/pytest-of-root/pytest-0/test_non_root_indexes_do_not_s0/public/dev/feature-login/history/

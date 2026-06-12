@@ -109,6 +109,27 @@
             overflow-wrap: anywhere;
         }
 
+        .hero {
+            margin: 0 0 24px;
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--panel);
+        }
+
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: 1.35rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            max-width: 760px;
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
         .breadcrumbs {
             display: flex;
             flex-wrap: wrap;
@@ -462,6 +483,7 @@
             <h1 class="breadcrumbs" aria-label="Current location"><a href="../../">gitlab-allure-history</a><span class="breadcrumb-separator">/</span><a href="../">dev</a><span class="breadcrumb-separator">/</span><span aria-current="page">stabilize-reusable-ci-template</span></h1>
             <button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">Theme</button>
         </div>
+
         <table class="index-table has-summary" data-progressive-list>
             <thead>
                 <tr>
