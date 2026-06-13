@@ -384,9 +384,8 @@ def test_env_index_links_each_branch_to_latest_report(tmp_path):
 
     html = index_path.read_text(encoding="utf-8")
     assert (
-        '<span class="entry-meta-label">latest:</span>'
-        '<a class="entry-meta-link" href="feature-login/latest/" '
-        'title="feature-login/latest/">latest/</a>'
+        '<span class="entry-separator">\u00b7</span>'
+        '<a class="entry-latest-link" href="feature-login/latest/">latest</a>'
     ) in html
 
 
@@ -407,9 +406,8 @@ def test_root_index_links_each_env_to_latest_report_inside_env(tmp_path):
 
     html = index_path.read_text(encoding="utf-8")
     assert (
-        '<span class="entry-meta-label">latest:</span>'
-        '<a class="entry-meta-link" href="dev/feature-login/latest/" '
-        'title="dev/feature-login/latest/">feature-login/latest/</a>'
+        '<span class="entry-separator">\u00b7</span>'
+        '<a class="entry-latest-link" href="dev/feature-login/latest/">latest</a>'
     ) in html
 
 
@@ -581,9 +579,11 @@ def test_generator_footer_renders_with_version(monkeypatch):
 
     html = generator_footer_html()
 
+    assert '<span class="generator-footer-content">' in html
     assert "gitlab-allure-history" in html
+    assert '<span class="dot-separator">\u00b7</span>' in html
+    assert '<span class="generator-version">2026.2.8</span>' in html
     assert "2026.2.8" in html
-    assert "v2026.2.8" not in html
 
 
 def test_generator_footer_skips_moving_refs(monkeypatch):

@@ -137,3 +137,7 @@ jobid
 executor.json
 report-*.xml
 .idea/
+
+demo-output/
+.playwright-browsers/
+node_modules/

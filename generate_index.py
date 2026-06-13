@@ -134,8 +134,12 @@ STYLE = """
         .hero p {
             max-width: 760px;
             margin: 0;
-            color: var(--muted);
+            color: #4a5568;
             line-height: 1.5;
+        }
+
+        :root[data-theme="dark"] .hero p {
+            color: #adbac7;
         }
 
         .breadcrumbs {
@@ -152,17 +156,17 @@ STYLE = """
         }
 
         .theme-toggle {
-            min-width: 72px;
-            min-height: 34px;
+            min-width: 68px;
+            min-height: 32px;
             flex: 0 0 auto;
             border: 1px solid var(--border);
             border-radius: 6px;
             background: var(--panel);
-            color: var(--text);
+            color: var(--muted);
             cursor: pointer;
             font: inherit;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
         }
 
@@ -235,8 +239,9 @@ STYLE = """
         .entry-title {
             display: flex;
             min-width: 0;
-            align-items: center;
-            gap: 8px;
+            align-items: baseline;
+            gap: 6px;
+            line-height: 1.4;
         }
 
         .entry-link {
@@ -260,32 +265,26 @@ STYLE = """
             text-transform: lowercase;
         }
 
-        .entry-meta {
-            display: flex;
-            min-width: 0;
-            align-items: baseline;
-            gap: 5px;
-            margin-top: 1px;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.25;
-            overflow-wrap: anywhere;
-        }
-
-        .entry-meta-label {
+        .entry-separator {
             flex: 0 0 auto;
             color: var(--muted);
-            font-weight: 500;
+            opacity: 0.5;
+            font-weight: 400;
+            user-select: none;
         }
 
-        .entry-meta-link {
-            min-width: 0;
-            color: var(--muted);
-            overflow-wrap: anywhere;
-        }
-
-        .entry-meta-link:hover {
+        .entry-latest-link {
+            flex: 0 0 auto;
             color: var(--link);
+            font-weight: 400;
+            opacity: 0.82;
+            text-decoration: none;
+        }
+
+        .entry-latest-link:hover {
+            color: var(--link);
+            opacity: 1;
+            text-decoration: underline;
         }
 
         .modified-cell {
@@ -397,7 +396,8 @@ STYLE = """
             }
 
             .theme-toggle {
-                min-width: 68px;
+                min-width: 64px;
+                min-height: 30px;
             }
 
             .hero {
@@ -451,6 +451,10 @@ STYLE = """
 
             .modified-cell {
                 padding-top: 0;
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 1.3;
                 font-variant-numeric: tabular-nums;
                 text-align: left;
             }
@@ -475,6 +479,21 @@ STYLE = """
                 text-transform: none;
             }
 
+            .modified-cell[data-label]::before {
+                content: attr(data-label) ":";
+                color: var(--muted);
+                font-size: 10px;
+                font-weight: 400;
+                letter-spacing: normal;
+                margin-right: 4px;
+                opacity: 0.65;
+                text-transform: none;
+            }
+
+            .modified-cell[data-label] {
+                display: block;
+            }
+
             .list-controls {
                 align-items: stretch;
                 flex-direction: column;
@@ -488,9 +507,16 @@ STYLE = """
         .generator-footer {
             margin-top: 24px;
             padding: 8px 0;
-            text-align: center;
-            font-size: 12px;
             color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .generator-footer-content {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 4px;
+            line-height: 1.5;
         }
 
         .generator-footer a {
@@ -500,6 +526,10 @@ STYLE = """
         .generator-footer a:hover {
             color: var(--link);
             text-decoration: underline;
+        }
+
+        .generator-footer .dot-separator {
+            line-height: inherit;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -1050,45 +1080,26 @@ def root_intro_html(folder: Path) -> str:
         </section>""".rstrip()
 
 
-def entry_title_html(entry: Path, is_latest: bool) -> str:
+def entry_title_html(entry: Path, is_latest: bool, latest_href: str | None = None) -> str:
     badge = ' <span class="latest-badge">latest</span>' if is_latest else ""
+    latest_part = ""
+    if latest_href:
+        latest_part = (
+            '<span class="entry-separator">\u00b7</span>'
+            '<a class="entry-latest-link" href="{href}">latest</a>'
+        ).format(href=latest_href)
 
     return (
         '<div class="entry-title">'
         '<a class="entry-link" href="{href}">{label}</a>'
+        "{latest_part}"
         "{badge}"
         "</div>"
     ).format(
         href=escape(link_for(entry), quote=True),
         label=escape(label_for(entry)),
+        latest_part=latest_part,
         badge=badge,
-    )
-
-
-def latest_report_meta_html(folder: Path, entry: Path) -> str:
-    if not entry.is_dir() or is_report_folder(entry):
-        return ""
-
-    latest_report = latest_report_for(entry)
-
-    if latest_report is None:
-        return ""
-
-    branch_parent = latest_report.parent
-    alias_path = branch_parent / LATEST_DIRNAME
-    href = link_for_path(alias_path.relative_to(folder))
-    title = "/".join([*alias_path.relative_to(folder).parts, ""])
-    label = "/".join([*alias_path.relative_to(entry).parts, ""])
-
-    return (
-        '<div class="entry-meta">'
-        '<span class="entry-meta-label">latest:</span>'
-        '<a class="entry-meta-link" href="{href}" title="{title}">{label}</a>'
-        "</div>"
-    ).format(
-        href=escape(href, quote=True),
-        title=escape(title, quote=True),
-        label=escape(label),
     )
 
 
@@ -1176,13 +1187,22 @@ def entry_row(
     latest_report: Path | None,
     show_report_summary: bool,
 ) -> list[str]:
-    title = entry_title_html(entry, latest_report == entry)
-    meta = latest_report_meta_html(folder, entry)
+    latest_href = None
+    if entry.is_dir() and not is_report_folder(entry):
+        lr = latest_report_for(entry)
+        if lr is not None:
+            alias_path = lr.parent / LATEST_DIRNAME
+            latest_href = escape(
+                link_for_path(alias_path.relative_to(folder)),
+                quote=True,
+            )
+
+    title = entry_title_html(entry, latest_report == entry, latest_href)
     summary_cells = report_summary_cells(entry) if show_report_summary else []
 
     return [
         '            <tr data-list-row>',
-        f'                <td class="name-cell">{title}{meta}</td>',
+        f'                <td class="name-cell">{title}</td>',
         *summary_cells,
         (
             '                <td class="modified-cell" data-label="Modified">'
@@ -1224,14 +1244,19 @@ def generator_footer_html() -> str:
     if version in MOVING_REF_VERSIONS:
         version = ""
 
-    parts = ['Generated by <a href="{url}">gitlab-allure-history</a>'.format(
-        url=escape(GENERATOR_URL, quote=True),
-    )]
+    parts = [
+        '<span>Generated by <a href="{url}">gitlab-allure-history</a></span>'.format(
+            url=escape(GENERATOR_URL, quote=True),
+        )
+    ]
     if version:
-        parts.append(escape(version))
+        parts.append('<span class="dot-separator">\u00b7</span>')
+        parts.append(f'<span class="generator-version">{escape(version)}</span>')
 
     return (
-        '<footer class="generator-footer">{text}</footer>'
+        '<footer class="generator-footer">'
+        '<span class="generator-footer-content">{text}</span>'
+        '</footer>'
     ).format(text=" ".join(parts))
 
 
