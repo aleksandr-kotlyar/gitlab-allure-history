@@ -445,8 +445,14 @@
             }
 
             .modified-cell[data-label]::before {
+                content: attr(data-label) ":";
                 letter-spacing: normal;
+                margin-right: 4px;
                 text-transform: none;
+            }
+
+            .modified-cell[data-label] {
+                display: block;
             }
 
             .list-controls {

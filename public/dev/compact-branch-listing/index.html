@@ -445,8 +445,14 @@
             }
 
             .modified-cell[data-label]::before {
+                content: attr(data-label) ":";
                 letter-spacing: normal;
+                margin-right: 4px;
                 text-transform: none;
+            }
+
+            .modified-cell[data-label] {
+                display: block;
             }
 
             .list-controls {
@@ -527,7 +533,13 @@
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14840654272/">job_14840654272/</a> <span class="latest-badge">latest</span></div></td>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14840669860/">job_14840669860/</a> <span class="latest-badge">latest</span></div></td>
+                <td class="result-cell" data-label="Result"><a href="job_14840669860/#categories"><span class="summary-compact issue" title="Failed: 1 · Broken: 1 · Skipped: 1 · Passed: 83">2 issues · 86 total</span></a></td>
+                <td class="duration-cell" data-label="Duration">1s</td>
+                <td class="modified-cell" data-label="Modified">13-Jun-2026 11:15</td>
+            </tr>
+            <tr data-list-row>
+                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="job_14840654272/">job_14840654272/</a></div></td>
                 <td class="result-cell" data-label="Result"><span class="summary-compact passed" title="Skipped: 2 · Passed: 84">84 passed</span></td>
                 <td class="duration-cell" data-label="Duration">3s</td>
                 <td class="modified-cell" data-label="Modified">13-Jun-2026 11:11</td>
