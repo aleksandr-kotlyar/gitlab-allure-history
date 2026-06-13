@@ -117,7 +117,7 @@
             background: var(--panel);
         }
 
-        .hero h1 {
+        .hero h2 {
             margin: 0 0 6px;
             font-size: 1.35rem;
             line-height: 1.2;
@@ -159,15 +159,21 @@
             font: inherit;
             font-size: 12px;
             font-weight: 500;
+            transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            border-color: var(--link);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 22%, transparent);
         }
 
         .theme-toggle:hover {
-            background: var(--row);
+            background: color-mix(in srgb, var(--link) 10%, var(--panel));
         }
 
         .theme-toggle:focus-visible {
-            outline: 2px solid var(--link);
-            outline-offset: 2px;
+            outline: none;
         }
 
         table {
@@ -376,15 +382,6 @@
                 font-size: 20px;
             }
 
-            .hero h1 {
-                font-size: 18px;
-            }
-
-            .hero p {
-                font-size: 15px;
-                line-height: 1.4;
-            }
-
             .page-header {
                 align-items: flex-start;
                 flex-direction: column;
@@ -393,6 +390,23 @@
             .theme-toggle {
                 min-width: 64px;
                 min-height: 30px;
+            }
+
+            .hero {
+                padding: 14px 16px;
+            }
+
+            .hero h2 {
+                margin-bottom: 6px;
+                font-size: 1.12rem;
+                font-weight: 650;
+                line-height: 1.25;
+            }
+
+            .hero p {
+                font-size: 0.88rem;
+                font-weight: 400;
+                line-height: 1.45;
             }
 
             th {
@@ -418,12 +432,22 @@
                 padding-bottom: 2px;
             }
 
+            .entry-meta,
+            .entry-meta-label,
+            .entry-meta-link {
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
+            }
+
             .modified-cell {
                 padding-top: 0;
                 color: var(--muted);
                 font-size: 12px;
                 font-weight: 400;
                 line-height: 1.3;
+                font-variant-numeric: tabular-nums;
                 text-align: left;
             }
 
@@ -431,23 +455,30 @@
                 display: flex;
                 align-items: baseline;
                 justify-content: space-between;
-                gap: 12px;
+                column-gap: 8px;
+                color: var(--muted);
+                font-size: 0.82rem;
+                font-weight: 500;
+                line-height: 1.35;
             }
 
             td[data-label]::before {
                 content: attr(data-label);
                 flex: 0 0 auto;
-                color: var(--muted);
-                font-size: 10px;
-                font-weight: 400;
-                text-transform: uppercase;
-                opacity: 0.65;
+                color: inherit;
+                font: inherit;
+                letter-spacing: 0;
+                text-transform: none;
             }
 
             .modified-cell[data-label]::before {
                 content: attr(data-label) ":";
+                color: var(--muted);
+                font-size: 10px;
+                font-weight: 400;
                 letter-spacing: normal;
                 margin-right: 4px;
+                opacity: 0.65;
                 text-transform: none;
             }
 
