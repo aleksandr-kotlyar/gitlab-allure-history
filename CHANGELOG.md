@@ -10,7 +10,7 @@
 - An explicit `allure-history-image-tag` is only needed for SHA or branch
   component references.
 
-## 2026.2.9 (unreleased)
+## 2026.2.9 (2026-06-14)
 
 ### Added
 
