@@ -1,4 +1,5 @@
-# GitLab Allure History Publisher
+<h1><img src="docs/assets/gitlab-allure-history-logo-readme-tight.png" width="36" height="36" alt="GitLab Allure History logo" align="absmiddle"> GitLab Allure History Publisher</h1>
+
 
 [![Latest Release](https://img.shields.io/gitlab/v/release/aleksandr-kotlyar/gitlab-allure-history?sort=semver)](https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history/-/releases)
 
