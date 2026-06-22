@@ -1,0 +1,1 @@
+Indexing: /tmp/pytest-of-root/pytest-0/test_theme_toggle_has_hover_an0/public/
