@@ -1,0 +1,4 @@
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_links_latest_b0/public/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_links_latest_b0/public/dev/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_links_latest_b0/public/dev/feature-login/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_links_latest_b0/public/dev/master/

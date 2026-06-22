@@ -214,8 +214,15 @@
             display: none !important;
         }
 
-        .name-cell {
+        .name-cell,
+        .latest-report-cell {
             width: auto;
+        }
+
+        .history-cell {
+            width: 86px;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .result-cell {
@@ -241,6 +248,10 @@
             overflow-wrap: anywhere;
         }
 
+        .entry-name-text {
+            color: var(--text);
+        }
+
         .latest-badge {
             display: inline-flex;
             min-height: 20px;
@@ -257,26 +268,35 @@
             text-transform: lowercase;
         }
 
-        .entry-separator {
-            flex: 0 0 auto;
-            color: var(--muted);
-            opacity: 0.5;
-            font-weight: 400;
-            user-select: none;
+        .history-link {
+            display: inline-flex;
+            width: 32px;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            color: var(--link);
+            vertical-align: middle;
         }
 
-        .entry-latest-link {
-            flex: 0 0 auto;
-            color: var(--link);
-            font-weight: 400;
-            opacity: 0.82;
+        .history-link:hover {
+            background: color-mix(in srgb, var(--link) 10%, transparent);
             text-decoration: none;
         }
 
-        .entry-latest-link:hover {
-            color: var(--link);
-            opacity: 1;
-            text-decoration: underline;
+        .history-link:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
+        }
+
+        .history-icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2;
         }
 
         .modified-cell {
@@ -427,9 +447,17 @@
                 border-bottom: 0;
             }
 
-            .name-cell {
+            .name-cell,
+            .latest-report-cell {
                 width: 100%;
                 padding-bottom: 2px;
+            }
+
+            .history-cell {
+                width: 100%;
+                padding-top: 0;
+                padding-bottom: 2px;
+                text-align: left;
             }
 
             .entry-meta,
@@ -555,198 +583,251 @@
         <table class="index-table directory-index" data-progressive-list>
             <thead>
                 <tr>
-                    <th class="name-cell">Name</th>
 
+                    <th class="latest-report-cell">Latest report</th>
+                    <th class="history-cell">History</th>
                     <th class="modified-cell">Modified</th>
                 </tr>
             </thead>
             <tbody>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master/">master/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="master/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="master/latest/">master</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="master/" aria-label="Open master history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">14-Jun-2026 05:11</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="extract-core/">extract-core/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="extract-core/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="feature-latest-report-history-columns/latest/">feature-latest-report-history-columns</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="feature-latest-report-history-columns/" aria-label="Open feature-latest-report-history-columns history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
+                <td class="modified-cell" data-label="Modified">22-Jun-2026 05:03</td>
+            </tr>
+            <tr data-list-row>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="extract-core/latest/">extract-core</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="extract-core/" aria-label="Open extract-core history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">20-Jun-2026 21:04</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-9/">2026-2-9/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-9/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-9/latest/">2026-2-9</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-9/" aria-label="Open 2026-2-9 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">14-Jun-2026 01:54</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="changelog-compact/">changelog-compact/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="changelog-compact/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="changelog-compact/latest/">changelog-compact</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="changelog-compact/" aria-label="Open changelog-compact history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">14-Jun-2026 01:48</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="compact-branch-listing/">compact-branch-listing/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="compact-branch-listing/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="compact-branch-listing/latest/">compact-branch-listing</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="compact-branch-listing/" aria-label="Open compact-branch-listing history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">13-Jun-2026 11:28</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="demo-playwright-recordings/">demo-playwright-recordings/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="demo-playwright-recordings/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="demo-playwright-recordings/latest/">demo-playwright-recordings</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="demo-playwright-recordings/" aria-label="Open demo-playwright-recordings history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 21:27</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="generated-index-ui-polish/">generated-index-ui-polish/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="generated-index-ui-polish/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="generated-index-ui-polish/latest/">generated-index-ui-polish</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="generated-index-ui-polish/" aria-label="Open generated-index-ui-polish history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 19:04</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="master-pipeline-pages-deploy/">master-pipeline-pages-deploy/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="master-pipeline-pages-deploy/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="master-pipeline-pages-deploy/latest/">master-pipeline-pages-deploy</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="master-pipeline-pages-deploy/" aria-label="Open master-pipeline-pages-deploy history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 06:32</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="root-index-intro-card/">root-index-intro-card/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="root-index-intro-card/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="root-index-intro-card/latest/">root-index-intro-card</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="root-index-intro-card/" aria-label="Open root-index-intro-card history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 05:59</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="issue-templates/">issue-templates/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="issue-templates/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="issue-templates/latest/">issue-templates</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="issue-templates/" aria-label="Open issue-templates history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 04:33</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="retry-pages-push/">retry-pages-push/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="retry-pages-push/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="retry-pages-push/latest/">retry-pages-push</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="retry-pages-push/" aria-label="Open retry-pages-push history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 04:05</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="smoke-links-test/">smoke-links-test/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="smoke-links-test/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="smoke-links-test/latest/">smoke-links-test</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="smoke-links-test/" aria-label="Open smoke-links-test history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">12-Jun-2026 03:49</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="regression-tests/">regression-tests/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="regression-tests/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="regression-tests/latest/">regression-tests</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="regression-tests/" aria-label="Open regression-tests history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 22:09</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="consumer-contract-fixtures/">consumer-contract-fixtures/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="consumer-contract-fixtures/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="consumer-contract-fixtures/latest/">consumer-contract-fixtures</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="consumer-contract-fixtures/" aria-label="Open consumer-contract-fixtures history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 21:59</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="footer-fix/">footer-fix/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="footer-fix/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="footer-fix/latest/">footer-fix</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="footer-fix/" aria-label="Open footer-fix history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 21:30</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-alias/">latest-report-alias/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="latest-report-alias/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="latest-report-alias/latest/">latest-report-alias</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="latest-report-alias/" aria-label="Open latest-report-alias history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 20:35</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="refine-fonts/">refine-fonts/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="refine-fonts/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="refine-fonts/latest/">refine-fonts</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="refine-fonts/" aria-label="Open refine-fonts history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">11-Jun-2026 03:31</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="refine-report-summary/">refine-report-summary/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="refine-report-summary/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="refine-report-summary/latest/">refine-report-summary</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="refine-report-summary/" aria-label="Open refine-report-summary history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 20:30</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="mr-report-comment/">mr-report-comment/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="mr-report-comment/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="mr-report-comment/latest/">mr-report-comment</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="mr-report-comment/" aria-label="Open mr-report-comment history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 20:15</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-8/">2026-2-8/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-8/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-8/latest/">2026-2-8</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-8/" aria-label="Open 2026-2-8 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 19:55</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="flaky-demo-tests/">flaky-demo-tests/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="flaky-demo-tests/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="flaky-demo-tests/latest/">flaky-demo-tests</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="flaky-demo-tests/" aria-label="Open flaky-demo-tests history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">08-Jun-2026 17:53</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-7/">2026-2-7/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-7/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-7/latest/">2026-2-7</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-7/" aria-label="Open 2026-2-7 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 11:30</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="fix-component-image-tag/">fix-component-image-tag/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="fix-component-image-tag/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="fix-component-image-tag/latest/">fix-component-image-tag</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="fix-component-image-tag/" aria-label="Open fix-component-image-tag history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 10:58</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="stabilize-reusable-ci-template/">stabilize-reusable-ci-template/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="stabilize-reusable-ci-template/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="stabilize-reusable-ci-template/latest/">stabilize-reusable-ci-template</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="stabilize-reusable-ci-template/" aria-label="Open stabilize-reusable-ci-template history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 10:32</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-5/">2026-2-5/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-5/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-5/latest/">2026-2-5</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-5/" aria-label="Open 2026-2-5 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:53</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-6/">2026-2-6/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-6/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-6/latest/">2026-2-6</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-6/" aria-label="Open 2026-2-6 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:52</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-4/">2026-2-4/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-4/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-4/latest/">2026-2-4</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-4/" aria-label="Open 2026-2-4 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:49</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-3/">2026-2-3/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-3/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-3/latest/">2026-2-3</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-3/" aria-label="Open 2026-2-3 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:49</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="2026-2-1/">2026-2-1/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="2026-2-1/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="2026-2-1/latest/">2026-2-1</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="2026-2-1/" aria-label="Open 2026-2-1 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:47</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="fix-allure-trend-report-links/">fix-allure-trend-report-links/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="fix-allure-trend-report-links/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="fix-allure-trend-report-links/latest/">fix-allure-trend-report-links</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="fix-allure-trend-report-links/" aria-label="Open fix-allure-trend-report-links history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:29</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="report-summary-index/">report-summary-index/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="report-summary-index/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="report-summary-index/latest/">report-summary-index</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="report-summary-index/" aria-label="Open report-summary-index history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 09:07</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="latest-report-links/">latest-report-links/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="latest-report-links/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="latest-report-links/latest/">latest-report-links</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="latest-report-links/" aria-label="Open latest-report-links history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 08:29</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="open-demo/">open-demo/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="open-demo/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="open-demo/latest/">open-demo</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="open-demo/" aria-label="Open open-demo history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 05:36</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-last-thirty/">keep-last-thirty/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="keep-last-thirty/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="keep-last-thirty/latest/">keep-last-thirty</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="keep-last-thirty/" aria-label="Open keep-last-thirty history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">07-Jun-2026 03:55</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="column-modified-time/">column-modified-time/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="column-modified-time/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="column-modified-time/latest/">column-modified-time</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="column-modified-time/" aria-label="Open column-modified-time history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">05-Jun-2026 04:38</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="improve-allure-pages-template/">improve-allure-pages-template/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="improve-allure-pages-template/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="improve-allure-pages-template/latest/">improve-allure-pages-template</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="improve-allure-pages-template/" aria-label="Open improve-allure-pages-template history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">04-Jun-2026 22:25</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru-env/">qaguru-env/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="qaguru-env/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="qaguru-env/latest/">qaguru-env</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="qaguru-env/" aria-label="Open qaguru-env history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">26-Jul-2024 19:01</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="qaguru/">qaguru/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="qaguru/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="qaguru/latest/">qaguru</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="qaguru/" aria-label="Open qaguru history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">26-Jul-2024 17:43</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="v6/">v6/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="v6/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="v6/latest/">v6</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="v6/" aria-label="Open v6 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:46</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="update-python-2024-06-27/">update-python-2024-06-27/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="update-python-2024-06-27/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="update-python-2024-06-27/latest/">update-python-2024-06-27</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="update-python-2024-06-27/" aria-label="Open update-python-2024-06-27 history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:41</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="test-job/">test-job/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="test-job/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="test-job/latest/">test-job</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="test-job/" aria-label="Open test-job history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:20</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="build-job/">build-job/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="build-job/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="build-job/latest/">build-job</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="build-job/" aria-label="Open build-job history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">26-Jun-2024 16:18</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="revert-15-keep-history-in-branch/">revert-15-keep-history-in-branch/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="revert-15-keep-history-in-branch/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="revert-15-keep-history-in-branch/latest/">revert-15-keep-history-in-branch</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="revert-15-keep-history-in-branch/" aria-label="Open revert-15-keep-history-in-branch history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 16:05</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="keep-history-in-branch/">keep-history-in-branch/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="keep-history-in-branch/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="keep-history-in-branch/latest/">keep-history-in-branch</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="keep-history-in-branch/" aria-label="Open keep-history-in-branch history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 15:56</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="publish-gl-pages-only/">publish-gl-pages-only/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="publish-gl-pages-only/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="publish-gl-pages-only/latest/">publish-gl-pages-only</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="publish-gl-pages-only/" aria-label="Open publish-gl-pages-only history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 15:02</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="readme/">readme/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="readme/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="readme/latest/">readme</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="readme/" aria-label="Open readme history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">06-Mar-2021 14:33</td>
             </tr>
             <tr data-list-row>
-                <td class="name-cell"><div class="entry-title"><a class="entry-link" href="deploy-gitlab-pages/">deploy-gitlab-pages/</a><span class="entry-separator">·</span><a class="entry-latest-link" href="deploy-gitlab-pages/latest/">latest</a></div></td>
+                <td class="latest-report-cell"><div class="entry-title"><a class="entry-link latest-report-link" href="deploy-gitlab-pages/latest/">deploy-gitlab-pages</a></div></td>
+                <td class="history-cell" data-label="History"><a class="history-link" href="deploy-gitlab-pages/" aria-label="Open deploy-gitlab-pages history" title="Open history"><svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h4l2 2h7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></svg></a></td>
                 <td class="modified-cell" data-label="Modified">05-Mar-2021 05:51</td>
             </tr>
             </tbody>
@@ -757,7 +838,7 @@
             <button class="show-more" type="button">Show more...</button>
         </div>
     </main>
-    <footer class="generator-footer"><span class="generator-footer-content"><span>Generated by <a href="https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history">gitlab-allure-history</a></span> <span class="dot-separator">·</span> <span class="generator-version">c8f93711a1d60fdc6f018b1006680827cad5a26b</span></span></footer>
+    <footer class="generator-footer"><span class="generator-footer-content"><span>Generated by <a href="https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history">gitlab-allure-history</a></span> <span class="dot-separator">·</span> <span class="generator-version">2026.2.8</span></span></footer>
     <script>
 
         (function () {
