@@ -28,6 +28,7 @@ MOBILE_LIST_BATCH_SIZE = 12
 SHOW_FOOTER_ENV = "ALLURE_HISTORY_SHOW_FOOTER"
 VERSION_ENV = "GITLAB_ALLURE_HISTORY_VERSION"
 GENERATOR_URL = "https://gitlab.com/aleksandr-kotlyar/gitlab-allure-history"
+COMPONENT_URL = "https://gitlab.com/explore/catalog/aleksandr-kotlyar/gitlab-allure-history"
 MOVING_REF_VERSIONS = {"latest", "master", "main"}
 
 STYLE = """
@@ -549,11 +550,13 @@ STYLE = """
 
         .generator-footer a {
             color: var(--muted);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
         }
 
         .generator-footer a:hover {
             color: var(--link);
-            text-decoration: underline;
         }
 
         .generator-footer .dot-separator {
@@ -1350,7 +1353,12 @@ def generator_footer_html() -> str:
     ]
     if version:
         parts.append('<span class="dot-separator">\u00b7</span>')
-        parts.append(f'<span class="generator-version">{escape(version)}</span>')
+        parts.append(
+            '<a class="generator-version" href="{url}">{version}</a>'.format(
+                url=escape(COMPONENT_URL, quote=True),
+                version=escape(version),
+            )
+        )
 
     return (
         '<footer class="generator-footer">'

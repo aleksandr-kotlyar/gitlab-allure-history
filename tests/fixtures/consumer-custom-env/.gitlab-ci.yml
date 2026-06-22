@@ -1,12 +1,21 @@
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.8"
+      allure-history-image-tag: "2026.2.9"
       environment: staging
+
+variables:
+  GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"
 
 consumer_contract:
   image: alpine:3.22
   stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     - mkdir -p allure-results
     - |
@@ -28,6 +37,14 @@ publish-allure-history:
 verify_consumer_contract:
   image: alpine:3.22
   stage: report
+  dependencies:
+    - consumer_contract
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     - test "$ENV" = "staging"
     - test "$PAGES_BRANCH" = "gl-pages"

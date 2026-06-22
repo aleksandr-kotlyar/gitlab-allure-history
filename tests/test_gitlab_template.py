@@ -92,8 +92,12 @@ def test_project_pipeline_dogfoods_reusable_template():
     assert "allure-history-image-tag: $CI_COMMIT_TAG" in pipeline
     assert 'build-runtime-image: "true"' in pipeline
     assert "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA" in pipeline
-    assert 'allure-history-image-tag: "2026.2.8"' in pipeline
+    assert 'allure-history-image-tag: "2026.2.9"' in pipeline
     assert "if: $CI_COMMIT_TAG == null" in pipeline
+    assert (
+        'GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"'
+        in pipeline
+    )
     assert "GITLAB_ALLURE_HISTORY_VERSION:" not in pipeline
     assert "create_release:" in pipeline
     assert "tag_name: $CI_COMMIT_TAG" in pipeline
@@ -118,14 +122,11 @@ def test_project_pipeline_smokes_published_pages_after_publish_job():
     pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
 
     assert "pages_smoke:\n  stage: release\n" in pipeline
-    assert "    - job: test_gate\n      artifacts: true" in pipeline
-    assert (
-        "    - job: publish-allure-history\n"
-        "      artifacts: false"
-    ) in pipeline
+    assert "  dependencies:\n    - test_gate" in pipeline
     assert '        --base-url "$CI_PAGES_URL"' in pipeline
     assert '        --environment "$ENV"' in pipeline
     assert '        --branch "$CI_COMMIT_REF_SLUG"' in pipeline
+    assert "    - test -s jobid" in pipeline
     assert '        --report "job_$(cat jobid)"' in pipeline
 
 
@@ -474,8 +475,8 @@ def test_readme_external_include_uses_pinned_component_version():
 
     assert (
         "component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/"
-        "gitlab-allure-history@2026.2.9"
+        "gitlab-allure-history@2026.2.10"
         in readme
     )
-    assert 'allure-history-image-tag: "2026.2.9"' in readme
+    assert 'allure-history-image-tag: "2026.2.10"' in readme
     assert "pin a published release tag" in readme

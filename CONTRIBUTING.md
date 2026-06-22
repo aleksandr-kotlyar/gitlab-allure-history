@@ -103,7 +103,7 @@ include:
       - if: $CI_COMMIT_TAG
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.8"
+      allure-history-image-tag: "2026.2.9"
     rules:
       - if: $CI_COMMIT_TAG == null
 ```

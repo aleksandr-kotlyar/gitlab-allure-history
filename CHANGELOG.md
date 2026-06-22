@@ -10,6 +10,24 @@
 - An explicit `allure-history-image-tag` is only needed for SHA or branch
   component references.
 
+## 2026.2.10 (2026-06-22)
+
+### Changed
+
+- Branch index navigation now separates latest report links from branch history
+  links.
+- Generated footers now underline the project link and link component versions
+  to the GitLab CI/CD Catalog page.
+
+### Repository CI
+
+- Consumer contract child pipelines now run their verification jobs in merge
+  request/downstream pipeline contexts.
+- Non-tag dogfood and consumer contract pipelines use the latest published
+  `2026.2.9` fallback runtime image.
+- Project CI uses concurrent-slot-specific clone paths to avoid local runner
+  checkout collisions.
+
 ## 2026.2.9 (2026-06-14)
 
 ### Added

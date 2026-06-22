@@ -17,7 +17,7 @@ Include the component in `.gitlab-ci.yml` and pin a published release tag:
 
 ```yaml
 include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.9
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.10
     inputs:
       environment: dev
       pages-branch: gl-pages
@@ -122,7 +122,7 @@ Component and runtime image tags are released as a matched pair. A tagged compon
 
 ```yaml
 include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.9
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.10
     inputs:
       environment: dev
 ```
@@ -133,7 +133,7 @@ Use a published release tag for normal use. When using a full commit SHA or bran
 include:
   - component: gitlab.com/.../gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.9"
+      allure-history-image-tag: "2026.2.10"
 ```
 
 The version scheme is `YYYY.MINOR.PATCH`. See [CHANGELOG.md](CHANGELOG.md) for release history.

@@ -49,12 +49,26 @@ def test_consumer_fixture_uses_external_component_contract(name):
     content = load_fixture(name)
 
     assert f"component: {COMPONENT_INCLUDE}" in content
-    assert 'allure-history-image-tag: "2026.2.8"' in content
+    assert 'allure-history-image-tag: "2026.2.9"' in content
+    assert (
+        'GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"'
+        in content
+    )
     assert "consumer_contract:" in content
     assert "allure-results" in content
     assert "verify_consumer_contract:" in content
     assert "publish-allure-history:\n  rules:\n    - when: never" in content
+    assert "dependencies:\n    - consumer_contract" in content
     assert content.count("  tags:\n    - macos-local") == 2
+
+
+@pytest.mark.parametrize("name", CONTRACTS)
+def test_consumer_fixture_jobs_run_in_downstream_and_mr_pipelines(name):
+    content = load_fixture(name)
+
+    assert content.count('if: $CI_PIPELINE_SOURCE == "parent_pipeline"') == 2
+    assert content.count('if: $CI_PIPELINE_SOURCE == "merge_request_event"') == 2
+    assert content.count("    - when: never") == 3
 
 
 @pytest.mark.parametrize("name, contract", CONTRACTS.items())
