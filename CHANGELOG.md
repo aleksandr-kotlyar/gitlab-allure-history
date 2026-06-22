@@ -14,10 +14,17 @@
 
 ### Changed
 
-- Branch index navigation now separates latest report links from branch history
-  links.
+- Environment branch indexes now separate latest report links from branch
+  history links.
+- Root environment indexes keep environment rows visible instead of linking each
+  environment directly to a nested latest report.
 - Generated footers now underline the project link and link component versions
   to the GitLab CI/CD Catalog page.
+
+### Documentation
+
+- README examples now point to `2026.2.10` and show the project logo in the
+  header.
 
 ### Repository CI
 

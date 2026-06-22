@@ -120,14 +120,21 @@ def test_project_pipeline_validates_expanded_component_with_ci_lint_api():
 
 def test_project_pipeline_smokes_published_pages_after_publish_job():
     pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
+    publish_job = pipeline.split("\npublish-allure-history:\n", 1)[1].split(
+        "\npages_smoke:\n", 1
+    )[0]
+    pages_smoke_job = pipeline.split("\npages_smoke:\n", 1)[1].split(
+        "\ncreate_release:\n", 1
+    )[0]
 
+    assert "  dependencies:\n    - test_gate" in publish_job
     assert "pages_smoke:\n  stage: release\n" in pipeline
-    assert "  dependencies:\n    - test_gate" in pipeline
-    assert '        --base-url "$CI_PAGES_URL"' in pipeline
-    assert '        --environment "$ENV"' in pipeline
-    assert '        --branch "$CI_COMMIT_REF_SLUG"' in pipeline
-    assert "    - test -s jobid" in pipeline
-    assert '        --report "job_$(cat jobid)"' in pipeline
+    assert "  dependencies:\n    - test_gate" in pages_smoke_job
+    assert '        --base-url "$CI_PAGES_URL"' in pages_smoke_job
+    assert '        --environment "$ENV"' in pages_smoke_job
+    assert '        --branch "$CI_COMMIT_REF_SLUG"' in pages_smoke_job
+    assert "    - test -s jobid" in pages_smoke_job
+    assert '        --report "job_$(cat jobid)"' in pages_smoke_job
 
 
 def test_template_uses_url_safe_branch_slug_and_component_versioned_image_tag():
