@@ -1,0 +1,6 @@
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_keeps_environm0/public/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_keeps_environm0/public/beta/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_keeps_environm0/public/beta/release/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_keeps_environm0/public/dev/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_keeps_environm0/public/dev/feature-login/
+Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_keeps_environm0/public/dev/master/
