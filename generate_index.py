@@ -1146,7 +1146,7 @@ def latest_report_link_label(entry: Path, latest_report: Path | None) -> str:
     return latest_report.parent.name
 
 
-def directory_entry_cells(folder: Path, entry: Path) -> list[str]:
+def branch_entry_cells(folder: Path, entry: Path) -> list[str]:
     latest_report = (
         latest_report_for(entry)
         if entry.is_dir() and not is_report_folder(entry)
@@ -1203,6 +1203,11 @@ def directory_entry_cells(folder: Path, entry: Path) -> list[str]:
 
 def include_report_summary(entries: list[Path]) -> bool:
     return any(is_report_folder(entry) for entry in entries)
+
+
+def is_branch_index(folder: Path) -> bool:
+    suffix_parts = public_suffix_parts(folder)
+    return suffix_parts is not None and len(suffix_parts) == 1
 
 
 def summary_compact_html(summary: ReportSummary) -> str:
@@ -1284,13 +1289,14 @@ def entry_row(
     entry: Path,
     latest_report: Path | None,
     show_report_summary: bool,
+    show_branch_navigation: bool,
 ) -> list[str]:
     title = entry_title_html(entry, latest_report == entry)
     summary_cells = report_summary_cells(entry) if show_report_summary else []
     primary_cells = (
-        [f'                <td class="name-cell">{title}</td>']
-        if show_report_summary
-        else directory_entry_cells(folder, entry)
+        branch_entry_cells(folder, entry)
+        if show_branch_navigation
+        else [f'                <td class="name-cell">{title}</td>']
     )
 
     return [
@@ -1358,7 +1364,8 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
     desktop_batch_size, mobile_batch_size = configured_list_batch_sizes()
     latest_report = latest_report_for(folder)
     show_report_summary = include_report_summary(entries)
-    column_count = 4 if show_report_summary else 3
+    show_branch_navigation = not show_report_summary and is_branch_index(folder)
+    column_count = 4 if show_report_summary else 3 if show_branch_navigation else 2
     table_mode_class = "has-summary" if show_report_summary else "directory-index"
     table_headers = (
         """
@@ -1369,12 +1376,23 @@ def build_index_html(folder: Path, entries: list[Path]) -> str:
         else """
                     <th class="latest-report-cell">Latest report</th>
                     <th class="history-cell">History</th>""".rstrip()
+        if show_branch_navigation
+        else """
+                    <th class="name-cell">Name</th>""".rstrip()
     )
     rows: list[str] = []
 
     if entries:
         for entry in entries:
-            rows.extend(entry_row(folder, entry, latest_report, show_report_summary))
+            rows.extend(
+                entry_row(
+                    folder,
+                    entry,
+                    latest_report,
+                    show_report_summary,
+                    show_branch_navigation,
+                )
+            )
     else:
         rows.extend(empty_row(column_count))
 

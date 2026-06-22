@@ -34,7 +34,7 @@ def test_index_folder_creates_empty_index(tmp_path):
     assert "Index of" not in html
     assert "gitlab-allure-history" in html
     assert 'aria-current="page">gitlab-allure-history</span>' in html
-    assert '<td class="name-cell" colspan="3">No reports yet.</td>' in html
+    assert '<td class="name-cell" colspan="2">No reports yet.</td>' in html
     assert "Show more..." not in html
 
 
@@ -50,8 +50,9 @@ def test_root_index_shows_project_intro_and_keeps_listing_links(tmp_path):
     assert "<h1>GitLab Allure History Publisher</h1>" not in html
     assert "Branch-based Allure report history on GitLab Pages." in html
     assert "No server. No database. No external storage." in html
-    assert '<span class="entry-link entry-name-text">dev/</span>' in html
-    assert '<a class="history-link" href="dev/"' in html
+    assert '<th class="name-cell">Name</th>' in html
+    assert '<th class="latest-report-cell">Latest report</th>' not in html
+    assert 'href="dev/">dev/</a>' in html
     assert html.index('class="hero"') < html.index('class="index-table')
 
 
@@ -403,15 +404,20 @@ def test_env_index_links_each_branch_to_latest_report(tmp_path):
     assert html.count('href="feature-login/"') == 1
 
 
-def test_root_index_links_latest_branch_and_env_history(tmp_path):
+def test_root_index_keeps_environment_rows_visible(tmp_path):
     public_dir = tmp_path / "public"
     old_report = public_dir / "dev" / "master" / "job_101"
     latest_report = public_dir / "dev" / "feature-login" / "job_102"
+    beta_report = public_dir / "beta" / "release" / "job_103"
     old_report.mkdir(parents=True)
     latest_report.mkdir(parents=True)
+    beta_report.mkdir(parents=True)
     (old_report / ".modified_at").write_text("2026-06-05T22:15:00Z\n", encoding="utf-8")
     (latest_report / ".modified_at").write_text(
         "2026-06-06T08:00:00Z\n", encoding="utf-8"
+    )
+    (beta_report / ".modified_at").write_text(
+        "2026-06-07T09:30:00Z\n", encoding="utf-8"
     )
 
     index_tree(public_dir)
@@ -419,11 +425,12 @@ def test_root_index_links_latest_branch_and_env_history(tmp_path):
     index_path = public_dir / "index.html"
 
     html = index_path.read_text(encoding="utf-8")
-    assert (
-        '<a class="entry-link latest-report-link" '
-        'href="dev/feature-login/latest/">feature-login</a>'
-    ) in html
-    assert '<a class="history-link" href="dev/"' in html
+    assert 'href="dev/">dev/</a>' in html
+    assert 'href="beta/">beta/</a>' in html
+    assert "feature-login" not in html
+    assert "release" not in html
+    assert '<th class="latest-report-cell">Latest report</th>' not in html
+    assert '<th class="history-cell">History</th>' not in html
 
 
 def test_index_adds_show_more_controls_for_populated_lists(tmp_path):
