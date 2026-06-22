@@ -34,6 +34,7 @@ def test_index_folder_creates_empty_index(tmp_path):
     assert "Index of" not in html
     assert "gitlab-allure-history" in html
     assert 'aria-current="page">gitlab-allure-history</span>' in html
+    assert '<td class="name-cell" colspan="3">No reports yet.</td>' in html
     assert "Show more..." not in html
 
 
@@ -49,7 +50,8 @@ def test_root_index_shows_project_intro_and_keeps_listing_links(tmp_path):
     assert "<h1>GitLab Allure History Publisher</h1>" not in html
     assert "Branch-based Allure report history on GitLab Pages." in html
     assert "No server. No database. No external storage." in html
-    assert 'href="dev/">dev/</a>' in html
+    assert '<span class="entry-link entry-name-text">dev/</span>' in html
+    assert '<a class="history-link" href="dev/"' in html
     assert html.index('class="hero"') < html.index('class="index-table')
 
 
@@ -124,7 +126,12 @@ def test_non_root_indexes_do_not_show_project_intro(tmp_path):
         assert 'class="hero"' not in html
         assert "GitLab Allure History Publisher" not in html
 
-    assert 'href="feature-login/">feature-login/</a>' in env_html
+    assert (
+        '<a class="entry-link latest-report-link" '
+        'href="feature-login/latest/">feature-login</a>'
+    ) in env_html
+    assert '<a class="history-link" href="feature-login/"' in env_html
+    assert 'href="feature-login/">feature-login/</a>' not in env_html
     assert 'href="job_101/">job_101/</a>' in branch_html
 
 
@@ -383,13 +390,20 @@ def test_env_index_links_each_branch_to_latest_report(tmp_path):
     index_path = index_folder(env_dir)
 
     html = index_path.read_text(encoding="utf-8")
+    assert '<th class="latest-report-cell">Latest report</th>' in html
+    assert '<th class="history-cell">History</th>' in html
     assert (
-        '<span class="entry-separator">\u00b7</span>'
-        '<a class="entry-latest-link" href="feature-login/latest/">latest</a>'
+        '<a class="entry-link latest-report-link" '
+        'href="feature-login/latest/">feature-login</a>'
     ) in html
+    assert '<a class="history-link" href="feature-login/"' in html
+    assert 'href="feature-login/">feature-login/</a>' not in html
+    assert 'class="entry-separator"' not in html
+    assert 'class="entry-latest-link"' not in html
+    assert html.count('href="feature-login/"') == 1
 
 
-def test_root_index_links_each_env_to_latest_report_inside_env(tmp_path):
+def test_root_index_links_latest_branch_and_env_history(tmp_path):
     public_dir = tmp_path / "public"
     old_report = public_dir / "dev" / "master" / "job_101"
     latest_report = public_dir / "dev" / "feature-login" / "job_102"
@@ -406,9 +420,10 @@ def test_root_index_links_each_env_to_latest_report_inside_env(tmp_path):
 
     html = index_path.read_text(encoding="utf-8")
     assert (
-        '<span class="entry-separator">\u00b7</span>'
-        '<a class="entry-latest-link" href="dev/feature-login/latest/">latest</a>'
+        '<a class="entry-link latest-report-link" '
+        'href="dev/feature-login/latest/">feature-login</a>'
     ) in html
+    assert '<a class="history-link" href="dev/"' in html
 
 
 def test_index_adds_show_more_controls_for_populated_lists(tmp_path):
