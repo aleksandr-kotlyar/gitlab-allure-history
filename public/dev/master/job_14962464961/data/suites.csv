@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","0","test_broken","tests","2026-06-22","broken","2026-06-22","","test_simulation","",""
+"","0","test_skipped","tests","2026-06-22","skipped","2026-06-22","","test_simulation","",""
+"","0","test_fail","tests","2026-06-22","failed","2026-06-22","","test_simulation","",""
+"","0","test_pass","tests","2026-06-22","passed","2026-06-22","","test_simulation","",""
