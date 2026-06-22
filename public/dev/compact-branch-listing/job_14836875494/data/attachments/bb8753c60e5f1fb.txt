@@ -1,1 +1,0 @@
-Attempt 1/1 failed: https://example.test/dev/master/job_123/: HTTP 503

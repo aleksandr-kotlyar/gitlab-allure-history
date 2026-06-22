@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_escapes_labels_and_0/public/

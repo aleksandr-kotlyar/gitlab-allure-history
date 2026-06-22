@@ -1,3 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_tree_updates_naviga0/public/
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_tree_updates_naviga0/public/feature/
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_tree_updates_naviga0/public/master/

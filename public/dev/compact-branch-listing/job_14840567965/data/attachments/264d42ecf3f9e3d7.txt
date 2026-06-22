@@ -1,1 +1,0 @@
-Attempt 1/2 failed: https://example.test/dev/: HTTP Error 404: Not Found; https://example.test/dev/master/latest/: HTTP Error 404: Not Found

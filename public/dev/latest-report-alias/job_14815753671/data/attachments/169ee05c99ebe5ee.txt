@@ -1,2 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_latest_alias_moves_after_0/public/dev/feature-login/
-Indexing: /tmp/pytest-of-root/pytest-0/test_latest_alias_moves_after_0/public/dev/feature-login/

@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_root_index_shows_project_0/public/

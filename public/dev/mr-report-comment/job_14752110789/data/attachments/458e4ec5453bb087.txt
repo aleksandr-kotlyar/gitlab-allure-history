@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_adds_show_more_cont0/public/

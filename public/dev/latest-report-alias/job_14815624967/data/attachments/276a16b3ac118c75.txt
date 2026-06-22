@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_report_index_falls_back_w0/public/dev/feature-login/

@@ -1,2 +1,0 @@
-OK https://example.test/dev/ -> https://example.test/dev/ (200)
-OK https://example.test/dev/master/latest/ -> https://example.test/dev/master/latest/ (200)

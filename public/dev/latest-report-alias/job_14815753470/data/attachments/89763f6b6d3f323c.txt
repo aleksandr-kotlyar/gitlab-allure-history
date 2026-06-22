@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_handles_branch_repo0/public/feature-login/

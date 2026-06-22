@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_index_omits_parent_table_0/public/master/

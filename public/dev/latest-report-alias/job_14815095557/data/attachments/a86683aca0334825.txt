@@ -1,2 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_navigation_indexes_exclud0/public/
-Indexing: /tmp/pytest-of-root/pytest-0/test_navigation_indexes_exclud0/public/dev/

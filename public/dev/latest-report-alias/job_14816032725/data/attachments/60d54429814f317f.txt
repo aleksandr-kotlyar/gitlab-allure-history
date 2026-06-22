@@ -1,1 +1,0 @@
-Indexing: /tmp/pytest-of-root/pytest-0/test_latest_alias_not_generate2/public/dev/feature-login/job_101/
