@@ -127,7 +127,7 @@ def test_project_pipeline_smokes_published_pages_after_publish_job():
         "\ncreate_release:\n", 1
     )[0]
 
-    assert "  dependencies:\n    - test_gate" in publish_job
+    assert "  dependencies:\n    - test_gate\n    - test_demo" in publish_job
     assert "pages_smoke:\n  stage: release\n" in pipeline
     assert "  dependencies:\n    - test_gate" in pages_smoke_job
     assert '        --base-url "$CI_PAGES_URL"' in pages_smoke_job

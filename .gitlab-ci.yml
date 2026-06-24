@@ -121,6 +121,9 @@ consumer_contract:custom-pages-branch:
     strategy: mirror
 
 publish-allure-history:
+  dependencies:
+    - test_gate
+    - test_demo
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
