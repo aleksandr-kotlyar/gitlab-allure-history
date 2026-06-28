@@ -49,7 +49,7 @@ def test_consumer_fixture_uses_external_component_contract(name):
     content = load_fixture(name)
 
     assert f"component: {COMPONENT_INCLUDE}" in content
-    assert 'allure-history-image-tag: "2026.2.9"' in content
+    assert 'allure-history-image-tag: "2026.2.10"' in content
     assert (
         'GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"'
         in content

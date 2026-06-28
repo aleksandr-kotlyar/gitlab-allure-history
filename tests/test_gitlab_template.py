@@ -92,7 +92,7 @@ def test_project_pipeline_dogfoods_reusable_template():
     assert "allure-history-image-tag: $CI_COMMIT_TAG" in pipeline
     assert 'build-runtime-image: "true"' in pipeline
     assert "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA" in pipeline
-    assert 'allure-history-image-tag: "2026.2.9"' in pipeline
+    assert 'allure-history-image-tag: "2026.2.10"' in pipeline
     assert "if: $CI_COMMIT_TAG == null" in pipeline
     assert (
         'GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"'
