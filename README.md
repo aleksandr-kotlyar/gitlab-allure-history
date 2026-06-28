@@ -17,10 +17,8 @@ Include the component in `.gitlab-ci.yml` and pin a published release tag:
 
 ```yaml
 include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.10
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.11
     inputs:
-      environment: dev
-      pages-branch: gl-pages
       reports-to-keep: "30"
 
 stages:
@@ -39,6 +37,11 @@ test:
 ```
 
 The component adds a `publish-allure-history` job that generates the HTML report, preserves history across runs, pushes the generated content to the storage branch, and publishes GitLab Pages from the main/component pipeline.
+
+Provider-neutral report generation is supplied by
+[`core-allure-history`](https://github.com/aleksandr-kotlyar/core-allure-history).
+This repository contains the GitLab CI adapter, storage-branch publishing, and
+merge request integration.
 
 > [!WARNING]
 > This component publishes the project's GitLab Pages site from `public/`. If the project already uses GitLab Pages for another site, use a dedicated project for Allure history or avoid conflicting Pages deployments.
@@ -72,9 +75,9 @@ Test jobs must save `allure-results/` with `artifacts.when: always`. They may al
 ## How It Works
 
 1. Test jobs publish `allure-results/`.
-2. The component restores the previous branch history from `gl-pages`.
-3. Allure generates a new immutable report snapshot.
-4. Static indexes and the stable `latest/` alias are updated.
+2. The component prepares the persistent `gl-pages` storage tree.
+3. `core-allure-history` restores history and generates a new immutable report.
+4. Core updates retention, static indexes, and the stable `latest/` alias.
 5. The `public/` tree is committed to `gl-pages` with CI skipped for persistent storage.
 6. The same `public/` tree is uploaded by the `publish-allure-history` job and published by GitLab Pages from the main/component pipeline.
 
@@ -118,23 +121,18 @@ https://<pages-domain>/<project>/<environment>/<branch-slug>/job_NNN/
 
 ## Version Pinning
 
-Component and runtime image tags are released as a matched pair. A tagged component reference resolves the matching runtime image tag automatically:
+Pin the GitLab component itself to a published release tag:
 
 ```yaml
 include:
-  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.10
+  - component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/gitlab-allure-history@2026.2.11
     inputs:
       environment: dev
 ```
 
-Use a published release tag for normal use. When using a full commit SHA or branch reference, set the runtime image tag explicitly:
-
-```yaml
-include:
-  - component: gitlab.com/.../gitlab-allure-history@$CI_COMMIT_SHA
-    inputs:
-      allure-history-image-tag: "2026.2.10"
-```
+The component uses a tested Core Allure History runtime image internally. In
+normal usage, there is nothing extra to pin or override beyond the component
+version shown above.
 
 The version scheme is `YYYY.MINOR.PATCH`. See [CHANGELOG.md](CHANGELOG.md) for release history.
 
@@ -143,12 +141,8 @@ The version scheme is `YYYY.MINOR.PATCH`. See [CHANGELOG.md](CHANGELOG.md) for r
 | Input | Default | Description |
 |-------|---------|-------------|
 | `environment` | `dev` | Report environment folder under `public/`. |
-| `allure-history-image` | `registry.gitlab.com/...` | Runtime image repository. |
-| `allure-history-image-tag` | `$[[ component.version ]]` | Runtime image tag. Set explicitly for SHA or branch component references. |
-| `allure-history-tools-dir` | `/opt/gitlab-allure-history` | **Advanced custom image override.** Directory containing `generate_index.py` and `prune_reports.py`. |
 | `pages-branch` | `gl-pages` | Persistent storage branch for generated Pages content and Allure history. |
 | `reports-to-keep` | `30` | Report snapshots retained per environment and branch. |
-| `build-runtime-image` | `false` | **Maintainer/release input.** Build and push this project's runtime image in tag pipelines. |
 | `comment-mr` | `false` | Post or update a merge request comment with the current immutable report URL. |
 
 ### Optional CI Variables

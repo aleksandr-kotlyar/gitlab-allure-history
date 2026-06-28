@@ -2,13 +2,27 @@
 
 ## Release policy
 
-- Component tags and runtime image tags use the same version.
-- Tagged component includes resolve the runtime image tag from the component
-  version by default.
+- Component releases pin a tested Core Allure History runtime image.
 - Versions follow the `YYYY.MINOR.PATCH` scheme.
 - Breaking changes are called out explicitly.
-- An explicit `allure-history-image-tag` is only needed for SHA or branch
-  component references.
+
+## 2026.2.11 (2026-06-28)
+
+### Changed
+
+- The publish-template helper scripts were moved into
+  Core Allure History, leaving the GitLab component as a thinner wrapper around
+  the shared runtime.
+- The default runtime image now points to
+  `registry.gitlab.com/aleksandr-kotlyar/allure-history-core:2026.2.11`.
+
+### Breaking
+
+- Removed runtime image override and maintainer-only inputs:
+  `allure-history-image`, `allure-history-image-tag`,
+  `allure-history-tools-dir`, and `build-runtime-image`.
+- The component now owns the tested Core Allure History runtime pin directly;
+  consumers should pin only the GitLab component version.
 
 ## 2026.2.10 (2026-06-22)
 
@@ -31,7 +45,7 @@
 - Consumer contract child pipelines now run their verification jobs in merge
   request/downstream pipeline contexts.
 - Non-tag dogfood and consumer contract pipelines use the latest published
-  `2026.2.9` fallback runtime image.
+  `2026.2.10` fallback runtime image.
 - Project CI uses concurrent-slot-specific clone paths to avoid local runner
   checkout collisions.
 

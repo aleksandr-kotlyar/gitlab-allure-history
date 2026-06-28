@@ -1,7 +1,6 @@
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.10"
       pages-branch: allure-pages
 
 variables:

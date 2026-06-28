@@ -1,84 +1,14 @@
-import json
-import subprocess
-import textwrap
 from pathlib import Path
 
 
-def extract_python_heredoc(template: str, marker: str) -> str:
-    lines = template.splitlines()
-    start = lines.index(marker) + 1
-    end = lines.index("      PY", start)
-
-    return textwrap.dedent("\n".join(lines[start:end]))
-
-
-def extract_mr_note_lookup_python(template: str) -> str:
-    start_marker = "      MATCH_INFO=$(printf '%s' \"${NOTES_JSON}\" | python3 -c '"
-    start = template.index(start_marker) + len(start_marker)
-    end = template.index("      ' \"${CURRENT_USER_ID}\"", start)
-
-    return textwrap.dedent(template[start:end])
-
-
-def extract_mr_comment_python(template: str) -> str:
-    start_marker = "      COMMENT_BODY=$(python3 <<'PY'"
-    lines = template.splitlines()
-    start = lines.index(start_marker) + 1
-    end = lines.index("      PY", start)
-
-    return textwrap.dedent("\n".join(lines[start:end]))
-
-
-def extract_script_block(template: str, first_line: str) -> str:
-    lines = template.splitlines()
-    start = lines.index(first_line)
-    end = lines.index("    - |", start)
-
-    return textwrap.dedent("\n".join(lines[start:end]))
-
-
-def render_mr_comment(tmp_path, monkeypatch, statistic):
+def test_template_delegates_publish_flow_to_core_gitlab_helper():
     template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
-    script = extract_mr_comment_python(template)
-    report_dir = tmp_path / "job_123"
-    widgets_dir = report_dir / "widgets"
-    widgets_dir.mkdir(parents=True)
-    (widgets_dir / "summary.json").write_text(
-        json.dumps({"statistic": statistic}),
-        encoding="utf-8",
-    )
-    monkeypatch.setenv("REPORT_DIR", str(report_dir))
-    monkeypatch.setenv("REPORT_URL", "https://example.gitlab.io/project/dev/branch/job_123/")
 
-    result = subprocess.run(
-        ["python3", "-c", script],
-        text=True,
-        capture_output=True,
-        check=True,
-    )
-
-    return result.stdout.rstrip("\n")
-
-
-def test_executor_report_url_points_to_report_snapshot(tmp_path, monkeypatch):
-    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
-    script = extract_python_heredoc(template, "      python3 - <<'PY'")
-
-    monkeypatch.chdir(tmp_path)
-    (tmp_path / "allure-results").mkdir()
-
-    monkeypatch.setenv("CI_PAGES_URL", "https://example.gitlab.io/project/")
-    monkeypatch.setenv("REPORT_ENV", "dev")
-    monkeypatch.setenv("REPORT_BRANCH", "feature-login")
-    monkeypatch.setenv("REPORT_DIR", "job_123")
-    monkeypatch.setenv("CI_PIPELINE_URL", "https://gitlab.example/pipeline/1")
-    monkeypatch.setenv("JOB_ID", "123")
-
-    exec(script, {"__builtins__": __builtins__})
-
-    executor = json.loads((tmp_path / "allure-results" / "executor.json").read_text())
-
-    assert executor["reportUrl"] == "https://example.gitlab.io/project/dev/feature-login/job_123/"
+    assert "image: registry.gitlab.com/aleksandr-kotlyar/allure-history-core:2026.2.11" in template
+    assert "allure-history-gitlab publish-job" in template
+    assert "allure-history build-report" not in template
+    assert "git ls-remote" not in template
+    assert "/merge_requests/" not in template
 
 
 def test_project_pipeline_dogfoods_reusable_template():
@@ -89,15 +19,13 @@ def test_project_pipeline_dogfoods_reusable_template():
         "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG"
         in pipeline
     )
-    assert "allure-history-image-tag: $CI_COMMIT_TAG" in pipeline
-    assert 'build-runtime-image: "true"' in pipeline
     assert "  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA" in pipeline
-    assert 'allure-history-image-tag: "2026.2.10"' in pipeline
     assert "if: $CI_COMMIT_TAG == null" in pipeline
     assert (
         'GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"'
         in pipeline
     )
+    assert "allure-history-image-tag:" not in pipeline
     assert "GITLAB_ALLURE_HISTORY_VERSION:" not in pipeline
     assert "create_release:" in pipeline
     assert "tag_name: $CI_COMMIT_TAG" in pipeline
@@ -129,7 +57,9 @@ def test_project_pipeline_smokes_published_pages_after_publish_job():
 
     assert "  dependencies:\n    - test_gate\n    - test_demo" in publish_job
     assert "pages_smoke:\n  stage: release\n" in pipeline
-    assert "  dependencies:\n    - test_gate" in pages_smoke_job
+    assert "  image: registry.gitlab.com/aleksandr-kotlyar/allure-history-core:2026.2.11" in pages_smoke_job
+    assert "    - job: test_gate\n      artifacts: true" in pages_smoke_job
+    assert "    - job: publish-allure-history\n      artifacts: false" in pages_smoke_job
     assert '        --base-url "$CI_PAGES_URL"' in pages_smoke_job
     assert '        --environment "$ENV"' in pages_smoke_job
     assert '        --branch "$CI_COMMIT_REF_SLUG"' in pages_smoke_job
@@ -137,23 +67,12 @@ def test_project_pipeline_smokes_published_pages_after_publish_job():
     assert '        --report "job_$(cat jobid)"' in pages_smoke_job
 
 
-def test_template_uses_url_safe_branch_slug_and_component_versioned_image_tag():
-    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
+def test_project_pipeline_uses_job_specific_images():
+    pipeline = Path(".gitlab-ci.yml").read_text(encoding="utf-8")
 
-    assert '"$[[ inputs.build-runtime-image ]]" == "true" && $CI_COMMIT_TAG' in template
-    assert "IMAGE_TAG: $CI_COMMIT_TAG" in template
-    assert (
-        "ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ inputs.allure-history-image-tag ]]"
-        in template
-    )
-    assert "docker build -t \"$CI_REGISTRY_IMAGE:$IMAGE_TAG\" ." in template
-    assert "docker push \"$CI_REGISTRY_IMAGE:$IMAGE_TAG\"" in template
-    assert "docker tag \"$CI_REGISTRY_IMAGE:$IMAGE_TAG\"" not in template
-    assert "IMAGE_TAG: $CI_COMMIT_SHA" not in template
-    assert "ALLURE_HISTORY_IMAGE: $[[ inputs.allure-history-image ]]:$[[ component.version ]]" not in template
-    assert "ALLURE_HISTORY_IMAGE: $CI_COMMIT_REF_SLUG" not in template
-    assert "REPORT_BRANCH=\"${CI_COMMIT_REF_SLUG:-detached}\"" in template
-    assert "CI_COMMIT_REF_NAME" not in template
+    assert "default:\n  image: python:3.14\n" in pipeline
+    assert "pages_smoke:\n  stage: release\n  image: registry.gitlab.com/aleksandr-kotlyar/allure-history-core:2026.2.11\n" in pipeline
+    assert "create_release:\n  stage: release\n  image: registry.gitlab.com/gitlab-org/cli:latest\n" in pipeline
 
 
 def test_template_defines_component_inputs():
@@ -163,11 +82,13 @@ def test_template_defines_component_inputs():
     assert "  component: [version, reference]\n" in template
     assert "  inputs:\n" in template
     assert "    environment:\n" in template
-    assert "    allure-history-image:\n" in template
-    assert "    allure-history-image-tag:\n" in template
     assert "    pages-branch:\n" in template
     assert "    reports-to-keep:\n" in template
-    assert "    build-runtime-image:\n" in template
+    assert "    comment-mr:\n" in template
+    assert "allure-history-image" not in template
+    assert "allure-history-image-tag" not in template
+    assert "allure-history-tools-dir" not in template
+    assert "build-runtime-image" not in template
     assert "---\n\nvariables:" in template
 
 
@@ -183,307 +104,17 @@ def test_publish_job_publishes_public_as_gitlab_pages_artifact():
         "    paths:\n"
         "      - public\n"
     ) in publish_job
-    assert "\nallure:" not in template
-    assert "\n  tags:" not in template
-
-
-def run_storage_checkout_script(tmp_path, monkeypatch, branch_status):
-    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
-    script = extract_script_block(
-        template,
-        "      PAGES_BRANCH_STATUS=0",
-    )
-    bin_dir = tmp_path / "bin"
-    bin_dir.mkdir()
-    fake_git = bin_dir / "git"
-    fake_git.write_text(
-        textwrap.dedent(
-            """\
-            #!/bin/sh
-            printf '%s\n' "$*" >> "$GIT_COMMANDS"
-
-            if [ "$1" = "ls-remote" ]; then
-              exit "$BRANCH_STATUS"
-            fi
-
-            if [ "$1" = "init" ]; then
-              mkdir -p "$2"
-            fi
-            """
-        ),
-        encoding="utf-8",
-    )
-    fake_git.chmod(0o755)
-    commands_file = tmp_path / "git-commands"
-
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
-    monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
-    monkeypatch.setenv("BRANCH_STATUS", str(branch_status))
-    monkeypatch.setenv("CI_REPOSITORY_URL", "https://gitlab.example/group/project.git")
-    monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
-
-    result = subprocess.run(
-        ["sh", "-eu", "-c", script],
-        text=True,
-        capture_output=True,
-    )
-
-    return result, commands_file.read_text(encoding="utf-8").splitlines()
-
-
-def test_existing_storage_branch_is_cloned(tmp_path, monkeypatch):
-    result, commands = run_storage_checkout_script(tmp_path, monkeypatch, branch_status=0)
-
-    assert result.returncode == 0
-    assert (
-        "clone --single-branch --branch gl-pages "
-        "https://gitlab.example/group/project.git pages-worktree"
-    ) in commands
-    assert not any(command.startswith("init ") for command in commands)
-
-
-def test_missing_storage_branch_is_created_as_orphan(tmp_path, monkeypatch):
-    result, commands = run_storage_checkout_script(tmp_path, monkeypatch, branch_status=2)
-
-    assert result.returncode == 0
-    assert "Storage branch 'gl-pages' does not exist; creating it." in result.stdout
-    assert "init pages-worktree" in commands
-    assert (
-        "-C pages-worktree remote add origin "
-        "https://gitlab.example/group/project.git"
-    ) in commands
-    assert "-C pages-worktree checkout --orphan gl-pages" in commands
-    assert not any(command.startswith("clone ") for command in commands)
-
-
-def test_storage_branch_check_failure_is_not_treated_as_missing(tmp_path, monkeypatch):
-    result, commands = run_storage_checkout_script(
-        tmp_path,
-        monkeypatch,
-        branch_status=128,
-    )
-
-    assert result.returncode == 1
-    assert "Failed to check storage branch 'gl-pages'." in result.stdout
-    assert not any(command.startswith(("clone ", "init ")) for command in commands)
-
-
-def run_pages_publish_script(
-    tmp_path,
-    monkeypatch,
-    successful_push,
-    remote_branch_exists=True,
-):
-    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
-    script = extract_script_block(
-        template,
-        '      git -C pages-worktree config user.name "GitLab Runner"',
-    )
-    bin_dir = tmp_path / "bin"
-    bin_dir.mkdir()
-    fake_git = bin_dir / "git"
-    fake_git.write_text(
-        textwrap.dedent(
-            """\
-            #!/bin/sh
-            printf '%s\n' "$*" >> "$GIT_COMMANDS"
-            command="$3"
-
-            case "$command" in
-              diff)
-                exit 1
-                ;;
-              ls-remote)
-                [ "$REMOTE_BRANCH_EXISTS" = "true" ] || exit 2
-                ;;
-              pull)
-                printf 'pull\n' >> "$GIT_CALLS"
-                ;;
-              push)
-                printf 'push\n' >> "$GIT_CALLS"
-                push_count=$(grep -c '^push$' "$GIT_CALLS")
-                [ "$SUCCESSFUL_PUSH" -gt 0 ] && [ "$push_count" -ge "$SUCCESSFUL_PUSH" ]
-                ;;
-            esac
-            """
-        ),
-        encoding="utf-8",
-    )
-    fake_git.chmod(0o755)
-    fake_sleep = bin_dir / "sleep"
-    fake_sleep.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
-    fake_sleep.chmod(0o755)
-
-    pages_public = tmp_path / "pages-worktree" / "public"
-    pages_public.mkdir(parents=True)
-    (pages_public / "index.html").write_text("report", encoding="utf-8")
-    (tmp_path / "pages-worktree" / ".gitlab-ci.yml").write_text(
-        "pages:\n  script: echo legacy\n",
-        encoding="utf-8",
-    )
-    calls_file = tmp_path / "git-calls"
-    commands_file = tmp_path / "git-commands"
-
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("PATH", f"{bin_dir}:{Path('/usr/bin')}:{Path('/bin')}")
-    monkeypatch.setenv("GIT_CALLS", str(calls_file))
-    monkeypatch.setenv("GIT_COMMANDS", str(commands_file))
-    monkeypatch.setenv("SUCCESSFUL_PUSH", str(successful_push))
-    monkeypatch.setenv(
-        "REMOTE_BRANCH_EXISTS",
-        "true" if remote_branch_exists else "false",
-    )
-    monkeypatch.setenv("GIT_PUSH_TOKEN", "secret")
-    monkeypatch.setenv("CI_SERVER_HOST", "gitlab.example")
-    monkeypatch.setenv("CI_PROJECT_PATH", "group/project")
-    monkeypatch.setenv("CI_PIPELINE_ID", "123")
-    monkeypatch.setenv("PAGES_BRANCH", "gl-pages")
-
-    result = subprocess.run(
-        ["sh", "-eu", "-c", script],
-        text=True,
-        capture_output=True,
-    )
-
-    return result, calls_file, commands_file
-
-
-def test_pages_push_retries_after_racing_updates(tmp_path, monkeypatch):
-    result, calls_file, commands_file = run_pages_publish_script(
-        tmp_path,
-        monkeypatch,
-        successful_push=3,
-    )
-
-    assert result.returncode == 0
-    assert calls_file.read_text(encoding="utf-8").splitlines() == [
-        "pull",
-        "push",
-        "pull",
-        "push",
-        "pull",
-        "push",
-    ]
-    assert "Pages push attempt 1/3 failed" in result.stdout
-    assert "Pages push attempt 2/3 failed" in result.stdout
-    assert (tmp_path / "public" / "index.html").read_text(encoding="utf-8") == "report"
-    assert not (tmp_path / "pages-worktree" / ".gitlab-ci.yml").exists()
-
-    commands = commands_file.read_text(encoding="utf-8").splitlines()
-    assert any(
-        command.endswith(
-            "commit -m Publish Allure report for pipeline 123 [skip ci]"
-        )
-        for command in commands
-    )
-    assert sum(
-        command.endswith("push -o ci.skip origin HEAD:gl-pages")
-        for command in commands
-    ) == 3
-
-
-def test_first_storage_push_does_not_pull_missing_branch(tmp_path, monkeypatch):
-    result, calls_file, _ = run_pages_publish_script(
-        tmp_path,
-        monkeypatch,
-        successful_push=1,
-        remote_branch_exists=False,
-    )
-
-    assert result.returncode == 0
-    assert calls_file.read_text(encoding="utf-8").splitlines() == ["push"]
-    assert (tmp_path / "public" / "index.html").is_file()
-
-
-def test_pages_push_fails_after_three_attempts(tmp_path, monkeypatch):
-    result, calls_file, _ = run_pages_publish_script(
-        tmp_path,
-        monkeypatch,
-        successful_push=0,
-    )
-
-    assert result.returncode == 1
-    assert calls_file.read_text(encoding="utf-8").splitlines().count("push") == 3
-    assert "Failed to push Pages content after 3 attempts." in result.stdout
-    assert not (tmp_path / "public").exists()
-
-
-def run_mr_note_lookup(body):
-    template = Path("templates/gitlab-allure-history.yml").read_text(encoding="utf-8")
-    script = extract_mr_note_lookup_python(template)
-    notes = [
-        {
-            "id": 123,
-            "body": body,
-            "system": False,
-            "author": {"id": 42},
-        }
-    ]
-
-    result = subprocess.run(
-        ["python3", "-c", script, "42"],
-        input=json.dumps(notes),
-        text=True,
-        capture_output=True,
-        check=True,
-    )
-
-    return result.stdout.strip()
-
-
-def test_mr_note_lookup_finds_allure_report_link():
-    assert run_mr_note_lookup(
-        "> [!tip]\n"
-        "> \U0001f7e2 **PASSED** \u00b7 [Allure report](https://example.test/#categories)"
-    ) == "OWN:123"
-
-
-def test_mr_note_lookup_keeps_legacy_marker_compatibility():
-    assert run_mr_note_lookup(
-        "Allure report\n\n<!-- allure-history-report -->"
-    ) == "OWN:123"
-
-
-def test_failed_mr_comment_uses_caution_alert(tmp_path, monkeypatch):
-    comment = render_mr_comment(
-        tmp_path,
-        monkeypatch,
-        {"passed": 42, "failed": 1, "broken": 1, "skipped": 0, "unknown": 0, "total": 44},
-    )
-
-    assert comment == (
-        "> [!caution]\n"
-        "> \U0001f534 **FAILED** \u00b7 "
-        "[Allure report 2 issues]"
-        "(https://example.gitlab.io/project/dev/branch/job_123/#categories) "
-        "(failed 1, broken 1) \u00b7 44 total"
-    )
-
-
-def test_passed_mr_comment_uses_tip_alert(tmp_path, monkeypatch):
-    comment = render_mr_comment(
-        tmp_path,
-        monkeypatch,
-        {"passed": 44, "failed": 0, "broken": 0, "skipped": 0, "unknown": 0, "total": 44},
-    )
-
-    assert comment == (
-        "> [!tip]\n"
-        "> \U0001f7e2 **PASSED** \u00b7 "
-        "[Allure report]"
-        "(https://example.gitlab.io/project/dev/branch/job_123/#categories) "
-        "\u00b7 44 total"
-    )
 
 
 def test_readme_external_include_uses_pinned_component_version():
     readme = Path("README.md").read_text(encoding="utf-8")
+    usage_docs = readme.split("## Component Inputs", 1)[0]
 
     assert (
         "component: gitlab.com/aleksandr-kotlyar/gitlab-allure-history/"
-        "gitlab-allure-history@2026.2.10"
+        "gitlab-allure-history@2026.2.11"
         in readme
     )
-    assert 'allure-history-image-tag: "2026.2.10"' in readme
+    assert "allure-history-image-tag:" not in usage_docs
+    assert "allure-history-image-tag" not in readme
     assert "pin a published release tag" in readme

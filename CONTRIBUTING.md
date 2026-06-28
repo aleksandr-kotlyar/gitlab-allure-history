@@ -78,37 +78,28 @@ Demo tests may intentionally produce failed, broken, or skipped Allure states. T
 Focused examples:
 
 ```bash
-pytest tests/test_generate_index.py
-pytest tests/test_prune_reports.py
 pytest tests/test_gitlab_template.py
 ```
 
-To test index generation directly:
-
-```bash
-python3 generate_index.py public
-```
+Index generation, retention, Pages smoke checks, and end-to-end report tree
+tests live in `core-allure-history`.
 
 ## How This Repository Uses Itself
 
-The project includes its own component from `.gitlab-ci.yml`. Tag pipelines build and use the matching release image. Non-tag pipelines include the component at the current commit SHA and use the latest published fallback image:
+The project includes its own component from `.gitlab-ci.yml`. Tag and non-tag
+pipelines deliberately use the same pinned Core Allure History release:
 
 ```yaml
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
-    inputs:
-      allure-history-image-tag: $CI_COMMIT_TAG
-      build-runtime-image: "true"
     rules:
       - if: $CI_COMMIT_TAG
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
-    inputs:
-      allure-history-image-tag: "2026.2.10"
     rules:
       - if: $CI_COMMIT_TAG == null
 ```
 
-After each release, update the fallback image tag in `.gitlab-ci.yml`.
+Update the core tag only when adopting and validating a new core release.
 
 ## CI-only Validation
 
@@ -126,19 +117,18 @@ These checks require GitLab CI context and variables; they are not normal local-
 | `templates/gitlab-allure-history.yml` | Reusable GitLab CI component. |
 | `tests/fixtures/consumer-*` | External consumer configurations executed as child pipelines. |
 | `validate_gitlab_ci.py` | GitLab CI Lint API validation. |
-| `Dockerfile` | Runtime image with Python, Java, Git, and Allure CLI. |
-| `generate_index.py` | Static HTML index generator. |
-| `prune_reports.py` | Report snapshot retention. |
-| `smoke_public_pages.py` | Published Pages smoke checks. |
 | `pytest.ini` | Pytest markers and Allure configuration. |
-| `tests/` | Gate, component, and demo tests. |
+| `tests/` | Gate, GitLab component, consumer contract, and demo tests. |
 | `CHANGELOG.md` | Release history and policy. |
+
+The runtime Dockerfile, report builder, generated index implementation,
+retention logic, and Pages smoke CLI are maintained in `core-allure-history`.
 
 ## Testing generated indexes
 
-The generated index pages are part of the product.
+Generated index behavior is tested in `core-allure-history`.
 
-When changing `generate_index.py`, check that:
+When changing the adapter contract around generated indexes, check that:
 
 * the root index opens;
 * the environment index opens;
@@ -189,7 +179,8 @@ When changing latest report logic, verify:
 
 ## Testing Pruning
 
-When changing `prune_reports.py`, verify:
+Pruning behavior is owned by `core-allure-history`. When changing retention
+arguments in this adapter, verify:
 
 * only old `job_*` report folders are removed;
 * `history/` is preserved;
@@ -254,7 +245,7 @@ When changing `templates/gitlab-allure-history.yml`, check:
 * missing Allure results fail with a clear diagnostic;
 * default values are safe;
 * existing documented usage remains valid;
-* `allure-history-image-tag` is still handled correctly;
+* the pinned Core Allure History runtime image is still handled correctly;
 * report publishing still works;
 * MR comments remain optional;
 * generated Pages layout remains compatible.
@@ -327,14 +318,17 @@ The project uses a year-based versioning scheme:
 YYYY.MINOR.PATCH
 ```
 
-Component tags and runtime image tags are released together and should use the same version.
+Component and Core Allure History versions are independent. A component release
+records the tested core version through its pinned runtime image.
 
 ## Release Workflow
 
 1. Merge the release changes to `master` with an updated changelog.
 2. Create a `YYYY.MINOR.PATCH` tag from the validated `master` commit.
-3. The tag pipeline includes the component at that tag, builds and pushes the matching runtime image through `build_python`, runs validation and publishing jobs, and creates the GitLab release through `create_release`.
-4. After the release succeeds, update the fallback runtime image tag in `.gitlab-ci.yml` for non-tag pipelines.
+3. If adopting a new core release, update the pinned Core Allure History image
+   in the component, dogfooding pipeline, tests, and documentation.
+4. The tag pipeline includes the component at that tag, runs validation and
+   publishing jobs, and creates the GitLab release through `create_release`.
 
 ## Pull Request Checklist
 
@@ -366,15 +360,14 @@ Before tagging:
 - [ ] MR comment behavior is checked if affected.
 - [ ] README version references are updated.
 - [ ] The CHANGELOG entry is moved from `unreleased` to released.
-- [ ] Component version and runtime image tag match.
+- [ ] The pinned Core Allure History image exists and passed adapter CI.
 
 After tagging:
 
 - [ ] Release tag is created.
 - [ ] Tag pipeline is green.
-- [ ] Matching runtime image is published.
+- [ ] The pinned Core Allure History runtime image remains available.
 - [ ] GitLab release notes are published.
-- [ ] Non-tag fallback image in `.gitlab-ci.yml` is updated.
 
 ## Design Principles
 

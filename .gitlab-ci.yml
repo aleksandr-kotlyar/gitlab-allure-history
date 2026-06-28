@@ -1,14 +1,9 @@
 include:
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_TAG
-    inputs:
-      allure-history-image-tag: $CI_COMMIT_TAG
-      build-runtime-image: "true"
-      comment-mr: "false"
     rules:
       - if: $CI_COMMIT_TAG
   - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/gitlab-allure-history@$CI_COMMIT_SHA
     inputs:
-      allure-history-image-tag: "2026.2.10"
       comment-mr: "true"
     rules:
       - if: $CI_COMMIT_TAG == null
@@ -17,7 +12,7 @@ variables:
   GIT_CLONE_PATH: "$CI_BUILDS_DIR/$CI_PROJECT_PATH_SLUG/$CI_CONCURRENT_PROJECT_ID"
 
 default:
-  image: $ALLURE_HISTORY_IMAGE
+  image: python:3.14
 
 ci_lint:
   stage: test
@@ -38,6 +33,8 @@ test_gate:
     - if: $IMAGE_TAG
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
+  before_script:
+    - python3 -m pip install -r requirements.txt
   script:
     - set -euo pipefail
     - echo "$CI_JOB_ID" > jobid
@@ -60,6 +57,8 @@ test_demo:
       when: never
     - if: $CI_PIPELINE_SOURCE != "web"
       when: always
+  before_script:
+    - python3 -m pip install -r requirements.txt
   script:
     - set -euo pipefail
     - pytest -m "demo" --env="$ENV" --junitxml=report-demo.xml
@@ -136,8 +135,12 @@ publish-allure-history:
 
 pages_smoke:
   stage: release
-  dependencies:
-    - test_gate
+  image: registry.gitlab.com/aleksandr-kotlyar/allure-history-core:2026.2.11
+  needs:
+    - job: test_gate
+      artifacts: true
+    - job: publish-allure-history
+      artifacts: false
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       when: never
@@ -145,7 +148,7 @@ pages_smoke:
   script:
     - set -euo pipefail
     - test -s jobid
-    - python3 smoke_public_pages.py
+    - allure-history smoke
         --base-url "$CI_PAGES_URL"
         --environment "$ENV"
         --branch "$CI_COMMIT_REF_SLUG"
